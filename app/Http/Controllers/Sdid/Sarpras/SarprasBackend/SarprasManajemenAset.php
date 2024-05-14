@@ -263,6 +263,13 @@ class SarprasManajemenAset extends Controller
         return redirect()->route('manajemen_aset.prasarana')->with('success', 'Prasarana created successfully.');
     }
 
+    public function get_data_prasarana(Request $request)
+    {
+        // dd($request);
+        $prasarana = Prasarana::find($request->id);
+        return response()->json($prasarana);
+    }
+
     public function index_bangunan_kuliah()
     {
 
