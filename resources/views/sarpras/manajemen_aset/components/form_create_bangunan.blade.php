@@ -68,6 +68,55 @@
                         <label for="merk">MERK:</label>
                         <input type="text" class="form-control" id="merk" name="merk" required>
                     </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="bangunanCheck">
+                        <label class="form-check-label" for="bangunanCheck">Bangunan</label>
+                    </div>
+             
+                    <!-- Dynamic Bangunan fields container -->
+                    <div id="bangunanFields">
+                        <div class="form-group">
+                            <label for="idBangunan">ID Bangunan (GUID):</label>
+                            <input type="text" class="form-control" id="idBangunan" name="id_bangunan">
+                        </div>
+                        <div class="form-group">
+                            <label for="kdSatkerTanah">Kode Satker Tanah:</label>
+                            <input type="text" class="form-control" id="kdSatkerTanah" name="kd_satker_tanah">
+                        </div>
+                        <div class="form-group">
+                            <label for="nmSatkerTanah">Nama Satker Tanah:</label>
+                            <input type="text" class="form-control" id="nmSatkerTanah" name="nm_satker_tanah">
+                        </div>
+                        <div class="form-group">
+                            <label for="kdBrgTanah">Kode Barang Tanah:</label>
+                            <input type="text" class="form-control" id="kdBrgTanah" name="kd_brg_tanah">
+                        </div>
+                        <div class="form-group">
+                            <label for="nmBrgTanah">Nama Barang Tanah:</label>
+                            <input type="text" class="form-control" id="nmBrgTanah" name="nm_brg_tanah">
+                        </div>
+                        <div class="form-group">
+                            <label for="nupBrgTanah">NUP Barang Tanah:</label>
+                            <input type="text" class="form-control" id="nupBrgTanah" name="nup_brg_tanah">
+                        </div>
+                        <div class="form-group">
+                            <label for="tglSkPemakai">Tanggal SK Pemakai:</label>
+                            <input type="date" class="form-control" id="tglSkPemakai" name="tgl_sk_pemakai">
+                        </div>
+                        <div class="form-group">
+                            <label for="kapasitas">Kapasitas:</label>
+                            <input type="number" class="form-control" id="kapasitas" name="kapasitas">
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggalHapusBuku">Tanggal Hapus Buku:</label>
+                            <input type="date" class="form-control" id="tanggalHapusBuku" name="tanggal_hapus_buku">
+                        </div>
+                        <div class="form-group">
+                            <label for="keterangan">Keterangan:</label>
+                            <input type="text" class="form-control" id="keterangan" name="keterangan">
+                        </div>
+                    </div>
+                    
                     <!-- <div>
             <label for="luas_bangunan">Luas Bangunan:</label>
             <input type="number" id="luas_bangunan" name="luas_bangunan" required>
@@ -194,7 +243,12 @@
         </div>
     </div>
 </div>
-
+<script>
+    document.getElementById('bangunanCheck').addEventListener('change', function() {
+        var bangunanContainer = document.getElementById('bangunanFields');
+        bangunanContainer.style.display = this.checked ? 'block' : 'none';
+    });
+    </script>
 <script>
     document.getElementById('kocak').addEventListener('click', function() {
         console.log('Button kocak diklik!');

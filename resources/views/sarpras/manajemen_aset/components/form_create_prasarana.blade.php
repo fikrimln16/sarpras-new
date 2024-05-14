@@ -55,9 +55,17 @@
            <input type="number" class="form-control" id="nilai_buku" name="nilai_buku" required>
        </div>
        <div class="form-group">
-           <label for="merk">MERK:</label>
+           <label for="merk">MERK</label>
            <input type="text" class="form-control" id="merk" name="merk" required>
        </div>
+       <h1>1</h1>
        <button type="submit" class="btn btn-primary">Submit</button>
    </form>
 </div>
+
+<script>
+    document.getElementById('bangunanCheck').addEventListener('change', function() {
+        var bangunanContainer = document.getElementById('bangunanFields');
+        bangunanContainer.style.display = this.checked ? 'block' : 'none';
+    });
+</script>

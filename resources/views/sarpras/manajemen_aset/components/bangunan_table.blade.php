@@ -31,11 +31,11 @@
                     <td>{{ $item['lebar'] }}</td>
                     <td>{{ $item['luas_bangunan'] }}</td>
                     <td  class="truncate" title="Click to expand">{{ $item['alamat'] }}</td>
-                    <td>{{ $item['latitude'] }}</td>
-                    <td>{{ $item['longitude'] }}</td>
-                    <td>{{ $item['BMN_satker'] }}</td>
-                    <td>{{ $item['BMN_kode_barang'] }}</td>
-                    <td>{{ $item['BMN_nup'] }}</td>
+                    <td>{{ $item['lintang'] }}</td>
+                    <td>{{ $item['bujur'] }}</td>
+                    <td>{{ $item['bmn_satker'] }}</td>
+                    <td>{{ $item['bmn_kode_barang'] }}</td>
+                    <td>{{ $item['bmn_nup'] }}</td>
                     {{-- <td>{{ $item['tanggal_perolehan']}}</td> --}}
                     <td>{{ number_format($item['nilai_perolehan'], 2) }}</td>
                     <td>{{ number_format($item['nilai_buku'], 2) }}</td>
