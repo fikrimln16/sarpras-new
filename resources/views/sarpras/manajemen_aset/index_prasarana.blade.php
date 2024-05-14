@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <!-- Tab navigasi -->
-    <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
+    {{-- <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
         <li class="nav-item">
             <a class="nav-link {{ $activeTab == 'kuliah' ? 'active' : '' }}" id="bangunan-tab" data-toggle="tab" href="{{ route('manajemen_aset.bangunan', ['tab' => 'kuliah']) }}" role="tab" aria-controls="kuliah" aria-selected="true">Kuliah</a>
         </li>
@@ -28,12 +28,12 @@
         <li class="nav-item">
             <a class="nav-link {{ $activeTab == 'lainnya' ? 'active' : '' }}" id="lainnya-tab" data-toggle="tab" href="{{ route('manajemen_aset.bangunan', ['tab' => 'lainnya']) }}" role="tab" aria-controls="lainnya" aria-selected="false">Lainnya</a>
         </li>
-    </ul>
+    </ul> --}}
 
     <!-- Isi tab -->
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="content" role="tabpanel" aria-labelledby="content-tab">
-            <h1>Bangunan Content Here</h1>
+            <h1>Prasarana</h1>
             @yield('bangunan_table')
         </div>
     </div>

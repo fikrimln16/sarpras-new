@@ -10,35 +10,63 @@
             </div>
             <div class="modal-body">
                 <!-- Form Tambah -->
-                <form id="prasaranaForm">
+                <form id="prasaranaForm" action="{{ route('manajemen_aset.prasarana.create') }}" method="POST">
                     @csrf
-                    <div>
-                        <label for="nama_prasarana">Nama Prasarana:</label>
-                        <input type="text" id="nama_prasarana" name="nama_prasarana" required>
+                    <div class="form-group">
+                        <label for="namaPrasarana">Nama Prasarana:</label>
+                        <input type="text" class="form-control" id="namaPrasarana" name="nama_prasarana" required>
                     </div>
-                    <div>
-                        <label for="jenis_prasarana">Jenis Prasarana:</label>
-                        <input type="text" id="jenis_prasarana" name="jenis_prasarana" required>
+                    <div class="form-group">
+                        <label for="panjang">Panjang (m):</label>
+                        <input type="number" step="0.1" class="form-control" id="panjang" name="panjang" required>
                     </div>
-                    <div>
+                    <div class="form-group">
+                        <label for="lebar">Lebar (m):</label>
+                        <input type="number" step="0.1" class="form-control" id="lebar" name="lebar" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="luas">Luas (m²):</label>
+                        <input type="number" step="0.1" class="form-control" id="luas" name="luas" required>
+                    </div>
+                    <div class="form-group">
                         <label for="alamat">Alamat:</label>
-                        <input type="text" id="alamat" name="alamat" required>
+                        <input type="text" class="form-control" id="alamat" name="alamat" required>
                     </div>
-                    <div>
-                        <label for="latitude">Latitude:</label>
-                        <input type="text" id="latitude" name="latitude" required>
+                    <div class="form-group">
+                        <label for="lintang">Lintang:</label>
+                        <input type="text" class="form-control" id="lintang" name="lintang" required>
                     </div>
-                    <div>
-                        <label for="longitude">Longitude:</label>
-                        <input type="text" id="longitude" name="longitude" required>
+                    <div class="form-group">
+                        <label for="bujur">Bujur:</label>
+                        <input type="text" class="form-control" id="bujur" name="bujur" required>
                     </div>
-                    <div>
-                        <label for="panjang">Panjang:</label>
-                        <input type="number" id="panjang" name="panjang" required>
+                    <div class="form-group">
+                        <label for="bmnSatker">BMN Satker:</label>
+                        <input type="text" class="form-control" id="bmnSatker" name="bmn_satker" required>
                     </div>
-                    <div>
-                        <label for="lebar">Lebar:</label>
-                        <input type="number" id="lebar" name="lebar" required>
+                    <div class="form-group">
+                        <label for="bmnKodeBarang">BMN Kode Barang:</label>
+                        <input type="text" class="form-control" id="bmnKodeBarang" name="bmn_kode_barang" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bmnNup">BMN NUP:</label>
+                        <input type="number" class="form-control" id="bmnNup" name="bmn_nup" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tanggalPerolehan">Tanggal Perolehan:</label>
+                        <input type="date" class="form-control" id="tanggalPerolehan" name="tanggal_perolehan" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nilaiPerolehan">Nilai Perolehan (Rp):</label>
+                        <input type="number" class="form-control" id="nilaiPerolehan" name="nilai_perolehan" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nilaiBuku">Nilai Buku (Rp):</label>
+                        <input type="number" class="form-control" id="nilaiBuku" name="nilai_buku" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="merk">MERK:</label>
+                        <input type="text" class="form-control" id="merk" name="merk" required>
                     </div>
                     <!-- <div>
             <label for="luas_bangunan">Luas Bangunan:</label>
