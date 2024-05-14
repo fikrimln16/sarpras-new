@@ -13,24 +13,8 @@ class Prasarana extends Model
     public $timestamps = false; 
     public $incrementing = true;
     
-    protected $fillable = [
-        'nama_prasarana',
-        'panjang',
-        'lebar',
-        'luas_bangunan',
-        'alamat',
-        'lintang',
-        'bujur',
-        'bmn_satker',
-        'bmn_kode_barang',
-        'bmn_nup',
-        'tanggal_perolehan',
-        'nilai_perolehan',
-        'nilai_buku',
-        'merk'
-    ];
+    protected $guarded = ['id'];
     
-
     public function getDataPrasarana()
     {
         return DB::table($this->table)->get();
