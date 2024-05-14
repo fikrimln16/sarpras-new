@@ -252,7 +252,7 @@ class SarprasManajemenAset extends Controller
       $activeTab = $kategori; 
 
       // dd($bangunan);
-        return view('sarpras.manajemen_aset.components.bangunan_table', compact('data', 'activeTab'));
+        return view('sarpras.manajemen_aset.components.prasarana_table', compact('data', 'activeTab'));
     }
 
     public function create_prasarana(Request $request)

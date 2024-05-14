@@ -22,17 +22,19 @@
         Unit Sarpras PT Universitas<br>
         Pendidikan Indonesia
     </div>
-    <div class="menu-item">Manajemen Aset</div>
-    <div class="menu-item">Prasarana</div>
-    <div class="menu-item">Sarana</div>
-    <div class="menu-item">Inventaris</div>
+    <div class="menu-item" id="manajemenAset">Manajemen Aset</div>
+    <div class="submenu" id="submenu">
+        <div class="menu-item">Prasarana</div>
+        <div class="menu-item">Sarana</div>
+        <div class="menu-item">Inventaris</div>
+    </div>
 </div>
 
 <style>
     .sidebar {
         width: 300px;
         height: 100vh;
-        background-color: #333;
+        background-color: #304250;
         padding: 20px;
         color: white;
         box-sizing: border-box;
@@ -59,6 +61,19 @@
 
     .menu-item:hover {
         background-color: #555;
+    }
+
+    .submenu {
+        display: none;
+        margin-left: 20px;
+    }
+
+    .submenu .menu-item {
+        background-color: #555;
+    }
+
+    .submenu .menu-item:hover {
+        background-color: #666;
     }
 </style>
 
@@ -143,30 +158,12 @@
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var assetManagement = document.getElementById("asset_management");
-        var dropdown = assetManagement.querySelector(".dropdown");
-
-        assetManagement.addEventListener("click", function(e) {
-            e.preventDefault(); // Menghentikan perilaku default dari link
-            dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
-        });
-
-        // Menangani setiap item dropdown untuk mencegah menutup dropdown saat salah satu item diklik
-        var dropdownItems = dropdown.querySelectorAll("li");
-        dropdownItems.forEach(function(item) {
-            item.addEventListener("click", function(e) {
-                e.stopPropagation();
-                dropdown.style.display = "block";
-            });
-
-        });
-
-        // Menangani peristiwa klik di luar dropdown untuk menutup dropdown
-        document.addEventListener("click", function(e) {
-            if (!assetManagement.contains(e.target)) {
-                dropdown.style.display = "none";
-            }
-        });
+    document.getElementById('manajemenAset').addEventListener('click', function() {
+        var submenu = document.getElementById('submenu');
+        if (submenu.style.display === 'none' || submenu.style.display === '') {
+            submenu.style.display = 'block';
+        } else {
+            submenu.style.display = 'none';
+        }
     });
 </script>

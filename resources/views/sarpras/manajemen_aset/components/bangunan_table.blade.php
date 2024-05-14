@@ -1,13 +1,13 @@
 @extends('sarpras.manajemen_aset.index_prasarana')
 
 @section('bangunan_table')
-    <div class="container mt-5">
+    <!-- <div class="container mt-5"> -->
         <!-- Add Create New Prasarana Button -->
         <button id="tambahBtn" class="btn btn-primary mb-2">Tambah</button>
         <table id="dataTable" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Nama prasarana</th>
+                <th>Nama prasarana</th>
                 <th>Panjang</th>
                 <th>Lebar</th>
                 <th>Luas</th>
@@ -44,7 +44,7 @@
                 @endforeach
         </tbody>
     </table>
-</div>
+<!-- </div> -->
 @include('sarpras.manajemen_aset.components.form_create_bangunan')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -99,6 +99,7 @@
     table {
         width: 100%;
         border-collapse: collapse;
+        overflow-x: auto;
     }
     th, td {
         border: 1px solid #ccc;

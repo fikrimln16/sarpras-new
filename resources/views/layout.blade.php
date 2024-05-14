@@ -35,61 +35,37 @@
             --font-large: calc(var(--font-base) * 1.5);
         }
 
-        @media (min-width: 1300px) {
-            .layout h1 {
-                font-size: 32px;
-                text-overflow: ellipsis;
-
-            }
-        }
-
-        @media (min-width: 1700px) {
-            .layout h1 {
-                font-size: 48px;
-                text-overflow: ellipsis;
-
-            }
-
-            .text-performance h1 {
-                font-size: 24px !important;
-            }
-        }
-
-
-
         .layout {
             display: flex;
-            background-color: white;
             width: 100%;
             height: 100vh;
         }
 
+        .right {
+            flex: 1;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            background-color: #fff;
+        }
 
         .layout p {
             margin: 0;
         }
-
-        .content {
-            padding: 32px 28px;
-            overflow-y: auto;
-        }
     </style>
-
 </head>
 
 <body>
     <div class="layout">
-        <!-- sidebar -->
-
         @include('partials.sidebar')
-        <div>
+        <div class="right">
             @include('partials.topbar')
             @yield('content')
         </div>
-
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 
 </html>
