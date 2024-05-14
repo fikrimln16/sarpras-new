@@ -1,6 +1,6 @@
 <div class="topbar">
     <div>
-        <h1>Universitas Pendidikan Indonesia</h1>
+        <h4>Universitas Pendidikan Indonesia</h4>
     </div>
     <div class="right-icon">
         <li>
@@ -94,5 +94,5 @@
         min-width: 200px !important;
         max-width: 300px !important;
     }
-    
+
 </style>
