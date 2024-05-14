@@ -24,8 +24,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.0.3/js/dataTables.bootstrap5.js"></script>
-
-
+    <link rel="stylesheet" href="{{ URL::asset('css/main.css') }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <style>
@@ -36,7 +35,6 @@
         }
 
         .layout {
-            display: flex;
             width: 100%;
             height: 100vh;
         }

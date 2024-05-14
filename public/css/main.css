@@ -1,0 +1,157 @@
+.row_paging .pagination{
+	margin-top: 5px;
+	margin-bottom: 0px;
+	border-radius: 0px;	
+}
+.pagination>li:first-child>a, .pagination>li:first-child>span,
+.pagination>li:last-child>a, .pagination>li:last-child>span{
+	border-radius: 0px;
+	border-top-left-radius: 0px;
+	border-bottom-left-radius: 0px;
+
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+.row_paging .pagination li *{
+	padding: 7px 13px;
+}
+.row_paging .pagination li.active *{
+	/*border: none;*/
+}
+.row_paging .pagination li.active span{
+	background: #2D2D2D;
+	border: solid 1px #2d2d2d;
+	font-weight: bold;
+	color: white;
+}
+
+.empty-row {
+	text-align: center;
+}
+
+.bg-dark{
+	background: #424242 !important;
+	background-color: #424242 !important;
+	color: white;
+}
+
+.metismenu .fa.arrow:before {
+  content: "\f105";
+}
+body.mini-navbar .navbar-default .nav.metismenu > li > a > i.fa:before,
+body.mini-navbar .navbar-default .nav.metismenu > li > a > i.fa{
+	content: "\f10c";
+	
+}
+
+.alert{
+	/*border-radius: 0px !important;*/
+}
+
+.ibox-title{
+	font-size: 17px;
+	font-weight: bold;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	letter-spacing: -1px;
+	color: #2d2d2d;
+}
+
+.nav-header {
+	padding: 15px;
+	background: none;
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#e4f5fc+0,bfe8f9+50,9fd8ef+51,2ab0ed+100;Blue+Gloss+%235 */
+	background: #bfe8f9; /* Old browsers */
+	background: -moz-linear-gradient(-45deg,  #e4f5fc 0%, #bfe8f9 50%, #9fd8ef 51%, #2ab0ed 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(-45deg,  #e4f5fc 0%,#bfe8f9 50%,#9fd8ef 51%,#2ab0ed 100%);  Chrome10-25,Safari5.1-6 
+	background: linear-gradient(135deg,  #e4f5fc 0%,#bfe8f9 50%,#9fd8ef 51%,#2ab0ed 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e4f5fc', endColorstr='#2ab0ed',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+	position: relative;
+	z-index: 2;
+	box-shadow: -10px 0px 10px #000;
+ 	/*background: url("patterns/header-profile-skin-2.png") no-repeat;*/
+}
+
+.c_header_logo{
+	padding: 0px;
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 16px;
+	letter-spacing: -2px;
+	font-family: 'Sans', 'Verdana', 'Arial';
+}
+.header_logo{
+	float: left;
+	margin-top: -7px;
+	margin-right: 12px;
+	vertical-align: middle;
+}
+.logo_size{
+	width: 40px;
+}
+
+body.mini-navbar .user_info_header{
+	display: none;
+}
+.user_info_header{
+	position: relative;
+	z-index: 1;
+	padding: 15px;
+	background: url("patterns/header-profile-skin-2.png") no-repeat;
+	/*background: #15334F;*/
+	/*background: #2d2d2d;*/
+}
+
+.warna_template{
+	color: #0C166B !important;
+}
+.bg_warna_template{
+	background: #0C166B !important;
+	background-color: #0C166B !important;
+	color: white !important;
+}
+
+body:not(.fixed-sidebar):not(.canvas-menu).mini-navbar .nav li:hover > .nav-second-level, .mini-navbar .nav li:focus > .nav-second-level{
+	min-width: 200px;
+}
+
+.navbar{
+	height: 60px;
+}
+.nav-header{
+	height: 60px;
+}
+
+#page-wrapper .row.wrapper{
+	height: 100px;
+	padding-top: 5px;
+	border: none !important;
+	background: #e2e2e2;
+	background-image: url("../texture.png");
+	background-repeat: repeat;
+}
+.user_info_header{
+	height: 100px;
+}
+
+.breadcrumb{
+	background: none;
+	background-color: none;
+	color: #2d2d2d;
+}
+.breadcrumb>li+li:before{
+	color: #424242;
+}
+
+.logo-element{
+	padding: 8px 13px;
+}
+
+.text-xs{
+    font-size: 85%;
+}
+
+.layout {
+    display: flex;
+}

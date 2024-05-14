@@ -1,55 +1,76 @@
 @extends('sarpras.manajemen_aset.index_prasarana')
 
 @section('prasarana_table')
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5><i class="fa fa-th-list"></i> Daftar Bangunan</h5>
+        <div class="fright">
+            <button id="tambahBtn" class='btn btn-sm btn-primary noborder-radius' data-toggle="tooltip" data-placement="top">
+                <i class='fa fa-plus'></i> <b>Tambah Data</b>
+            </button>
 
-<button id="tambahBtn" class="btn btn-primary mb-2">Tambah</button>
-<div class="table-container">
-    <table class="tabel-prasarana">
-        <thead>
-            <tr>
-                <th>Nama prasarana</th>
-                <!-- <th>Panjang</th> -->
-                <!-- <th>Lebar</th> -->
-                <th>Luas</th>
-                <th>Alamat</th>
-                <!-- <th>Lintang</th> -->
-                <!-- <th>Bujur</th> -->
-                <th>BMN satker</th>
-                <!-- <th>BMN kode barang</th> -->
-                <th>BMN nup</th>
-                {{-- <th>Tanggal perolehan</th> --}}
-                <th>Nilai perolehan</th>
-                <th>Nilai buku</th>
-                {{-- <th>MERK</th> --}}
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($data as $item)
-            <tr>
-                <td>{{ $item['nama_prasarana'] }}</td>
-                <!-- <td>{{ $item['panjang'] }}</td> -->
-                <!-- <td>{{ $item['lebar'] }}</td> -->
-                <td>{{ $item['luas_bangunan'] }}</td>
-                <td class="truncate" title="Click to expand">{{ $item['alamat'] }}</td>
-                <!-- <td>{{ $item['latitude'] }}</td> -->
-                <!-- <td>{{ $item['longitude'] }}</td> -->
-                <td>{{ $item['BMN_satker'] }}</td>
-                <!-- <td>{{ $item['BMN_kode_barang'] }}</td> -->
-                <td>{{ $item['BMN_nup'] }}</td>
-                {{-- <td>{{ $item['tanggal_perolehan']}}</td> --}}
-                <td>{{ number_format($item['nilai_perolehan'], 2) }}</td>
-                <td>{{ number_format($item['nilai_buku'], 2) }}</td>
-                {{-- <td>{{ $item['merk'] }}</td> --}}
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+        </div>
+    </div>
+    <div class="table-container">
+        <table id="dataTable" class="table table-bordered table-striped tabel-prasarana">
+            <thead>
+                <tr>
+                    <th>Nama prasarana</th>
+                    <!-- <th>Panjang</th> -->
+                    <!-- <th>Lebar</th> -->
+                    <th>Luas</th>
+                    <th>Alamat</th>
+                    <!-- <th>Lintang</th> -->
+                    <!-- <th>Bujur</th> -->
+                    <th>BMN satker</th>
+                    <!-- <th>BMN kode barang</th> -->
+                    <th>BMN nup</th>
+                    {{-- <th>Tanggal perolehan</th> --}}
+                    <th>Nilai perolehan</th>
+                    <th>Nilai buku</th>
+                    {{-- <th>MERK</th> --}}
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($data as $item)
+                <tr>
+                    <td>{{ $item['nama_prasarana'] }}</td>
+                    <!-- <td>{{ $item['panjang'] }}</td> -->
+                    <!-- <td>{{ $item['lebar'] }}</td> -->
+                    <td>{{ $item['luas_bangunan'] }}</td>
+                    <td class="truncate" title="Click to expand">{{ $item['alamat'] }}</td>
+                    <!-- <td>{{ $item['latitude'] }}</td> -->
+                    <!-- <td>{{ $item['longitude'] }}</td> -->
+                    <td>{{ $item['BMN_satker'] }}</td>
+                    <!-- <td>{{ $item['BMN_kode_barang'] }}</td> -->
+                    <td>{{ $item['BMN_nup'] }}</td>
+                    {{-- <td>{{ $item['tanggal_perolehan']}}</td> --}}
+                    <td>{{ number_format($item['nilai_perolehan'], 2) }}</td>
+                    <td>{{ number_format($item['nilai_buku'], 2) }}</td>
+                    {{-- <td>{{ $item['merk'] }}</td> --}}
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 </div>
 <!-- </div> -->
 @include('sarpras.manajemen_aset.components.form_create_bangunan')
 
 
 <style>
+    .ibox-title {
+        font-size: 17px;
+        font-weight: bold;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        letter-spacing: -1px;
+        color: #2d2d2d;
+    }
+    .fright{
+	float: right !important;
+}
+
     .truncate {
         max-width: 250px;
         /* adjust based on your layout */
@@ -65,7 +86,7 @@
         white-space: normal;
     }
 
-   
+
 
     .table-container {
         max-height: 100vh;
