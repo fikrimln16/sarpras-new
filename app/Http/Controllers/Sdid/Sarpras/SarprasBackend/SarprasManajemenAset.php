@@ -16,9 +16,11 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Bangunan;
 use App\Models\Ruangan;
 use App\Models\PenempatanSarana;
+use App\Models\PenempatanPrasarana;
 use App\Models\Sarana;
 use App\Models\Prasarana;
 use App\Models\SumberPendanaan;
+use App\Models\DataLokasiKampus;
 
 
 class SarprasManajemenAset extends Controller
@@ -115,7 +117,18 @@ class SarprasManajemenAset extends Controller
     {
         $id = $request->query('id');
 
-        $bangunan = Prasarana::all();
+        $universities = auth()->user()->universities;
+        $universityCode = $universities->first()->id;
+
+        // dd($universityCode);
+
+        $data = Prasarana::select('prasarana.*')
+            ->join('penempatan_prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
+            ->where('penempatan_prasarana.id_data_lokasi_kampus', $universityCode)
+            ->get();
+        // dd($data);
+        $bangunan = DataLokasiKampus::find($universityCode)->prasarana;
+
         $kategori = $request->query('tab', 'default');
 
         // if ($kategori != 'default') {
@@ -125,7 +138,7 @@ class SarprasManajemenAset extends Controller
         // //   dd($data);
         // $activeTab = $kategori; 
 
-        $data = Prasarana::all(); // Ambil semua bangunan jika tidak ada filter
+        // $data = Prasarana::all(); // Ambil semua bangunan jika tidak ada filter
         if ($id) {
             $prasarana = Prasarana::find($id);
 
@@ -142,33 +155,62 @@ class SarprasManajemenAset extends Controller
         // return view('sarpras.manajemen_aset.components.prasarana_table', compact('data', 'activeTab'));
     }
 
+
     public function create_prasarana(Request $request)
     {
-        // Validate and store data
-        // dd($request);
-        Prasarana::create($request->all());
+        // Validate the incoming data
+        // $validated = $request->validate([
+        //     // Validation rules for Prasarana fields, e.g., 'name' => 'required|string|max:255'
+        // ]);
 
-        $rules = [
-            'kode_paket' => 'required|string|max:50',
-            'KD_SATKER_TANAH' => 'required|integer',
-            'NM_SATKER_TANAH' => 'required|string|max:255',
-            'KD_BRG_TANAH' => 'required|integer',
-            'NM_BRG_TANAH' => 'required|string|max:255',
-            'NUP_BRG_TANAH' => 'required|integer',
-            'TGL_SK_PEMAKAIAN' => 'required|date',
-            'kapasitas' => 'required|integer',
-            'tanggal_hapus_buku' => 'nullable|string|max:20',
-            'keterangan' => 'required|string|max:255',
-            // 'id_prasarana' => 'required|integer|exists:prasarana,id',
-            // 'id_tanah' => 'required|integer|exists:tanah,id',
-            'kategori' => 'nullable|string|max:50'
-        ];
+        $universities = auth()->user()->universities;
+        $universityCode = $universities->first()->id;
 
-        $validatedData = $request->validate($rules);
-        Bangunan::create($validatedData);
+        DB::beginTransaction();
 
-        return redirect()->route('manajemen_aset.prasarana')->with('success', 'Prasarana created successfully.');
+        try {
+            $prasarana = Prasarana::create($request->all());
+
+            PenempatanPrasarana::create([
+                'id_prasarana' => $prasarana->id,
+                'id_data_lokasi_kampus' => $universityCode
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('manajemen_aset.prasarana')->with('success', 'Prasarana created successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors('Error creating Prasarana: ' . $e->getMessage());
+        }
     }
+    // public function create_prasarana(Request $request)
+    // {
+    //     // Validate and store data
+    //     // dd($request);
+    //     Prasarana::create($request->all());
+
+    //     // $rules = [
+    //     //     'kode_paket' => 'required|string|max:50',
+    //     //     'KD_SATKER_TANAH' => 'required|integer',
+    //     //     'NM_SATKER_TANAH' => 'required|string|max:255',
+    //     //     'KD_BRG_TANAH' => 'required|integer',
+    //     //     'NM_BRG_TANAH' => 'required|string|max:255',
+    //     //     'NUP_BRG_TANAH' => 'required|integer',
+    //     //     'TGL_SK_PEMAKAIAN' => 'required|date',
+    //     //     'kapasitas' => 'required|integer',
+    //     //     'tanggal_hapus_buku' => 'nullable|string|max:20',
+    //     //     'keterangan' => 'required|string|max:255',
+    //     //     // 'id_prasarana' => 'required|integer|exists:prasarana,id',
+    //     //     // 'id_tanah' => 'required|integer|exists:tanah,id',
+    //     //     'kategori' => 'nullable|string|max:50'
+    //     // ];
+
+    //     // $validatedData = $request->validate($rules);
+    //     // Bangunan::create($validatedData);
+
+    //     return redirect()->route('manajemen_aset.prasarana')->with('success', 'Prasarana created successfully.');
+    // }
 
     public function delete_prasarana($id)
     {

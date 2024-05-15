@@ -1,13 +1,16 @@
 <div class="topbar">
 
-
+    @php
+        $universities = auth()->user()->universities;
+        $universityName = $universities->isNotEmpty() ? $universities->first()->nama_kampus : 'No University Assigned';
+    @endphp
     <div>
-        <h4>Universitas Pendidikan Indonesia</h4>
+        <h4>{{ $universityName }}</h4>
     </div>
     <div class="right-icon">
         <li class="peran-saat-ini">
             @if (auth()->check())
-            <p>peran saat ini: {{ auth()->user()->name }}</p>
+                <p>peran saat ini: {{ auth()->user()->name }}</p>
             @endif
 
             <!-- <form method="post" class="form-group change-role">
@@ -56,6 +59,7 @@
     .peran-saat-ini {
         padding-right: 12px;
     }
+
     .topbar {
         display: flex;
         justify-content: space-between;
