@@ -9,6 +9,8 @@ Route::post('manajemen_aset/prasarana', [SarprasManajemenAset::class, 'create_pr
      ->name('manajemen_aset.prasarana.create');
 Route::get('manajemen_aset/prasarana/{id}', [SarprasManajemenAset::class, 'get_data_prasarana'])
      ->name('manajemen_aset.prasarana.getData');
+Route::delete('manajemen_aset/prasarana/delete/{id}', [SarprasManajemenAset::class, 'delete_prasarana'])
+     ->name('manajemen_aset.prasarana.delete');
 
 Route::get('manajemen_aset/ruangan', [SarprasManajemenAset::class, 'create_prasarana'])
      ->name('manajemen_aset.ruangan');

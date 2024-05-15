@@ -29,6 +29,7 @@
                     <th>Nilai perolehan</th>
                     <th>Nilai buku</th>
                     <th>Detail</th>
+                    <th>Delete</th>
                     {{-- <th>MERK</th> --}}
                 </tr>
             </thead>
@@ -52,6 +53,13 @@
                     {{-- <td><button onclick="openModal('tabel-prasarana', '{{ $item['nama_prasarana'] }}', '{{ $item['id'] }}')">Open Modal</button></td> --}}
                     <td>
                         <a href="{{ route('manajemen_aset.prasarana', ['id' => $item['id']]) }}" class="btn btn-primary">Open Modal</a>
+                    </td>
+                    <td>
+                        <form action="{{ route('manajemen_aset.prasarana.delete', ['id' => $item['id']]) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach

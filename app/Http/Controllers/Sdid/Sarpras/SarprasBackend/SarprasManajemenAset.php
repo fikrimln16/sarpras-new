@@ -277,6 +277,16 @@ class SarprasManajemenAset extends Controller
         return redirect()->route('manajemen_aset.prasarana')->with('success', 'Prasarana created successfully.');
     }
 
+    public function delete_prasarana($id)
+    {
+        $prasarana = Prasarana::findOrFail($id);
+
+        // Lakukan penghapusan
+        $prasarana->delete();
+    
+        return redirect()->route('manajemen_aset.prasarana')->with('success', 'Prasarana created successfully.');
+    }
+
     public function get_data_prasarana(Request $request)
     {
         // dd($request);
