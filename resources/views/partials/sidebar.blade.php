@@ -1,46 +1,43 @@
 <div class="sidebar">
     <div class="datetime">{{ Carbon\Carbon::now()->isoFormat('D MMMM YYYY - HH:mm:ss') }}</div>
-    {{-- sarpras unit pt --}}
     @if (auth()->check() && auth()->user()->role === '2')
-        @php
-            $universities = auth()->user()->universities;
-            $universityName = $universities->isNotEmpty()
-                ? $universities->first()->nama_kampus
-                : 'No University Assigned';
-        @endphp
-
-        <div class="welcome">
-            Selamat datang, {{ Auth::user()->name }}<br>
-            Unit Sarpras PT {{ $universityName }}<br>
-        </div>
-        <div class="menu-item" data-toggle="submenu">Manajemen Aset</div>
-        <div class="submenu" style="display:none;">
-            <a href="{{ route('manajemen_aset.prasarana') }}" class="menu-item">Prasarana</a>
-            <a href="{{ route('manajemen_aset.sarana') }}" class="menu-item">Sarana</a>
-            <a href="" class="menu-item">Inventaris</a>
-        </div>
-
-    {{-- sarpras unit pusat --}}
+    @php
+    $universities = auth()->user()->universities;
+    $universityName = $universities->isNotEmpty()
+    ? $universities->first()->nama_kampus
+    : 'No University Assigned';
+    @endphp
+    <div class="welcome">
+        Selamat datang, {{ Auth::user()->name }}<br>
+        Unit Sarpras PT {{ $universityName }}<br>
+    </div>
+    <div class="menu-item" data-toggle="submenu">Manajemen Aset</div>
+    <div class="submenu">
+        <a href="{{ route('manajemen_aset.prasarana') }}" class="menu-item">Prasarana</a>
+        <a href="{{ route('manajemen_aset.sarana') }}" class="menu-item">Sarana</a>
+        <a href="" class="menu-item">Inventaris</a>
+    </div>
     @elseif(auth()->check() && auth()->user()->role === '1')
-        <div class="welcome">
-            Selamat datang, {{ Auth::user()->name }}<br>
-            Unit Sarpras Pusat<br>
-        </div>
-        <div class="menu-item" data-toggle="submenu">Sumber Perolehan Aset</div>
-        <div class="submenu" style="display:none;">
-            <a href="" class="menu-item">Pendanaan</a>
-            <a href="" class="menu-item">Data Paket</a>
-        </div>
-        <div class="menu-item" data-toggle="submenu">Manajemen Aset</div>
-        <div class="submenu" style="display:none;">
-            <a href="{{ route('manajemen_aset.prasarana') }}" class="menu-item">Prasarana</a>
-            <a href="{{ route('manajemen_aset.sarana') }}" class="menu-item">Sarana</a>
-            <a href="" class="menu-item">Inventaris</a>
-        </div>
+    <div class="welcome">
+        Selamat datang, {{ Auth::user()->name }}<br>
+        Unit Sarpras Pusat<br>
+    </div>
+    <div class="menu-item" data-toggle="submenu">Sumber Perolehan Aset</div>
+    <div class="submenu">
+        <a href="" class="menu-item">Pendanaan</a>
+        <a href="" class="menu-item">Data Paket</a>
+    </div>
+    <div class="menu-item" data-toggle="submenu">Manajemen Aset</div>
+    <div class="submenu">
+        <a href="{{ route('manajemen_aset.prasarana') }}" class="menu-item">Prasarana</a>
+        <a href="{{ route('manajemen_aset.sarana') }}" class="menu-item">Sarana</a>
+        <a href="" class="menu-item">Inventaris</a>
+    </div>
     @endif
 </div>
 
-<script>
+
+<!-- <script>
     document.addEventListener('DOMContentLoaded', function() {
         var menuItems = document.querySelectorAll('[data-toggle="submenu"]'); // Select all toggles
         menuItems.forEach(function(menu) {
@@ -53,6 +50,15 @@
                     submenu.style.display = 'none';
                 }
             });
+        });
+    });
+</script> -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.menu-item[data-toggle="submenu"]').click(function() {
+            $(this).toggleClass('active');
+            $(this).next('.submenu').slideToggle();
         });
     });
 </script>
@@ -101,6 +107,65 @@
 
     .submenu .menu-item:hover {
         background-color: #666;
+    }
+
+    .sidebar .datetime {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .sidebar .welcome {
+        margin-bottom: 20px;
+    }
+
+    .sidebar .menu-item {
+        padding: 10px 15px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+        display: block;
+        text-decoration: none;
+        color: #ecf0f1;
+    }
+
+    .sidebar .menu-item:hover {
+        background-color: #34495e;
+        color: white;
+    }
+
+    .sidebar .submenu {
+        display: none;
+        padding-left: 20px;
+    }
+
+    .sidebar .submenu .menu-item {
+        font-size: 14px;
+        padding: 8px 15px;
+    }
+
+    .sidebar .submenu .menu-item:hover {
+        background-color: #3b5368;
+    }
+
+    /* .sidebar .menu-item[data-toggle="submenu"]:after {
+        content: '\25BC';
+        float: right;
+        margin-right: 10px;
+        transition: transform 0.3s;
+    } */
+
+    .sidebar .menu-item[data-toggle="submenu"].active:after {
+        transform: rotate(-180deg);
+    }
+
+    @media (max-width: 768px) {
+        .sidebar {
+            width: 200px;
+        }
+
+        .sidebar .menu-item,
+        .sidebar .submenu .menu-item {
+            font-size: 14px;
+        }
     }
 </style>
 

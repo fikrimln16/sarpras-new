@@ -6,7 +6,7 @@
     <p>{{ session('success') }} {{ session('userName') }}</p>
     @endif
     <div class="ibox-title">
-        <h5><i class="fa fa-th-list"></i> Daftar Bangunan</h5>
+        <h5><i class="fa fa-th-list"></i> Daftar Prasarana</h5>
         <div class="fright">
             <button id="tambahBtn" class='btn btn-sm btn-primary noborder-radius' data-toggle="tooltip" data-placement="top">
                 <i class='fa fa-plus'></i> <b>Tambah Data</b>

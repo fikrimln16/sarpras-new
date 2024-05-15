@@ -395,36 +395,38 @@
         bangunanContainer.style.display = this.checked ? 'block' : 'none';
     });
 
-    $('#jenisPrasarana').change(function() {
-        var selectedOption = $(this).val();
-        if (selectedOption == 'Gedung Kuliah') {
-            $('#dropdownTerpaduProdi').removeClass('d-none');
-        } else {
-            $('#dropdownTerpaduProdi').addClass('d-none');
-        }
-        console.log(selectedOption);
-    });
-
     $(document).ready(function() {
-        $('#jenisTerpaduProdi').change(function() {
-            var selectedValue = $(this).val();
+        $('#jenisPrasarana').change(function() {
+            var selectedOption = $(this).val();
+            if (selectedOption == 'Gedung Kuliah') {
+                $('#dropdownTerpaduProdi').removeClass('d-none');
+            } else {
+                $('#dropdownTerpaduProdi').addClass('d-none');
+            }
+            console.log(selectedOption);
+        });
+
+        $('#prasaranaForm').submit(function(e) {
             var jenisPrasarana = $('#jenisPrasarana').val();
-            var gabungan = jenisPrasarana ? jenisPrasarana + ' ' + selectedValue : selectedValue;
-            $('#jenisPrasarana').val(gabungan);
-            console.log('Nilai gabungan: ', gabungan);
+            var jenisTerpaduProdi = $('#jenisTerpaduProdi').val();
+
+            if (jenisPrasarana === 'Gedung Kuliah' && jenisTerpaduProdi) {
+                var gabungan = jenisPrasarana + ' ' + jenisTerpaduProdi;
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'jenis_prasarana',
+                    value: gabungan
+                }).appendTo('#prasaranaForm');
+            }
+
+            console.log('Form submitted with values:', {
+                namaPrasarana: $('#namaPrasarana').val(),
+                jenisPrasarana: jenisPrasarana,
+                jenisTerpaduProdi: jenisTerpaduProdi,
+                gabungan: gabungan
+            });
         });
     });
-
-    // $(document).ready(function() {
-    //     $('#jenisTerpaduProdi').change(function() {
-    //         var selectedValue = $(this).val();
-    //         var jenisPrasarana = $('#jenisPrasarana').val();
-    //         var gabungan = jenisPrasarana + ' ' + selectedValue;
-    //         $('#jenisPrasarana').val(gabungan);
-    //         console.log('Nilai gabungan: ', gabungan);
-    //     });
-    // });
-
 </script>
 
 
