@@ -7,6 +7,8 @@ Route::get('manajemen_aset/prasarana', [SarprasManajemenAset::class, 'index_pras
      ->name('manajemen_aset.prasarana');
 Route::post('manajemen_aset/prasarana', [SarprasManajemenAset::class, 'create_prasarana'])
      ->name('manajemen_aset.prasarana.create');
+Route::get('manajemen_aset/prasarana/{id}', [SarprasManajemenAset::class, 'get_data_prasarana'])
+     ->name('manajemen_aset.prasarana.getData');
 
 Route::get('manajemen_aset/ruangan', [SarprasManajemenAset::class, 'create_prasarana'])
      ->name('manajemen_aset.ruangan');
