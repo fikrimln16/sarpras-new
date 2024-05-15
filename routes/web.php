@@ -2,9 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Sdid\Sarpras\SarprasBackend\SarprasManajemenAset;
+use App\Http\Controllers\AuthController;
+use App\Http\Middleware\AuthenticateUser;
 
+// Route::get('manajemen_aset/prasarana', [SarprasManajemenAset::class, 'index_prasarana'])
+//      ->name('manajemen_aset.prasarana');
 Route::get('manajemen_aset/prasarana', [SarprasManajemenAset::class, 'index_prasarana'])
-     ->name('manajemen_aset.prasarana');
+     ->name('manajemen_aset.prasarana')
+     ->middleware(AuthenticateUser::class);
 Route::post('manajemen_aset/prasarana', [SarprasManajemenAset::class, 'create_prasarana'])
      ->name('manajemen_aset.prasarana.create');
 Route::get('manajemen_aset/prasarana/{id}', [SarprasManajemenAset::class, 'get_data_prasarana'])
@@ -16,3 +21,19 @@ Route::get('manajemen_aset/penempatansarana/{id_ruangan}', [SarprasManajemenAset
      ->name('manajemen_aset.penempatansarana');
 
 Route::get('manajemen_aset/sarana', [SarprasManajemenAset::class, 'index_sarana']);
+
+
+
+
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware('auth')->name('dashboard');
+
+
+// Route::group(['middleware' => 'auth'], function () {
+//      Route::get('/manajamen_aset/prasarana', [AuthController::class, 'index']);
+//      Route::delete('/logout', [AuthController::class, 'logout'])->name('logout');
+//      });

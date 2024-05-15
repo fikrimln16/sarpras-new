@@ -1,10 +1,16 @@
 <div class="topbar">
+
+
     <div>
         <h4>Universitas Pendidikan Indonesia</h4>
     </div>
     <div class="right-icon">
-        <li>
-            <form method="post" class="form-group change-role">
+        <li class="peran-saat-ini">
+            @if (auth()->check())
+            <p>peran saat ini: {{ auth()->user()->name }}</p>
+            @endif
+
+            <!-- <form method="post" class="form-group change-role">
                 <input type="hidden" name="_token" value="ajUnBJubThwKOObnbK18NxVrOY5M0QnBm47TGVUn">
                 <span class="change-role-label">Peran saat ini: </span>
                 <input type="hidden" id="change-role-platform" name="platform" value="Perguruan Tinggi">
@@ -20,7 +26,7 @@
                     </optgroup>
 
                 </select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 376px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-id_role_pengguna-4i-container"><span class="select2-selection__rendered" id="select2-id_role_pengguna-4i-container" title="Unit Sarpras PT Universitas Pendidikan Indonesia">Unit Sarpras PT Universitas Pendidikan Indonesia</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
-            </form>
+            </form> -->
         </li>
         <li class="dropdown ">
             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
@@ -37,17 +43,19 @@
             </ul>
         </li>
         <li>
-            <a xdata-message="Apakah anda yakin akan logout?" xdata-type="confirmLink" class="xconfirmLink">
-                <div class="dropdown-messages-box">
-                    <i class="fa fa-sign-out fcblack"></i><span style="color: black;">Keluar</span>
-                </div>
-            </a>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit">Logout</button>
+            </form>
         </li>
     </div>
 
 </div>
 
 <style>
+    .peran-saat-ini {
+        padding-right: 12px;
+    }
     .topbar {
         display: flex;
         justify-content: space-between;
@@ -94,5 +102,4 @@
         min-width: 200px !important;
         max-width: 300px !important;
     }
-
 </style>
