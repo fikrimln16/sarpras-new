@@ -10,9 +10,10 @@ use App\Models\User;
 class AuthController extends Controller
 {
 
-    function index(){
+    function index()
+    {
         return view('dashboard');
-      }
+    }
     public function showLoginForm()
     {
         return view('login');
@@ -25,14 +26,11 @@ class AuthController extends Controller
         $credetials = [
             'email' => $request->email,
             'password' => $request->password,
-            ];
-            if (Auth::attempt($credetials)) {
+        ];
+        if (Auth::attempt($credetials)) {
             return redirect('/manajemen_aset/prasarana')->with('success', 'Login berhasil');
-            }
-            return back()->with('error', 'Email or Password salah');
-
-
-        
+        }
+        return back()->with('error', 'Email or Password salah');
     }
 
     public function logout()

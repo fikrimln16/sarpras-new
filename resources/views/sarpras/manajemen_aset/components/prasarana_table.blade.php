@@ -3,7 +3,7 @@
 @section('prasarana_table')
 <div class="ibox float-e-margins">
     @if(session('success'))
-        <p>{{ session('success') }} {{ session('userName') }}</p>
+    <p>{{ session('success') }} {{ session('userName') }}</p>
     @endif
     <div class="ibox-title">
         <h5><i class="fa fa-th-list"></i> Daftar Bangunan</h5>
@@ -53,16 +53,15 @@
                     <td>{{ number_format($item['nilai_perolehan'], 2) }}</td>
                     <td>{{ number_format($item['nilai_buku'], 2) }}</td>
                     {{-- <td>{{ $item['merk'] }}</td> --}}
-                    {{-- <td><button onclick="openModal('tabel-prasarana', '{{ $item['nama_prasarana'] }}', '{{ $item['id'] }}')">Open Modal</button></td> --}}
                     <td>
-                        <a href="{{ route('manajemen_aset.prasarana', ['id' => $item['id']]) }}" class="btn btn-primary">Open Modal</a>
+                        <a href="{{ route('manajemen_aset.prasarana', ['id' => $item['id']]) }}" class="btn btn-primary">Details</a>
                     </td>
                     <td>
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $item['id'] }}">
                             Delete
                         </button>
-                    </td>                    
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
@@ -93,7 +92,7 @@
     </div>
 </div>
 <!-- </div> -->
-@include('sarpras.manajemen_aset.components.form_create_bangunan')
+@include('sarpras.manajemen_aset.components.form_create_prasarana')
 
 
 <style>
@@ -105,9 +104,10 @@
         letter-spacing: -1px;
         color: #2d2d2d;
     }
-    .fright{
-	float: right !important;
-}
+
+    .fright {
+        float: right !important;
+    }
 
     .truncate {
         max-width: 250px;
@@ -159,15 +159,15 @@
     }
 </style>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         const deleteModal = document.getElementById('deleteModal');
-        deleteModal.addEventListener('show.bs.modal', function (event) {
+        deleteModal.addEventListener('show.bs.modal', function(event) {
             let button = event.relatedTarget;
             let id = button.getAttribute('data-id');
             let modalBody = deleteModal.querySelector('.modal-body #prasaranaDetails');
             let deleteForm = deleteModal.querySelector('#deleteForm');
-    
-            fetch(`/manajemen_aset/prasarana/${id}`)  // API endpoint that returns prasarana details
+
+            fetch(`/manajemen_aset/prasarana/${id}`) // API endpoint that returns prasarana details
                 .then(response => response.json())
                 .then(data => {
                     modalBody.innerHTML = `
@@ -211,7 +211,7 @@
                 });
         });
     });
-    </script>
+</script>
 
 <script>
     function openModal(tabName, nama, kode) {
@@ -222,14 +222,14 @@
         var table = document.getElementById(tableId);
 
         fetch(`/manajemen_aset/prasarana/${kode}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            modalContent.innerHTML = `
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                modalContent.innerHTML = `
                 <p>Nama: ${data.nama_prasarana}</p>
                 <p>Jenis Prasarana: ${data.jenis_prasarana || 'N/A'}</p>
                 <p>Alamat: ${data.alamat || 'N/A'}</p>
@@ -266,13 +266,13 @@
                 <p>keterangan: ${data.keterangan || 'N/A'}</p>
                 
             `;
-            modal.style.display = "block";
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            modalContent.innerHTML = `<p>Error: ${error.message}</p>`;
-            modal.style.display = "block";
-        });
+                modal.style.display = "block";
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                modalContent.innerHTML = `<p>Error: ${error.message}</p>`;
+                modal.style.display = "block";
+            });
     }
 
     function closeModal() {
