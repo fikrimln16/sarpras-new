@@ -299,3 +299,19 @@
         background-color: #383F4F;
     }
 </style> -->
+<<<<<<< HEAD
+=======
+
+
+
+<script>
+    document.getElementById('manajemenAset').addEventListener('click', function() {
+        var submenu = document.getElementById('submenu');
+        if (submenu.style.display === 'none' || submenu.style.display === '') {
+            submenu.style.display = 'block';
+        } else {
+            submenu.style.display = 'none';
+        }
+    });
+</script>
+>>>>>>> d714bae (tambah fitur sidebar)
