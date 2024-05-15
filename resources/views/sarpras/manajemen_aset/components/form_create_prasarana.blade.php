@@ -1,9 +1,9 @@
 <!-- Modal Tambah -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="tambahModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="tambahModalLabel">Tambah Prasarana</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -42,6 +42,7 @@
                             <div class="form-group">
                                 <label for="jenisTerpaduProdi">Jenis Terpadu / Prodi:</label>
                                 <select class="form-control" id="jenisTerpaduProdi" name="jenis_terpadu_prodi">
+                                    <option value="" disabled selected>Pilih Salah Satu</option>
                                     <option value="Terpadu">Terpadu</option>
                                     <option value="Prodi">Prodi/Fakultas</option>
                                 </select>
@@ -263,7 +264,7 @@
 
                 </form>
             </div>
-
+            
         </div>
     </div>
 </div>
@@ -388,6 +389,9 @@
             <label for="keterangan">Keterangan:</label>
             <input type="text" id="keterangan" name="keterangan" required>
         </div> -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
     document.getElementById('bangunanCheck').addEventListener('change', function() {

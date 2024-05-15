@@ -1,6 +1,10 @@
 @extends('sarpras.manajemen_aset.index_prasarana')
 
 @section('prasarana_table')
+<!-- Button trigger modal -->
+
+
+
 <div class="ibox float-e-margins">
     @if(session('success'))
     <p>{{ session('success') }} {{ session('userName') }}</p>
@@ -8,8 +12,11 @@
     <div class="ibox-title">
         <h5><i class="fa fa-th-list"></i> Daftar Prasarana</h5>
         <div class="fright">
-            <button id="tambahBtn" class='btn btn-sm btn-primary noborder-radius' data-toggle="tooltip" data-placement="top">
+            <!-- <button id="tambahBtn" class='btn btn-sm btn-primary noborder-radius' data-toggle="tooltip" data-placement="top">
                 <i class='fa fa-plus'></i> <b>Tambah Data</b>
+            </button> -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                Tambah
             </button>
 
         </div>
@@ -110,19 +117,17 @@
     }
 
     .truncate {
-        max-width: 250px;
-        /* adjust based on your layout */
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        cursor: pointer;
-        /* Indicates that the element is clickable */
-    }
+    max-width: 250px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
 
-    .not-truncated {
-        max-width: none;
-        white-space: normal;
-    }
+.not-truncated {
+    max-width: none;
+    white-space: pre-line;
+}
 
 
 
@@ -136,7 +141,7 @@
     }
 
     .tabel-prasarana {
-        height: 100vh;
+        height: 100%;
         width: 100%;
         /* Make the table take the full width of the container */
         border-collapse: collapse;
@@ -214,71 +219,7 @@
 </script>
 
 <script>
-    function openModal(tabName, nama, kode) {
-        console.log(kode);
-        var modal = document.getElementById("myModal");
-        var modalContent = document.getElementById("modal-body");
-        var tableId = tabName + "-index-table";
-        var table = document.getElementById(tableId);
-
-        fetch(`/manajemen_aset/prasarana/${kode}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                modalContent.innerHTML = `
-                <p>Nama: ${data.nama_prasarana}</p>
-                <p>Jenis Prasarana: ${data.jenis_prasarana || 'N/A'}</p>
-                <p>Alamat: ${data.alamat || 'N/A'}</p>
-                <p>Lintang: ${data.lintang || 'N/A'}</p>
-                <p>Bujur: ${data.bujur || 'N/A'}</p>
-                <p>Panjang (m): ${data.panjang || 'N/A'}</p>
-                <p>Lebar (m): ${data.lebar || 'N/A'}</p>
-                <p>Luas Bangunan (m²): ${data.luas_bangunan || 'N/A'}</p>
-                <p>Luas Tanah (m²): ${data.luas_tanah || 'N/A'}</p>
-                <p>Jumlah Lantai: ${data.jumlah_lantai || 'N/A'}</p>
-                <p>BMN Satker: ${data.bmn_satker || 'N/A'}</p>
-                <p>BMN Kode Barang: ${data.bmn_kode_barang || 'N/A'}</p>
-                <p>BMN NUP: ${data.bmn_nup || 'N/A'}</p>
-                <p>Tanggal Perolehan: ${data.tanggal_perolehan || 'N/A'}</p>
-                <p>Nilai Perolehan (Rp): ${data.nilai_perolehan || 'N/A'}</p>
-                <p>Nilai Buku (Rp): ${data.nilai_buku || 'N/A'}</p>
-                <p>MERK: ${data.merk || 'N/A'}</p>
-                <p>Penggunaan: ${data.penggunaan || 'N/A'}</p>
-                <p>Kondisi: ${data.kondisi || 'N/A'}</p>
-                <p>KD Kab/Kota: ${data.KD_KAB_KOTA || 'N/A'}</p>
-                <p>NM Kab/Kota: ${data.NM_KAB_KOTA || 'N/A'}</p>
-                <p>KD Prov: ${data.KD_PROV || 'N/A'}</p>
-                <p>NM Prov: ${data.NM_PROV || 'N/A'}</p>
-                <p>No Dok Kepemilikan: ${data.NO_DOK_KEPEMILIKAN || 'N/A'}</p>
-                <p>Dok Kepemilikan: ${data.DOK_KEPEMILIKAN || 'N/A'}</p>
-                <p>JNS Dok Kepemilikan: ${data.JNS_DOK_KEPEMILIKAN || 'N/A'}</p>
-                <h5>Bangunan: </h5>
-                <p>KD_BRG_TANAH: ${data.KD_BRG_TANAH || 'N/A'}</p>
-                <p>NM_BRG_TANAH: ${data.NM_BRG_TANAH || 'N/A'}</p>
-                <p>NUP_BRG_TANAH: ${data.NUP_BRG_TANAH || 'N/A'}</p>
-                <p>TGL_SK_PEMAKAIAN: ${data.TGL_SK_PEMAKAIAN || 'N/A'}</p>
-                <p>kapasitas: ${data.kapasitas || 'N/A'}</p>
-                <p>tanggal_hapus_buku: ${data.tanggal_hapus_buku || 'N/A'}</p>
-                <p>keterangan: ${data.keterangan || 'N/A'}</p>
-                
-            `;
-                modal.style.display = "block";
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                modalContent.innerHTML = `<p>Error: ${error.message}</p>`;
-                modal.style.display = "block";
-            });
-    }
-
-    function closeModal() {
-        var modal = document.getElementById("myModal");
-        modal.style.display = "none";
-    }
+    
     document.addEventListener('DOMContentLoaded', function() {
         const addressCells = document.querySelectorAll('.truncate');
 
@@ -288,6 +229,8 @@
             });
         });
     });
+
+    
     $(document).ready(function() {
 
         $('#dataTable').DataTable(); // Memastikan DataTables diaktifkan untuk tabel ini
