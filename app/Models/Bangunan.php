@@ -11,6 +11,10 @@ class Bangunan extends Model
 
     protected $table = 'bangunan';
 
+    public $incrementing = true;
+    
+    protected $guarded = ['id'];
+
     public function getDataBangunan()
     {
         return DB::table($this->table)->get();
