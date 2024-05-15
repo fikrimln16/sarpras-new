@@ -5,12 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Ruangan;
+use Illuminate\Support\Facades\DB;
 
 class Sarana extends Model
 {
     use HasFactory;
 
     protected $table = 'sarana';
+
+    // public $timestamps = false; 
+    public $incrementing = true;
+    
+    protected $guarded = ['id'];
 
     public function getDataSarana()
     {

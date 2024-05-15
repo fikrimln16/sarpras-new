@@ -4,12 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class PenempatanSarana extends Model
 {
     use HasFactory;
 
     protected $table = 'penempatan_sarana';
+
+    public $timestamps = false; 
+    public $incrementing = true;
+    
+    protected $guarded = ['id'];
 
     public function getData()
     {
