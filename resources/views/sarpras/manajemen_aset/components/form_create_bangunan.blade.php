@@ -94,31 +94,31 @@
                     </div>
                     <div class="form-group">
                         <label for="kd_kab_kota">kd_kab_kota:</label>
-                        <input type="text" class="form-control" id="kd_kab_kota" name="kd_kab_kota" required>
+                        <input type="text" class="form-control" id="kd_kab_kota" name="KD_KAB_KOTA" required>
                     </div>
                     <div class="form-group">
                         <label for="nm_kab_kota">nm_kab_kota:</label>
-                        <input type="text" class="form-control" id="nm_kab_kota" name="nm_kab_kota" required>
+                        <input type="text" class="form-control" id="nm_kab_kota" name="NM_KAB_KOTA" required>
                     </div>
                     <div class="form-group">
                         <label for="kd_prov">kd_prov:</label>
-                        <input type="text" class="form-control" id="kd_prov" name="kd_prov" required>
+                        <input type="text" class="form-control" id="kd_prov" name="KD_PROV" required>
                     </div>
                     <div class="form-group">
                         <label for="nm_prov">nm_prov:</label>
-                        <input type="text" class="form-control" id="nm_prov" name="nm_prov" required>
+                        <input type="text" class="form-control" id="nm_prov" name="NM_PROV" required>
                     </div>
                     <div class="form-group">
-                        <label for="nm_dok_kepemilikan">nm_dok_kepemilikan:</label>
-                        <input type="text" class="form-control" id="nm_dok_kepemilikan" name="nm_dok_kepemilikan" required>
+                        <label for="no_dok_kepemilikan">no_dok_kepemilikan:</label>
+                        <input type="text" class="form-control" id="nm_dok_kepemilikan" name="NO_DOK_KEPEMILIKAN" required>
                     </div>
                     <div class="form-group">
                         <label for="dok_kepemilikan">dok_kepemilikan:</label>
-                        <input type="text" class="form-control" id="dok_kepemilikan" name="dok_kepemilikan" required>
+                        <input type="text" class="form-control" id="dok_kepemilikan" name="DOK_KEPEMILIKAN" required>
                     </div>
                     <div class="form-group">
                         <label for="jns_dok_kepemilikan">jns_dok_kepemilikan:</label>
-                        <input type="text" class="form-control" id="jns_dok_kepemilikan" name="jns_dok_kepemilikan" required>
+                        <input type="text" class="form-control" id="jns_dok_kepemilikan" name="JNS_DOK_KEPEMILIKAN" required>
                     </div>
                     <div class="form-group form-check">
                         <input type="checkbox" class="form-check-input" id="bangunanCheck">
@@ -128,32 +128,28 @@
                     <!-- Dynamic Bangunan fields container -->
                     <div id="bangunanFields">
                         <div class="form-group">
-                            <label for="idBangunan">ID Bangunan (GUID):</label>
-                            <input type="text" class="form-control" id="idBangunan" name="id_bangunan">
-                        </div>
-                        <div class="form-group">
                             <label for="kdSatkerTanah">Kode Satker Tanah:</label>
-                            <input type="text" class="form-control" id="kdSatkerTanah" name="kd_satker_tanah">
+                            <input type="text" class="form-control" id="kdSatkerTanah" name="KD_SATKER_TANAH">
                         </div>
                         <div class="form-group">
                             <label for="nmSatkerTanah">Nama Satker Tanah:</label>
-                            <input type="text" class="form-control" id="nmSatkerTanah" name="nm_satker_tanah">
+                            <input type="text" class="form-control" id="nmSatkerTanah" name="NM_SATKER_TANAH">
                         </div>
                         <div class="form-group">
                             <label for="kdBrgTanah">Kode Barang Tanah:</label>
-                            <input type="text" class="form-control" id="kdBrgTanah" name="kd_brg_tanah">
+                            <input type="text" class="form-control" id="kdBrgTanah" name="KD_BRG_TANAH">
                         </div>
                         <div class="form-group">
                             <label for="nmBrgTanah">Nama Barang Tanah:</label>
-                            <input type="text" class="form-control" id="nmBrgTanah" name="nm_brg_tanah">
+                            <input type="text" class="form-control" id="nmBrgTanah" name="NM_BRG_TANAH">
                         </div>
                         <div class="form-group">
                             <label for="nupBrgTanah">NUP Barang Tanah:</label>
-                            <input type="text" class="form-control" id="nupBrgTanah" name="nup_brg_tanah">
+                            <input type="text" class="form-control" id="nupBrgTanah" name="NUP_BRG_TANAH">
                         </div>
                         <div class="form-group">
                             <label for="tglSkPemakai">Tanggal SK Pemakai:</label>
-                            <input type="date" class="form-control" id="tglSkPemakai" name="tgl_sk_pemakai">
+                            <input type="date" class="form-control" id="tglSkPemakai" name="TGL_SK_PEMAKAIAN">
                         </div>
                         <div class="form-group">
                             <label for="kapasitas">Kapasitas:</label>
