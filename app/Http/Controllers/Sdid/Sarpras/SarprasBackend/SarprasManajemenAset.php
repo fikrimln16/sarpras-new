@@ -9,7 +9,8 @@ use Yajra\Datatables\Facades\Datatables;
 use Illuminate\Support\Collection;
 // use App\Sdid\Sarpras\Models\Sarana;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 //import models
 use App\Models\Bangunan;
@@ -112,23 +113,23 @@ class SarprasManajemenAset extends Controller
 
     public function index_prasarana(Request $request)
     {
-    
+
         $id = $request->query('id');
 
         $bangunan = Prasarana::all();
-        $kategori = $request->query('tab', 'default'); 
+        $kategori = $request->query('tab', 'default');
 
         // if ($kategori != 'default') {
         //     $bangunan = Bangunan::where('kategori', $kategori)->get(); // Filter bangunan berdasarkan kategori
         // } else {
-            // }
-            // //   dd($data);
-            // $activeTab = $kategori; 
-            
+        // }
+        // //   dd($data);
+        // $activeTab = $kategori; 
+
         $data = Prasarana::all(); // Ambil semua bangunan jika tidak ada filter
-        if($id){
+        if ($id) {
             $prasarana = Prasarana::find($id);
-            
+
             if (!$prasarana) {
                 abort(404, 'Prasarana tidak ditemukan');
             }
@@ -166,7 +167,7 @@ class SarprasManajemenAset extends Controller
 
         $validatedData = $request->validate($rules);
         Bangunan::create($validatedData);
-        
+
         return redirect()->route('manajemen_aset.prasarana')->with('success', 'Prasarana created successfully.');
     }
 
@@ -176,7 +177,7 @@ class SarprasManajemenAset extends Controller
         SumberPendanaan::where('id_prasarana', $id)->delete();
         // Lakukan penghapusan
         $prasarana->delete();
-    
+
         return redirect()->route('manajemen_aset.prasarana')->with('success', 'Prasarana created successfully.');
     }
 
@@ -189,31 +190,31 @@ class SarprasManajemenAset extends Controller
 
     public function get_data_ruangan_by_bangunan(Request $request)
     {
-        $ruangan = Ruangan::where('id_bangunan', $request->id_bangunan)->get();
+        $ruangan = Ruangan::where('id_prasarana', $request->id_bangunan)->get();
         return response()->json($ruangan);
     }
 
     public function index_bangunan_kuliah()
     {
 
-      $bangunan = Bangunan::all();
-      $activeTab = 'kuliah';
+        $bangunan = Bangunan::all();
+        $activeTab = 'kuliah';
 
-      // dd($bangunan);
+        // dd($bangunan);
         return view('sarpras.manajemen_aset.components.bangunan_table', compact('bangunan', 'activeTab'));
     }
 
     public function index_bangunan_laboratorium()
     {
 
-      $bangunan = Bangunan::all();
-      $activeTab = 'kuliah';
+        $bangunan = Bangunan::all();
+        $activeTab = 'kuliah';
 
-      // dd($bangunan);
+        // dd($bangunan);
         return view('sarpras.manajemen_aset.components.bangunan_table', compact('bangunan', 'activeTab'));
     }
 
-    
+
 
     public function index_bangunan_detail()
     {
@@ -225,10 +226,10 @@ class SarprasManajemenAset extends Controller
     public function index_ruangan()
     {
 
-         $ruangan = Ruangan::with('bangunan')->get();
-         $prasarana = Prasarana::all();
-         // dd($ruangan);
-         return view('sarpras.manajemen_aset.components.ruangan_table', compact('ruangan', 'prasarana'));
+        $ruangan = Ruangan::with('bangunan')->get();
+        $prasarana = Prasarana::all();
+        // dd($ruangan);
+        return view('sarpras.manajemen_aset.components.ruangan_table', compact('ruangan', 'prasarana'));
     }
 
     public function create_ruangan(Request $request)
@@ -253,30 +254,30 @@ class SarprasManajemenAset extends Controller
 
         // Lakukan penghapusan
         $ruangan->delete();
-    
+
         return redirect()->route('manajemen_aset.ruangan')->with('success', 'Prasarana created successfully.');
     }
 
     public function penempatan_sarana($id_ruangan)
     {
 
-         // $sarana = (new Sarana())->getDataSaranaByIdRuang($id_ruangan);
-         // dd($sarana);
+        // $sarana = (new Sarana())->getDataSaranaByIdRuang($id_ruangan);
+        // dd($sarana);
 
-         $penempatanSarana = PenempatanSarana::with(['ruangan', 'sarana'])->get();
-         dd($penempatanSarana);
-         return view('sarpras.manajemen_aset.index_sarana', compact('penempatanSarana'));
+        $penempatanSarana = PenempatanSarana::with(['ruangan', 'sarana'])->get();
+        dd($penempatanSarana);
+        return view('sarpras.manajemen_aset.index_sarana', compact('penempatanSarana'));
     }
 
     public function index_sarana()
     {
-      //   $data = $this->data;
+        //   $data = $this->data;
+        $prasarana = Prasarana::all();
+        //   return view('sarpras.manajemen_aset.index_sarana', compact('data'));
 
-      //   return view('sarpras.manajemen_aset.index_sarana', compact('data'));
-
-         $penempatanSarana = PenempatanSarana::with(['ruangan', 'sarana'])->get();
-         // dd($penempatanSarana);
-         return view('sarpras.manajemen_aset.index_sarana', compact('penempatanSarana'));
+        $penempatanSarana = PenempatanSarana::with(['ruangan', 'sarana'])->get();
+        // dd($penempatanSarana);
+        return view('sarpras.manajemen_aset.index_sarana', compact('penempatanSarana', 'prasarana'));
     }
 
     public function index_inventaris()
@@ -364,66 +365,65 @@ class SarprasManajemenAset extends Controller
         }
     }
 
-    public function tambah_sarana(Request $request): JsonResponse
-    {
-        try {
-            // Validasi input (jika diperlukan)
-
-            // Proses input untuk universitas, bangunan, dan ruangan
-            $universitas = $request->nama_universitas;
-            $bangunan = $request->bangunan;
-            $ruangan = $request->ruangan;
-
-            // Masukkan data barang ke tabel 'sarana' dan ambil UUID
-            $data_sarana = [];
-            $data_penempatan = [];
-            foreach ($request->nama_sarana as $key => $value) {
-                $uuid = uniqid('', true); // Menghasilkan UUID yang unik
-
-                // Simpan data barang
-                $data_sarana[] = [
-                    'uuid' => $uuid,
-                    'nama_sarana' => $value,
-                    'jenis_sarana' => $request->jenis_sarana[$key],
-                    'tanggal_perolehan' => $request->tanggal_perolehan[$key],
-                    'nilai_perolehan' => $request->nilai_perolehan[$key],
-                    'kondisi' => $request->kondisi[$key],
-                    'status' => $request->status[$key],
-                    //    'universitas' => $universitas,
-                    //    'bangunan' => $bangunan,
-                    //    'ruangan' => $ruangan,
-                ];
-
-                // Simpan data penempatan barang
-                for ($i = 0; $i < $request->jumlah_barang[$key]; $i++) {
-                    $data_penempatan[] = [
-                        'uuid_sarana' => $uuid,
-                        'lokasi' => $ruangan // Contoh field lokasi, sesuaikan dengan kebutuhan
-                    ];
-                }
-            }
-
-            // Berhasil
-            return response()->json([
-                'message' => 'Data diterima',
-                'data_sarana' => $data_sarana,
-                'data_penempatan' => $data_penempatan,
-            ], 200);
-        } catch (\Exception $e) {
-            // Gagal
-            return response()->json(['message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
-        }
-    }
-
-
     // public function tambah_sarana(Request $request): JsonResponse
     // {
     //     try {
     //         // Validasi input (jika diperlukan)
 
     //         // Proses input untuk universitas, bangunan, dan ruangan
-    //         $universitas = $request->nama_universitas;
-    //         $bangunan = $request->bangunan;
+    //         $bangunan = $request->prasarana;
+    //         $ruangan = $request->ruangan;
+
+    //         // Masukkan data barang ke tabel 'sarana' dan ambil UUID
+    //         $data_sarana = [];
+    //         $data_penempatan = [];
+    //         foreach ($request->nama_sarana as $key => $value) {
+    //             $uuid = uniqid('', true); // Menghasilkan UUID yang unik
+
+    //             // Simpan data barang
+    //             $data_sarana[] = [
+    //                 'uuid' => $uuid,
+    //                 'nama_sarana' => $value,
+    //                 'jenis_sarana' => $request->jenis_sarana[$key],
+    //                 'tanggal_perolehan' => $request->tanggal_perolehan[$key],
+    //                 'nilai_perolehan' => $request->nilai_perolehan[$key],
+    //                 'kondisi' => $request->kondisi[$key],
+    //                 'status' => $request->status[$key],
+    //                 //    'universitas' => $universitas,
+    //                 //    'bangunan' => $bangunan,
+    //                 //    'ruangan' => $ruangan,
+    //             ];
+
+    //             // Simpan data penempatan barang
+    //             for ($i = 0; $i < $request->jumlah_barang[$key]; $i++) {
+    //                 $data_penempatan[] = [
+    //                     'uuid_sarana' => $uuid,
+    //                     'lokasi' => $ruangan // Contoh field lokasi, sesuaikan dengan kebutuhan
+    //                 ];
+    //             }
+    //         }
+
+    //         // Berhasil
+    //         return response()->json([
+    //             'message' => 'Data diterima',
+    //             'data_sarana' => $data_sarana,
+    //             'data_penempatan' => $data_penempatan,
+    //         ], 200);
+    //     } catch (\Exception $e) {
+    //         // Gagal
+    //         return response()->json(['message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
+    //     }
+    // }
+
+
+    // public function tambah_sarana(Request $request): JsonResponse
+    // {
+    //     try {
+    //         // Validasi input (jika diperlukan)
+    //         dd($request);
+    //         // Proses input untuk universitas, bangunan, dan ruangan
+    //         // $universitas = $request->nama_universitas;
+    //         $prasarana = $request->prasarana;
     //         $ruangan = $request->ruangan;
 
     //         // Masukkan data barang ke tabel 'sarana' dan ambil UUID
@@ -434,16 +434,12 @@ class SarprasManajemenAset extends Controller
 
     //             // Simpan data barang ke dalam model Sarana
     //             $sarana = new Sarana();
-    //             $sarana->uuid = $uuid;
     //             $sarana->nama_sarana = $value;
     //             $sarana->jenis_sarana = $request->jenis_sarana[$key];
     //             $sarana->tanggal_perolehan = $request->tanggal_perolehan[$key];
     //             $sarana->nilai_perolehan = $request->nilai_perolehan[$key];
     //             $sarana->kondisi = $request->kondisi[$key];
     //             $sarana->status = $request->status[$key];
-    //             $sarana->universitas = $universitas;
-    //             $sarana->bangunan = $bangunan;
-    //             $sarana->ruangan = $ruangan;
     //             $sarana->save();
 
     //             // Simpan data penempatan barang ke dalam model PenempatanSarana
@@ -463,8 +459,7 @@ class SarprasManajemenAset extends Controller
     //                 'nilai_perolehan' => $request->nilai_perolehan[$key],
     //                 'kondisi' => $request->kondisi[$key],
     //                 'status' => $request->status[$key],
-    //                 'universitas' => $universitas,
-    //                 'bangunan' => $bangunan,
+    //                 'bangunan' => $prasarana,
     //                 'ruangan' => $ruangan,
     //             ];
     //         }
@@ -479,4 +474,65 @@ class SarprasManajemenAset extends Controller
     //         return response()->json(['message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
     //     }
     // }
+
+    public function tambah_sarana(Request $request): JsonResponse
+    {
+        // Validation rules
+        $validator = Validator::make($request->all(), [
+            'prasarana' => 'required|integer|exists:prasarana,id',
+            'ruangan' => 'required|integer|exists:ruangan,id',
+            'nama_sarana.*' => 'required|string|max:255',
+            'jenis_sarana.*' => 'required|string|max:255',
+            'tanggal_perolehan.*' => 'required|date',
+            'nilai_perolehan.*' => 'required|numeric',
+            'kondisi.*' => 'required|string|max:255',
+            'status.*' => 'required|string|max:255',
+            'jumlah_barang.*' => 'required|integer|min:1'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation errors', 'errors' => $validator->errors()], 422);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $data_sarana = [];
+            foreach ($request->nama_sarana as $key => $value) {
+                $sarana = Sarana::create([
+                    'nama_sarana' => $value,
+                    'jenis_sarana' => $request->jenis_sarana[$key],
+                    'tanggal_perolehan' => $request->tanggal_perolehan[$key],
+                    'nilai_perolehan' => $request->nilai_perolehan[$key],
+                    'kondisi' => $request->kondisi[$key],
+                    'status' => $request->status[$key]
+                ]);
+
+                for ($i = 0; $i < $request->jumlah_barang[$key]; $i++) {
+                    PenempatanSarana::create([
+                        'id_sarana' => $sarana->id,
+                        'id_ruang' => $request->ruangan
+                    ]);
+                }
+
+                // $data_sarana[] = [
+                //     'id' => $sarana->id,
+                //     'nama_sarana' => $value,
+                //     'jenis_sarana' => $request->jenis_sarana[$key],
+                //     'tanggal_perolehan' => $request->tanggal_perolehan[$key],
+                //     'nilai_perolehan' => $request->nilai_perolehan[$key],
+                //     'kondisi' => $request->kondisi[$key],
+                //     'status' => $request->status[$key],
+                //     'prasarana' => $request->prasarana,
+                //     'ruangan' => $request->ruangan,
+                // ];
+            }
+
+            DB::commit();
+            return response()->json(['message' => 'Data diterima', 'data_sarana' => $data_sarana], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
+        }
+    }
 }
