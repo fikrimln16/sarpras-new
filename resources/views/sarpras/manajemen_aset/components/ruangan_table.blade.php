@@ -26,8 +26,8 @@
                     <td>{{ $r->lantai }}</td>
                     <td>{{ $r->kapasitas }}</td>
                     <td>{{ $r->tahun_perolehan }}</td>
-                    <td>{{ $r->bangunan->NM_BRG_TANAH }}</td>
-                    <td>{{ $r->bangunan->NM_SATKER_TANAH }}</td>
+                    <td>{{ $r->prasarana->NM_BRG_TANAH }}</td>
+                    <td>{{ $r->prasarana->NM_SATKER_TANAH }}</td>
                     {{-- <td>
                         <!-- Contoh tombol aksi -->
                         <button class="btn btn-info">Edit</button>

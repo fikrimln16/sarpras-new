@@ -13,9 +13,9 @@
                 <form id="ruanganForm" action="{{ route('manajemen_aset.ruangan.create') }}" method="POST">
                     @csrf
                     <div>
-                        <label for="bangunan">Bangunan:</label>
-                        <select class="form-control" id="bangunan" name="id_bangunan">
-                            @foreach($bangunan as $b)
+                        <label for="bangunan">Prasarana:</label>
+                        <select class="form-control" id="bangunan" name="id_prasarana">
+                            @foreach($prasarana as $b)
                                 <option value="{{ $b->id }}">{{ $b->NM_BRG_TANAH }}</option> <!-- asumsikan kolom nama ada di tabel bangunan -->
                             @endforeach
                         </select>

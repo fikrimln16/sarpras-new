@@ -147,6 +147,26 @@ class SarprasManajemenAset extends Controller
         // Validate and store data
         // dd($request);
         Prasarana::create($request->all());
+
+        $rules = [
+            'kode_paket' => 'required|string|max:50',
+            'KD_SATKER_TANAH' => 'required|integer',
+            'NM_SATKER_TANAH' => 'required|string|max:255',
+            'KD_BRG_TANAH' => 'required|integer',
+            'NM_BRG_TANAH' => 'required|string|max:255',
+            'NUP_BRG_TANAH' => 'required|integer',
+            'TGL_SK_PEMAKAIAN' => 'required|date',
+            'kapasitas' => 'required|integer',
+            'tanggal_hapus_buku' => 'nullable|string|max:20',
+            'keterangan' => 'required|string|max:255',
+            // 'id_prasarana' => 'required|integer|exists:prasarana,id',
+            // 'id_tanah' => 'required|integer|exists:tanah,id',
+            'kategori' => 'nullable|string|max:50'
+        ];
+
+        $validatedData = $request->validate($rules);
+        Bangunan::create($validatedData);
+        
         return redirect()->route('manajemen_aset.prasarana')->with('success', 'Prasarana created successfully.');
     }
 
@@ -206,9 +226,9 @@ class SarprasManajemenAset extends Controller
     {
 
          $ruangan = Ruangan::with('bangunan')->get();
-         $bangunan = Bangunan::all();
+         $prasarana = Prasarana::all();
          // dd($ruangan);
-         return view('sarpras.manajemen_aset.components.ruangan_table', compact('ruangan', 'bangunan'));
+         return view('sarpras.manajemen_aset.components.ruangan_table', compact('ruangan', 'prasarana'));
     }
 
     public function create_ruangan(Request $request)

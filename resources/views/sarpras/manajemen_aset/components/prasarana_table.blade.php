@@ -2,6 +2,9 @@
 
 @section('prasarana_table')
 <div class="ibox float-e-margins">
+    @if(session('success'))
+        <p>{{ session('success') }} {{ session('userName') }}</p>
+    @endif
     <div class="ibox-title">
         <h5><i class="fa fa-th-list"></i> Daftar Bangunan</h5>
         <div class="fright">

@@ -16,7 +16,7 @@ class DataLokasiKampus extends Model
         return DB::table($this->table)->get();
     }
 
-    public function ruangan()
+    public function prasarana()
     {
         return $this->belongsTo(Prasarana::class, 'id_prasarana', 'id');
     }
