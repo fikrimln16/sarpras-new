@@ -1,34 +1,16 @@
 @extends('sarpras.manajemen_aset.index_prasarana')
 
 @section('prasarana_table')
-    <!-- Button trigger modal -->
-
-
-
-    <div class="ibox float-e-margins">
-        @if (session('success'))
-            <p>{{ session('success') }} {{ session('userName') }}</p>
-        @endif
-        <div class="ibox-title">
-            <div class="fright">
-                <!-- <button id="tambahBtn" class='btn btn-sm btn-primary noborder-radius' data-toggle="tooltip" data-placement="top">
-                    <i class='fa fa-plus'></i> <b>Tambah Data</b>
-                </button> -->
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                    Tambah
-                </button>
-    <div class="ibox float-e-margins">
-        @if (session('success'))
-            <p>{{ session('success') }} {{ session('userName') }}</p>
-        @endif
-        <div class="ibox-title">
-            <div class="fright">
-                <!-- <button id="tambahBtn" class='btn btn-sm btn-primary noborder-radius' data-toggle="tooltip" data-placement="top">
-                    <i class='fa fa-plus'></i> <b>Tambah Data</b>
-                </button> -->
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                    Tambah
-                </button>
+<div class="ibox float-e-margins">
+    @if(session('success'))
+    <p>{{ session('success') }} {{ session('userName') }}</p>
+    @endif
+    <div class="ibox-title">
+        <h5><i class="fa fa-th-list"></i> Daftar Prasarana</h5>
+        <div class="fright">
+            <button id="tambahBtn" class='btn btn-sm btn-primary noborder-radius' data-toggle="tooltip" data-placement="top">
+                <i class='fa fa-plus'></i> <b>Tambah Data</b>
+            </button>
 
             </div>
         </div>

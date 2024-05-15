@@ -411,8 +411,7 @@
         bangunanContainer.style.display = this.checked ? 'block' : 'none';
     });
 
-    // dropdownJenisLaboratorium
-
+    $(document).ready(function() {
 
 
     $(document).ready(function() {
@@ -433,6 +432,7 @@
             console.log(selectedOption);
         });
 
+        $('#prasaranaForm').submit(function(e) {
         $('#prasaranaForm').submit(function(e) {
             var jenisPrasarana = $('#jenisPrasarana').val();
             var jenisTerpaduProdi = $('#jenisTerpaduProdi').val();
