@@ -239,20 +239,34 @@ class SarprasManajemenAset extends Controller
 
     public function index_prasarana(Request $request)
     {
+    
+        $id = $request->query('id');
 
-      $bangunan = Prasarana::all();
-      $kategori = $request->query('tab', 'default'); 
+        $bangunan = Prasarana::all();
+        $kategori = $request->query('tab', 'default'); 
 
-      if ($kategori != 'default') {
-        $bangunan = Bangunan::where('kategori', $kategori)->get(); // Filter bangunan berdasarkan kategori
-      } else {
-            $data = Prasarana::all(); // Ambil semua bangunan jika tidak ada filter
-      }
-    //   dd($data);
-      $activeTab = $kategori; 
+        // if ($kategori != 'default') {
+        //     $bangunan = Bangunan::where('kategori', $kategori)->get(); // Filter bangunan berdasarkan kategori
+        // } else {
+            // }
+            // //   dd($data);
+            // $activeTab = $kategori; 
+            
+        $data = Prasarana::all(); // Ambil semua bangunan jika tidak ada filter
+        if($id){
+            $prasarana = Prasarana::find($id);
+            
+            if (!$prasarana) {
+                abort(404, 'Prasarana tidak ditemukan');
+            }
 
-      // dd($bangunan);
-        return view('sarpras.manajemen_aset.components.prasarana_table', compact('data', 'activeTab'));
+            return view('sarpras.manajemen_aset.components.prasarana_detail', compact('prasarana', 'id'));
+        } else {
+            return view('sarpras.manajemen_aset.components.prasarana_table', compact('data'));
+        }
+
+        // dd($bangunan);
+        // return view('sarpras.manajemen_aset.components.prasarana_table', compact('data', 'activeTab'));
     }
 
     public function create_prasarana(Request $request)
