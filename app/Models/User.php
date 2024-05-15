@@ -44,4 +44,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function universities() {
+        return $this->belongsToMany(DataLokasiKampus::class, 'penempatan_users_univ', 'id_user', 'id_data_lokasi_kampus');
+    }
 }

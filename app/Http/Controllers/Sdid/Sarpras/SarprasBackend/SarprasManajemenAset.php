@@ -113,7 +113,6 @@ class SarprasManajemenAset extends Controller
 
     public function index_prasarana(Request $request)
     {
-
         $id = $request->query('id');
 
         $bangunan = Prasarana::all();

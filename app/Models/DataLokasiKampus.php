@@ -20,4 +20,9 @@ class DataLokasiKampus extends Model
     {
         return $this->belongsTo(Prasarana::class, 'id_prasarana', 'id');
     }
+
+    public function penempatan_users_univ()
+    {
+        return $this->hasMany(Prasarana::class, 'id_data_lokasi_kampus', 'id');
+    }
 }

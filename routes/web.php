@@ -32,7 +32,8 @@ Route::get('manajemen_aset/penempatansarana/{id_ruangan}', [SarprasManajemenAset
      ->name('manajemen_aset.penempatansarana');
 Route::post('manajemen_aset/sarana', [SarprasManajemenAset::class, 'tambah_sarana'])
      ->name('manajemen_aset.sarana.create');
-Route::get('manajemen_aset/sarana', [SarprasManajemenAset::class, 'index_sarana']);
+Route::get('manajemen_aset/sarana', [SarprasManajemenAset::class, 'index_sarana'])
+     ->name('manajemen_aset.sarana');
 
 
 
