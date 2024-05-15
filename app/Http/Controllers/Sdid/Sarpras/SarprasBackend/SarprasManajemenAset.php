@@ -51,10 +51,10 @@ class SarprasManajemenAset extends Controller
 
 
 
-    public function index_ruang()
-    {
-        return view('sarpras.manajemen_aset.index_ruang');
-    }
+    // public function index_ruang()
+    // {
+    //     return view('sarpras.manajemen_aset.index_ruang');
+    // }
 
     #nanti ambil data dari db di fungsi index
     protected $data = [

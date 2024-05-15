@@ -55,16 +55,38 @@
                         <a href="{{ route('manajemen_aset.prasarana', ['id' => $item['id']]) }}" class="btn btn-primary">Open Modal</a>
                     </td>
                     <td>
-                        <form action="{{ route('manajemen_aset.prasarana.delete', ['id' => $item['id']]) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
-                        </form>
-                    </td>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $item['id'] }}">
+                            Delete
+                        </button>
+                    </td>                    
                 </tr>
                 @endforeach
             </tbody>
         </table>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this item?</p>
+                    <div id="prasaranaDetails"></div> <!-- Details will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <form id="deleteForm" action="" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <!-- </div> -->
@@ -133,7 +155,60 @@
         /* Align text to the left in table header */
     }
 </style>
-
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            let button = event.relatedTarget;
+            let id = button.getAttribute('data-id');
+            let modalBody = deleteModal.querySelector('.modal-body #prasaranaDetails');
+            let deleteForm = deleteModal.querySelector('#deleteForm');
+    
+            fetch(`/manajemen_aset/prasarana/${id}`)  // API endpoint that returns prasarana details
+                .then(response => response.json())
+                .then(data => {
+                    modalBody.innerHTML = `
+                        <p>Nama: ${data.nama_prasarana}</p>
+                        <p>Jenis Prasarana: ${data.jenis_prasarana || 'N/A'}</p>
+                        <p>Alamat: ${data.alamat || 'N/A'}</p>
+                        <p>Lintang: ${data.lintang || 'N/A'}</p>
+                        <p>Bujur: ${data.bujur || 'N/A'}</p>
+                        <p>Panjang (m): ${data.panjang || 'N/A'}</p>
+                        <p>Lebar (m): ${data.lebar || 'N/A'}</p>
+                        <p>Luas Bangunan (m²): ${data.luas_bangunan || 'N/A'}</p>
+                        <p>Luas Tanah (m²): ${data.luas_tanah || 'N/A'}</p>
+                        <p>Jumlah Lantai: ${data.jumlah_lantai || 'N/A'}</p>
+                        <p>BMN Satker: ${data.bmn_satker || 'N/A'}</p>
+                        <p>BMN Kode Barang: ${data.bmn_kode_barang || 'N/A'}</p>
+                        <p>BMN NUP: ${data.bmn_nup || 'N/A'}</p>
+                        <p>Tanggal Perolehan: ${data.tanggal_perolehan || 'N/A'}</p>
+                        <p>Nilai Perolehan (Rp): ${data.nilai_perolehan || 'N/A'}</p>
+                        <p>Nilai Buku (Rp): ${data.nilai_buku || 'N/A'}</p>
+                        <p>MERK: ${data.merk || 'N/A'}</p>
+                        <p>Penggunaan: ${data.penggunaan || 'N/A'}</p>
+                        <p>Kondisi: ${data.kondisi || 'N/A'}</p>
+                        <p>KD Kab/Kota: ${data.KD_KAB_KOTA || 'N/A'}</p>
+                        <p>NM Kab/Kota: ${data.NM_KAB_KOTA || 'N/A'}</p>
+                        <p>KD Prov: ${data.KD_PROV || 'N/A'}</p>
+                        <p>NM Prov: ${data.NM_PROV || 'N/A'}</p>
+                        <p>No Dok Kepemilikan: ${data.NO_DOK_KEPEMILIKAN || 'N/A'}</p>
+                        <p>Dok Kepemilikan: ${data.DOK_KEPEMILIKAN || 'N/A'}</p>
+                        <p>JNS Dok Kepemilikan: ${data.JNS_DOK_KEPEMILIKAN || 'N/A'}</p>
+                        <h5>Bangunan: </h5>
+                        <p>KD_BRG_TANAH: ${data.KD_BRG_TANAH || 'N/A'}</p>
+                        <p>NM_BRG_TANAH: ${data.NM_BRG_TANAH || 'N/A'}</p>
+                        <p>NUP_BRG_TANAH: ${data.NUP_BRG_TANAH || 'N/A'}</p>
+                        <p>TGL_SK_PEMAKAIAN: ${data.TGL_SK_PEMAKAIAN || 'N/A'}</p>
+                        <p>kapasitas: ${data.kapasitas || 'N/A'}</p>
+                        <p>tanggal_hapus_buku: ${data.tanggal_hapus_buku || 'N/A'}</p>
+                        <p>keterangan: ${data.keterangan || 'N/A'}</p>
+                        
+                    `;
+                    deleteForm.action = `/manajemen_aset/prasarana/delete/${data.id}`;
+                });
+        });
+    });
+    </script>
 
 <script>
     function openModal(tabName, nama, kode) {
