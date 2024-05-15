@@ -11,6 +11,10 @@ class PenempatanPrasarana extends Model
 
     protected $table = 'penempatan_prasarana';
 
+    public $incrementing = true;
+    
+    protected $guarded = ['id'];
+
     public function getData()
     {
         return DB::table($this->table)->get();
