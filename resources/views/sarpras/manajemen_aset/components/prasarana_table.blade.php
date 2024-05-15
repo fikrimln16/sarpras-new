@@ -50,9 +50,8 @@
                     <td>{{ number_format($item['nilai_perolehan'], 2) }}</td>
                     <td>{{ number_format($item['nilai_buku'], 2) }}</td>
                     {{-- <td>{{ $item['merk'] }}</td> --}}
-                    {{-- <td><button onclick="openModal('tabel-prasarana', '{{ $item['nama_prasarana'] }}', '{{ $item['id'] }}')">Open Modal</button></td> --}}
                     <td>
-                        <a href="{{ route('manajemen_aset.prasarana', ['id' => $item['id']]) }}" class="btn btn-primary">Open Modal</a>
+                        <a href="{{ route('manajemen_aset.prasarana', ['id' => $item['id']]) }}" class="btn btn-primary">Details</a>
                     </td>
                     <td>
                         <!-- Button trigger modal -->
