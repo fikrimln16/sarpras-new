@@ -17,6 +17,7 @@ use App\Models\Ruangan;
 use App\Models\PenempatanSarana;
 use App\Models\Sarana;
 use App\Models\Prasarana;
+use App\Models\SumberPendanaan;
 
 
 class SarprasManajemenAset extends Controller
@@ -109,134 +110,6 @@ class SarprasManajemenAset extends Controller
     ];
 
 
-    // public function index_prasarana()
-    // {
-    //     $dataPrasarana = [
-    //         [
-    //             'id' => 1,
-    //             'nama_prasarana' => 'TULT',
-    //             'jenis_prasarana' => 'Gedung Kafetaria',
-    //             'alamat' => 'Jl. Lingkar, Pondok Cina, Kecamatan Beji, Kota Depok, Jawa Barat 16424',
-    //             'latitude' => -6.360338292,
-    //             'longitude' => 106.8272188,
-    //             'panjang' => 15,
-    //             'lebar' => 15,
-    //             'luas_bangunan' => 320,
-    //             'luas_tanah' => 1591,
-    //             'jumlah_lantai' => 18,
-    //             'objek_infrastruktur' => 'Universitas Indonesia',
-    //             'BMN_satker' => 'TULT-BRG-2345',
-    //             'BMN_kode_barang' => 1,
-    //             'BMN_nup' => '05-05-2020',
-    //             'tanggal_perolehan' => '2020-05-05',
-    //             'nilai_perolehan' => 50000000000,
-    //             'nilai_buku' => 45000000,
-    //             'merk' => '',
-    //             'KD_KAB_KOTA' => 'DKI-12512',
-    //             'NM_KAB_KOTA' => 'Jakarta Timur',
-    //             'KD_PROV' => 'DKI',
-    //             'NM_PROV' => 'DKI Jakarta',
-    //             'penggunaan' => 'peneltian, dll',
-    //             'kondisi' => 'baik',
-    //             'NO_DOK_KEPEMILIKAN' => 'DOK-12512',
-    //             'DOK_KEPEMILIKAN' => '',
-    //             'JNS_DOK_KEPEMILIKAN' => 'Sertifikat',
-    //             'KD_SATKER_TANAH' => '1234567890',
-    //             'NM_SATKER_TANAH' => 'Universitas Indonesia',
-    //             'KD_BRG_TANAH' => 1,
-    //             'NM_BRG_TANAH' => 'Gedung Utama',
-    //             'NUP_BRG_TANAH' => '12345678901',
-    //             'TGL_SK_PEMAKAIAN' => '2000-01-01',
-    //             'kapasitas' => 1000,
-    //             'tanggal_hapus_buku' => '',
-    //             'keterangan' => 'Gedung utama Universitas Indonesia'
-    //         ],
-    //         [
-    //             'id' => 2,
-    //             'nama_prasarana' => 'Gedung Sekolah',
-    //             'jenis_prasarana' => 'Gedung Sekolah',
-    //             'alamat' => 'Jl. Pahlawan, No. 123, Kota Bandung',
-    //             'latitude' => -6.934469,
-    //             'longitude' => 107.604858,
-    //             'panjang' => 20,
-    //             'lebar' => 25,
-    //             'luas_bangunan' => 500,
-    //             'luas_tanah' => 2000,
-    //             'jumlah_lantai' => 10,
-    //             'objek_infrastruktur' => 'Sekolah XYZ',
-    //             'BMN_satker' => 'SekolahXYZ-BRG-5678',
-    //             'BMN_kode_barang' => 2,
-    //             'BMN_nup' => '10-10-2019',
-    //             'tanggal_perolehan' => '2019-10-10',
-    //             'nilai_perolehan' => 75000000000,
-    //             'nilai_buku' => 60000000,
-    //             'merk' => '',
-    //             'KD_KAB_KOTA' => 'BDG-54321',
-    //             'NM_KAB_KOTA' => 'Bandung',
-    //             'KD_PROV' => 'JBR',
-    //             'NM_PROV' => 'Jawa Barat',
-    //             'penggunaan' => 'Pendidikan',
-    //             'kondisi' => 'Baik',
-    //             'NO_DOK_KEPEMILIKAN' => 'DOK-98765',
-    //             'DOK_KEPEMILIKAN' => '',
-    //             'JNS_DOK_KEPEMILIKAN' => 'Sertifikat',
-    //             'KD_SATKER_TANAH' => '0987654321',
-    //             'NM_SATKER_TANAH' => 'Sekolah XYZ',
-    //             'KD_BRG_TANAH' => 2,
-    //             'NM_BRG_TANAH' => 'Gedung Utama Sekolah',
-    //             'NUP_BRG_TANAH' => '98765432101',
-    //             'TGL_SK_PEMAKAIAN' => '2005-05-01',
-    //             'kapasitas' => 800,
-    //             'tanggal_hapus_buku' => '',
-    //             'keterangan' => 'Gedung utama Sekolah XYZ'
-    //         ],
-    //         [
-    //             'id' => 3,
-    //             'nama_prasarana' => 'Gedung Kantor',
-    //             'jenis_prasarana' => 'Gedung Kantor',
-    //             'alamat' => 'Jl. Sudirman, No. 456, Kota Surabaya',
-    //             'latitude' => -7.257472,
-    //             'longitude' => 112.752090,
-    //             'panjang' => 30,
-    //             'lebar' => 35,
-    //             'luas_bangunan' => 1000,
-    //             'luas_tanah' => 3000,
-    //             'jumlah_lantai' => 5,
-    //             'objek_infrastruktur' => 'Kantor Pemerintah',
-    //             'BMN_satker' => 'KantorPem-BRG-91011',
-    //             'BMN_kode_barang' => 3,
-    //             'BMN_nup' => '20-02-2018',
-    //             'tanggal_perolehan' => '2018-02-20',
-    //             'nilai_perolehan' => 100000000000,
-    //             'nilai_buku' => 80000000,
-    //             'merk' => '',
-    //             'KD_KAB_KOTA' => 'SBY-98765',
-    //             'NM_KAB_KOTA' => 'Surabaya',
-    //             'KD_PROV' => 'JTM',
-    //             'NM_PROV' => 'Jawa Timur',
-    //             'penggunaan' => 'Administrasi',
-    //             'kondisi' => 'Sangat Baik',
-    //             'NO_DOK_KEPEMILIKAN' => 'DOK-45678',
-    //             'DOK_KEPEMILIKAN' => '',
-    //             'JNS_DOK_KEPEMILIKAN' => 'Sertifikat',
-    //             'KD_SATKER_TANAH' => '5678901234',
-    //             'NM_SATKER_TANAH' => 'Kantor Pemerintah',
-    //             'KD_BRG_TANAH' => 3,
-    //             'NM_BRG_TANAH' => 'Gedung Utama Kantor',
-    //             'NUP_BRG_TANAH' => '45678901234',
-    //             'TGL_SK_PEMAKAIAN' => '2010-10-15',
-    //             'kapasitas' => 500,
-    //             'tanggal_hapus_buku' => '',
-    //             'keterangan' => 'Gedung utama Kantor Pemerintah'
-    //         ]
-    //     ];
-
-    //     $data = $this->data;
-
-    //     return redirect()->to('/manajemen_aset/prasarana/bangunan');
-    // }
-
-
     public function index_prasarana(Request $request)
     {
     
@@ -280,7 +153,7 @@ class SarprasManajemenAset extends Controller
     public function delete_prasarana($id)
     {
         $prasarana = Prasarana::findOrFail($id);
-
+        SumberPendanaan::where('id_prasarana', $id)->delete();
         // Lakukan penghapusan
         $prasarana->delete();
     
@@ -292,6 +165,12 @@ class SarprasManajemenAset extends Controller
         // dd($request);
         $prasarana = Prasarana::find($request->id);
         return response()->json($prasarana);
+    }
+
+    public function get_data_ruangan_by_bangunan(Request $request)
+    {
+        $ruangan = Ruangan::where('id_bangunan', $request->id_bangunan)->get();
+        return response()->json($ruangan);
     }
 
     public function index_bangunan_kuliah()
@@ -327,8 +206,35 @@ class SarprasManajemenAset extends Controller
     {
 
          $ruangan = Ruangan::with('bangunan')->get();
+         $bangunan = Bangunan::all();
          // dd($ruangan);
-         return view('sarpras.manajemen_aset.components.ruangan_table', compact('ruangan'));
+         return view('sarpras.manajemen_aset.components.ruangan_table', compact('ruangan', 'bangunan'));
+    }
+
+    public function create_ruangan(Request $request)
+    {
+        // Validate and store data
+        // dd($request);
+        Ruangan::create($request->all());
+        return redirect()->route('manajemen_aset.ruangan')->with('success', 'Ruangan created successfully.');
+    }
+
+    public function get_data_ruangan(Request $request)
+    {
+        // dd($request);
+        $ruangan = Ruangan::find($request->id);
+        return response()->json($ruangan);
+    }
+
+    public function delete_ruangan($id)
+    {
+        $ruangan = Ruangan::findOrFail($id);
+        PenempatanSarana::where('id_ruang', $id)->delete();
+
+        // Lakukan penghapusan
+        $ruangan->delete();
+    
+        return redirect()->route('manajemen_aset.ruangan')->with('success', 'Prasarana created successfully.');
     }
 
     public function penempatan_sarana($id_ruangan)

@@ -10,6 +10,10 @@ class Ruangan extends Model
     use HasFactory;
 
     protected $table = 'ruangan';
+    public $timestamps = false; 
+    public $incrementing = true;
+    
+    protected $guarded = ['id'];
 
     public function getDataRuangan()
     {

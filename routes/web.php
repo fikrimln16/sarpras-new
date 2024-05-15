@@ -14,7 +14,14 @@ Route::delete('manajemen_aset/prasarana/delete/{id}', [SarprasManajemenAset::cla
 
 Route::get('manajemen_aset/ruangan', [SarprasManajemenAset::class, 'index_ruangan'])
      ->name('manajemen_aset.ruangan');
-
+Route::get('manajemen_aset/ruangan/{id}', [SarprasManajemenAset::class, 'get_data_ruangan'])
+     ->name('manajemen_aset.ruangan.getData');
+Route::get('manajemen_aset/ruangan/bangunan/{id_bangunan}', [SarprasManajemenAset::class, 'get_data_ruangan_by_bangunan'])
+     ->name('manajemen_aset.ruangan.getDataByBangunan');
+Route::post('manajemen_aset/ruangan', [SarprasManajemenAset::class, 'create_ruangan'])
+     ->name('manajemen_aset.ruangan.create');
+Route::delete('manajemen_aset/ruangan/delete/{id}', [SarprasManajemenAset::class, 'delete_ruangan'])
+     ->name('manajemen_aset.ruangan.delete');
      
 Route::get('manajemen_aset/penempatansarana/{id_ruangan}', [SarprasManajemenAset::class, 'penempatan_sarana'])
      ->name('manajemen_aset.penempatansarana');
