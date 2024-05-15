@@ -1,34 +1,61 @@
-<!-- <div class="sidebar">
-   <div class="header">Sarpras</div>
-   <ul class="menu">
-       <li class="submenu"><a class="menu-item" href="">Overview</a></li>
-       <li class="submenu" id="asset_management"><a class="menu-item">Asset Management</a>
-           <ul class="dropdown">
-               <li><a href="">Bangunan</a></li>
-               <li><a href="">Ruangan</a></li>
-               <li><a href="">Sarana</a></li>
-               <li><a href="">Penempatan Dosen</a></li>
-           </ul>
-       </li>
-       {{-- <li class="submenu"><a class="menu-item">Analytics</a></li> --}}
-   </ul>
-</div> -->
-
-
 <div class="sidebar">
-    <div class="datetime">14/5/2024 - 10.56.19</div>
-    <div class="welcome">
-        Selamat datang, AAN KOMARIAH<br>
-        Unit Sarpras PT Universitas<br>
-        Pendidikan Indonesia
-    </div>
-    <div class="menu-item" id="manajemenAset">Manajemen Aset</div>
-    <div class="submenu" id="submenu">
-        <div class="menu-item">Prasarana</div>
-        <div class="menu-item">Sarana</div>
-        <div class="menu-item">Inventaris</div>
-    </div>
+    <div class="datetime">{{ Carbon\Carbon::now()->isoFormat('D MMMM YYYY - HH:mm:ss') }}</div>
+    {{-- sarpras unit pt --}}
+    @if (auth()->check() && auth()->user()->role === '2')
+        @php
+            $universities = auth()->user()->universities;
+            $universityName = $universities->isNotEmpty()
+                ? $universities->first()->nama_kampus
+                : 'No University Assigned';
+        @endphp
+
+        <div class="welcome">
+            Selamat datang, {{ Auth::user()->name }}<br>
+            Unit Sarpras PT {{ $universityName }}<br>
+        </div>
+        <div class="menu-item" data-toggle="submenu">Manajemen Aset</div>
+        <div class="submenu" style="display:none;">
+            <a href="{{ route('manajemen_aset.prasarana') }}" class="menu-item">Prasarana</a>
+            <a href="{{ route('manajemen_aset.sarana') }}" class="menu-item">Sarana</a>
+            <a href="" class="menu-item">Inventaris</a>
+        </div>
+
+    {{-- sarpras unit pusat --}}
+    @elseif(auth()->check() && auth()->user()->role === '1')
+        <div class="welcome">
+            Selamat datang, {{ Auth::user()->name }}<br>
+            Unit Sarpras Pusat<br>
+        </div>
+        <div class="menu-item" data-toggle="submenu">Sumber Perolehan Aset</div>
+        <div class="submenu" style="display:none;">
+            <a href="" class="menu-item">Pendanaan</a>
+            <a href="" class="menu-item">Data Paket</a>
+        </div>
+        <div class="menu-item" data-toggle="submenu">Manajemen Aset</div>
+        <div class="submenu" style="display:none;">
+            <a href="{{ route('manajemen_aset.prasarana') }}" class="menu-item">Prasarana</a>
+            <a href="{{ route('manajemen_aset.sarana') }}" class="menu-item">Sarana</a>
+            <a href="" class="menu-item">Inventaris</a>
+        </div>
+    @endif
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var menuItems = document.querySelectorAll('[data-toggle="submenu"]'); // Select all toggles
+        menuItems.forEach(function(menu) {
+            menu.addEventListener('click', function() {
+                var submenu = this
+                    .nextElementSibling; // Targets the immediate next sibling with class 'submenu'
+                if (submenu.style.display === 'none' || submenu.style.display === '') {
+                    submenu.style.display = 'block';
+                } else {
+                    submenu.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
 
 <style>
     .sidebar {
@@ -154,16 +181,3 @@
         background-color: #383F4F;
     }
 </style> -->
-
-
-
-<script>
-    document.getElementById('manajemenAset').addEventListener('click', function() {
-        var submenu = document.getElementById('submenu');
-        if (submenu.style.display === 'none' || submenu.style.display === '') {
-            submenu.style.display = 'block';
-        } else {
-            submenu.style.display = 'none';
-        }
-    });
-</script>
