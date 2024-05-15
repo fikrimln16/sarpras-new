@@ -21,7 +21,6 @@ use App\Models\PenempatanPrasarana;
 use App\Models\Sarana;
 use App\Models\Prasarana;
 use App\Models\SumberPendanaan;
-use App\Models\DataLokasiKampus;
 
 
 class SarprasManajemenAset extends Controller
