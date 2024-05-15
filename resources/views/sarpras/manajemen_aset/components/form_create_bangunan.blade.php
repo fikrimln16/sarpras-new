@@ -19,6 +19,14 @@
                                 <input type="text" class="form-control" id="namaPrasarana" name="nama_prasarana" required>
                             </div>
                         </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="jenisPrasarana">Jenis Prasarana:</label>
+                                <input type="text" class="form-control" id="jenisPrasarana" name="jenis_prasarana" required>
+                            </div>
+                        </div>
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="panjang">Panjang (m):</label>
@@ -97,13 +105,93 @@
                                 <input type="text" class="form-control" id="merk" name="merk" required>
                             </div>
                         </div>
+
+                        <div class="col-md-6 p-2">
+                                <div class="form-group">
+                                    <label for="luasBangunan">Luas Bangunan:</label>
+                                    <input type="text" class="form-control" id="luasBangunan" name="luas_bangunan" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-2">
+                                <div class="form-group">
+                                    <label for="luasTanah">Luas Tanah:</label>
+                                    <input type="text" class="form-control" id="luasTanah" name="luas_tanah" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-2">
+                                <div class="form-group">
+                                    <label for="jumlahLantai">Jumlah Lantai:</label>
+                                    <input type="number" class="form-control" id="jumlahLantai" name="jumlah_lantai" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-2">
+                                <div class="form-group">
+                                    <label for="objekInfrastruktur">Objek Infrastruktur:</label>
+                                    <input type="text" class="form-control" id="objekInfrastruktur" name="objek_infrastruktur" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-2">
+                                <div class="form-group">
+                                    <label for="kdCabKota">Kd Cab Kota:</label>
+                                    <input type="text" class="form-control" id="kdCabKota" name="KD_CAB_KOTA" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-2">
+                                <div class="form-group">
+                                    <label for="nmKabKota">Nm Kab Kota:</label>
+                                    <input type="text" class="form-control" id="nmKabKota" name="NM_KAB_KOTA" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-2">
+                                <div class="form-group">
+                                    <label for="kdKabKota">Kd Kab Kota:</label>
+                                    <input type="text" class="form-control" id="kdKabKota" name="KD_KAB_KOTA" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-2">
+                                <div class="form-group">
+                                    <label for="kdProv">Kd Prov:</label>
+                                    <input type="text" class="form-control" id="kdProv" name="KD_PROV" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-2">
+                                <div class="form-group">
+                                    <label for="nmProv">Nm Prov:</label>
+                                    <input type="text" class="form-control" id="nmProv" name="NM_PROV" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-2">
+                                <div class="form-group">
+                                    <label for="penggunaan">Penggunaan:</label>
+                                    <input type="text" class="form-control" id="penggunaan" name="penggunaan" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-2">
+                                <div class="form-group">
+                                    <label for="kondisi">Kondisi:</label>
+                                    <input type="text" class="form-control" id="kondisi" name="kondisi" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-2">
+                                <div class="form-group">
+                                    <label for="noDokKepemilikan">No Dok Kepemilikan:</label>
+                                    <input type="text" class="form-control" id="noDokKepemilikan" name="NO_DOK_KEPEMILIKAN" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-2">
+                                <div class="form-group">
+                                    <label for="jnsDokKepemilikan">Jns Dok Kepemilikan:</label>
+                                    <input type="text" class="form-control" id="jnsDokKepemilikan" name="JNS_DOK_KEPEMILIKAN" required>
+                                </div>
+                            </div>
+
                         <div class="col-md-6">
                             <div class="form-group form-check">
                                 <input type="checkbox" class="form-check-input" id="bangunanCheck">
                                 <label class="form-check-label" for="bangunanCheck">Bangunan</label>
                             </div>
                         </div>
-                        
+
                         <!-- Dynamic Bangunan fields container -->
                         <div id="bangunanFields">
                             <div class="form-group">
@@ -149,9 +237,10 @@
                                 </div>
                             </div>
                         </div>
+                        <button id="prasaranaForm" type="submit" class="btn btn-primary">Simpan</button>
+
                 </form>
             </div>
-            <button type="submit" class="btn btn-primary">Simpan</button>
 
         </div>
     </div>
@@ -284,94 +373,8 @@
         bangunanContainer.style.display = this.checked ? 'block' : 'none';
     });
 </script>
-<script>
-    document.getElementById('kocak').addEventListener('click', function() {
-        console.log('Button kocak diklik!');
-    });
 
-    document.addEventListener('DOMContentLoaded', function() {
-        // Cek apakah ada data prasarana tersimpan di local storage
-        if (localStorage.getItem('prasaranaData')) {
-            // Jika ada, ambil data dari local storage dan tampilkan dalam form
-            const prasaranaData = JSON.parse(localStorage.getItem('prasaranaData'));
-            populateForm(prasaranaData);
-        }
-    });
 
-    // Fungsi untuk menampilkan data prasarana dalam form
-    function populateForm(prasaranaData) {
-        document.getElementById('nama_prasarana').value = prasaranaData.nama_prasarana || '';
-        document.getElementById('jenis_prasarana').value = prasaranaData.jenis_prasarana || '';
-        document.getElementById('alamat').value = prasaranaData.alamat || '';
-        document.getElementById('latitude').value = prasaranaData.latitude || '';
-        document.getElementById('longitude').value = prasaranaData.longitude || '';
-        document.getElementById('panjang').value = prasaranaData.panjang || '';
-        document.getElementById('lebar').value = prasaranaData.lebar || '';
-        // document.getElementById('luas_bangunan').value = prasaranaData.luas_bangunan || '';
-        // document.getElementById('luas_tanah').value = prasaranaData.luas_tanah || '';
-        // document.getElementById('jumlah_lantai').value = prasaranaData.jumlah_lantai || '';
-        // document.getElementById('objek_infrastruktur').value = prasaranaData.objek_infrastruktur || '';
-        // document.getElementById('BMN_satker').value = prasaranaData.BMN_satker || '';
-        // document.getElementById('BMN_kode_barang').value = prasaranaData.BMN_kode_barang || '';
-        // document.getElementById('BMN_nup').value = prasaranaData.BMN_nup || '';
-        // document.getElementById('tanggal_perolehan').value = prasaranaData.tanggal_perolehan || '';
-        // document.getElementById('nilai_perolehan').value = prasaranaData.nilai_perolehan || '';
-        // document.getElementById('nilai_buku').value = prasaranaData.nilai_buku || '';
-        // document.getElementById('merk').value = prasaranaData.merk || '';
-        // document.getElementById('KD_KAB_KOTA').value = prasaranaData.KD_KAB_KOTA || '';
-        // document.getElementById('NM_KAB_KOTA').value = prasaranaData.NM_KAB_KOTA || '';
-        // document.getElementById('KD_PROV').value = prasaranaData.KD_PROV || '';
-        // document.getElementById('NM_PROV').value = prasaranaData.NM_PROV || '';
-        // document.getElementById('penggunaan').value = prasaranaData.penggunaan || '';
-        // document.getElementById('kondisi').value = prasaranaData.kondisi || '';
-        // document.getElementById('NO_DOK_KEPEMILIKAN').value = prasaranaData.NO_DOK_KEPEMILIKAN || '';
-        // document.getElementById('DOK_KEPEMILIKAN').value = prasaranaData.DOK_KEPEMILIKAN || '';
-        // document.getElementById('JNS_DOK_KEPEMILIKAN').value = prasaranaData.JNS_DOK_KEPEMILIKAN || '';
-        // document.getElementById('KD_SATKER_TANAH').value = prasaranaData.KD_SATKER_TANAH || '';
-        // document.getElementById('NM_SATKER_TANAH').value = prasaranaData.NM_SATKER_TANAH || '';
-        // document.getElementById('KD_BRG_TANAH').value = prasaranaData.KD_BRG_TANAH || '';
-        // document.getElementById('NM_BRG_TANAH').value = prasaranaData.NM_BRG_TANAH || '';
-        // document.getElementById('NUP_BRG_TANAH').value = prasaranaData.NUP_BRG_TANAH || '';
-        // document.getElementById('TGL_SK_PEMAKAIAN').value = prasaranaData.TGL_SK_PEMAKAIAN || '';
-        // document.getElementById('kapasitas').value = prasaranaData.kapasitas || '';
-        // document.getElementById('tanggal_hapus_buku').value = prasaranaData.tanggal_hapus_buku || '';
-        // document.getElementById('keterangan').value = prasaranaData.keterangan || '';
-    }
-
-    document.getElementById('prasaranaForm').addEventListener('submit', function(event) {
-        // Ambil nilai dari setiap input dalam formulir
-        const prasaranaData = {
-            nama_prasarana: document.getElementById('nama_prasarana').value,
-            jenis_prasarana: document.getElementById('jenis_prasarana').value,
-            alamat: document.getElementById('alamat').value,
-            latitude: document.getElementById('latitude').value,
-            longitude: document.getElementById('longitude').value,
-            panjang: document.getElementById('panjang').value,
-            lebar: document.getElementById('lebar').value,
-            // Tambahkan sisa data prasarana yang ingin Anda simpan
-        };
-
-        // Ambil data prasarana yang tersimpan dalam local storage, atau gunakan array kosong jika belum ada
-        let existingData = localStorage.getItem('prasaranaData');
-        let prasaranaArray = existingData ? JSON.parse(existingData) : [];
-
-        // Pastikan prasaranaArray adalah sebuah array
-        if (!Array.isArray(prasaranaArray)) {
-            prasaranaArray = [];
-        }
-
-        // Tambahkan data prasarana baru ke dalam array
-        prasaranaArray.push(prasaranaData);
-
-        // Simpan array data prasarana ke dalam local storage
-        localStorage.setItem('prasaranaData', JSON.stringify(prasaranaArray));
-
-        // Redirect ke halaman lain atau lakukan operasi lain sesuai kebutuhan
-        console.log('Data prasarana berhasil disimpan: 1 deh', prasaranaData);
-    });
-</script>
-
-</script>
 <style>
     .modal-header {
         background-color: #007bff;
