@@ -350,6 +350,18 @@ class SarprasManajemenAset extends Controller
             ->where('penempatan_prasarana.id_data_lokasi_kampus', $universityCode)
             ->get();
 
+        $penempatanSarana = DB::table('penempatan_sarana as ps')
+            ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
+            ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
+            ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
+            ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
+            ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
+            ->select('s.*', 'p.*', 'r.*', 'ps.id')
+            ->get();
+
+        // // dd($penempatanSarana);
+        //     ->get();
+
         // dd($penempatanSarana);
         $penempatanSarana = DB::table('penempatan_sarana as ps')
             ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
