@@ -3,7 +3,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Prasarana</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -26,6 +26,7 @@
                                 <select class="form-control" id="jenisPrasarana" name="jenis_prasarana">
                                     <option value="" disabled selected>Pilih Salah Satu</option>
                                     <option value="Gedung Kuliah">Gedung Kuliah</option>
+                                    <option value="Laboratorium">Laboratorium</option>
                                     <option value="Gedung STP">Gedung STP</option>
                                     <option value="Gedung Perpustakaan">Gedung Perpustakaan</option>
                                     <option value="Gedung Layanan Akademik dan Rektorat">Gedung Layanan Akademik dan Rektorat</option>
@@ -45,6 +46,17 @@
                                     <option value="" disabled selected>Pilih Salah Satu</option>
                                     <option value="Terpadu">Terpadu</option>
                                     <option value="Prodi">Prodi/Fakultas</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="dropdownJenisLaboratorium" class="col-md-6 d-none">
+                            <div class="form-group">
+                                <label for="jenisLaboratorium">Jenis Laboratorium</label>
+                                <select class="form-control" id="jenisLaboratorium" name="jenis_laboratorium">
+                                    <option value="" disabled selected>Pilih Salah Satu</option>
+                                    <option value="Dasar">Dasar</option>
+                                    <option value="Riset">Riset</option>
                                 </select>
                             </div>
                         </div>
@@ -264,7 +276,7 @@
 
                 </form>
             </div>
-            
+
         </div>
     </div>
 </div>
@@ -399,13 +411,24 @@
         bangunanContainer.style.display = this.checked ? 'block' : 'none';
     });
 
+    // dropdownJenisLaboratorium
+
+
+
     $(document).ready(function() {
+
+
         $('#jenisPrasarana').change(function() {
             var selectedOption = $(this).val();
             if (selectedOption == 'Gedung Kuliah') {
                 $('#dropdownTerpaduProdi').removeClass('d-none');
+            } else if (selectedOption == 'Laboratorium') {
+                $('#dropdownTerpaduProdi').removeClass('d-none');
+                $('#dropdownJenisLaboratorium').removeClass('d-none');
             } else {
                 $('#dropdownTerpaduProdi').addClass('d-none');
+                $('#dropdownJenisLaboratorium').addClass('d-none');
+
             }
             console.log(selectedOption);
         });
@@ -413,9 +436,22 @@
         $('#prasaranaForm').submit(function(e) {
             var jenisPrasarana = $('#jenisPrasarana').val();
             var jenisTerpaduProdi = $('#jenisTerpaduProdi').val();
+            var jenisLaboratorium = $('#jenisLaboratorium').val();
+
 
             if (jenisPrasarana === 'Gedung Kuliah' && jenisTerpaduProdi) {
+                console.log('ini gdeung kuliah bray')
                 var gabungan = jenisPrasarana + ' ' + jenisTerpaduProdi;
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'jenis_prasarana',
+                    value: gabungan
+                }).appendTo('#prasaranaForm');
+            }
+
+            if (jenisPrasarana === 'Laboratorium' && jenisTerpaduProdi && jenisLaboratorium) {
+                console.log('ini gedung labo bray')
+                var gabungan = jenisPrasarana + ' ' + jenisTerpaduProdi + ' ' + jenisLaboratorium;
                 $('<input>').attr({
                     type: 'hidden',
                     name: 'jenis_prasarana',
@@ -427,6 +463,7 @@
                 namaPrasarana: $('#namaPrasarana').val(),
                 jenisPrasarana: jenisPrasarana,
                 jenisTerpaduProdi: jenisTerpaduProdi,
+                jenisLaboratorium: jenisLaboratorium,
                 gabungan: gabungan
             });
         });
