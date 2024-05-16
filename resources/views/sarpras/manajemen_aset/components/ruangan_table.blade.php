@@ -4,15 +4,11 @@
 <div class="ibox float-e-margins">
     <div class="ibox-title">
         <div class="fright">
-            <!-- <button id="tambahBtn" class='btn btn-sm btn-primary noborder-radius' data-toggle="tooltip" data-placement="top">
-                <i class='fa fa-plus'></i> <b>Tambah Data</b>
-            </button> -->
-            <!-- <button type="button" class="btn btn-primary" data-toggle="kocak" data-target="kocak">
-                Tambah
-            </button> -->
+            @if (auth()->user()->role == '2')
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Tambah
             </button>
+            @endif
 
         </div>
     </div>

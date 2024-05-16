@@ -5,7 +5,11 @@
         $universityName = $universities->isNotEmpty() ? $universities->first()->nama_kampus : 'No University Assigned';
     @endphp
     <div>
+        @if (auth()->user()->role == '1')
+            <h4>Admin Pusat</h4>
+        @else
         <h4>{{ $universityName }}</h4>
+        @endif
     </div>
     <div class="right-icon">
         <li class="peran-saat-ini">

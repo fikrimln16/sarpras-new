@@ -123,12 +123,19 @@ class SarprasManajemenAset extends Controller
         $universities = auth()->user()->universities;
         $universityCode = $universities->first()->id;
 
+        $role = auth()->user()->role;
+        // dd($role);
         // dd($universityCode);
+        
+        $data = Prasarana::all();
+        if($role == "2"){
+            $data = Prasarana::select('prasarana.*')
+                ->join('penempatan_prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
+                ->where('penempatan_prasarana.id_data_lokasi_kampus', $universityCode)
+                ->get();
+        } 
+        
 
-        $data = Prasarana::select('prasarana.*')
-            ->join('penempatan_prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
-            ->where('penempatan_prasarana.id_data_lokasi_kampus', $universityCode)
-            ->get();
         // dd($data);
         $bangunan = DataLokasiKampus::find($universityCode)->prasarana;
 
@@ -273,11 +280,15 @@ class SarprasManajemenAset extends Controller
         $id = $request->query('id');
         $universityCode = $universities->first()->id;
         // $ruangan = Ruangan::with('prasarana')->get();
+        $role = auth()->user()->role;
 
-        $ruangan = Ruangan::join('penempatan_prasarana', 'ruangan.id_prasarana', '=', 'penempatan_prasarana.id_prasarana')
-            ->join('prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
-            ->where('penempatan_prasarana.id_data_lokasi_kampus', '=', $universityCode)
-            ->get(['ruangan.*']);
+        $ruangan = Ruangan::all();
+        if($role == "2"){
+            $ruangan = Ruangan::join('penempatan_prasarana', 'ruangan.id_prasarana', '=', 'penempatan_prasarana.id_prasarana')
+                ->join('prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
+                ->where('penempatan_prasarana.id_data_lokasi_kampus', '=', $universityCode)
+                ->get(['ruangan.*']);
+        }
 
         // $prasarana = Prasarana::all();
         $universities = auth()->user()->universities;
@@ -351,14 +362,25 @@ class SarprasManajemenAset extends Controller
             ->get();
 
         // dd($penempatanSarana);
-        $penempatanSarana = DB::table('penempatan_sarana as ps')
-            ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
-            ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
-            ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
-            ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
-            ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
-            ->select('s.*', 'p.*', 'r.*', 'ps.*')
-            ->get();
+        $role = auth()->user()->role;
+        if($role == '1'){
+            $penempatanSarana = DB::table('penempatan_sarana as ps')
+                ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
+                ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
+                ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
+                ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
+                ->select('s.*', 'p.*', 'r.*', 'ps.*')
+                ->get();
+        } else {
+            $penempatanSarana = DB::table('penempatan_sarana as ps')
+                ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
+                ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
+                ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
+                ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
+                ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
+                ->select('s.*', 'p.*', 'r.*', 'ps.*')
+                ->get();
+        }
 
         $skema_biaya = Sbsn::where('id_data_lokasi_kampus', $universityCode)->get();
         // dd($skema_biaya);
@@ -392,14 +414,26 @@ class SarprasManajemenAset extends Controller
         $universities = auth()->user()->universities;
         $universityCode = $universities->first()->id;
 
-        $data = DB::table('penempatan_sdm_ruang as psr')
-            ->join('ruangan as r', 'psr.id_ruang', '=', 'r.id')
-            ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
-            ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
-            ->leftJoin('sumber_daya_manusia as sdm', 'psr.id_sdm', '=', 'sdm.id')
-            ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
-            ->select('psr.*', 'r.*', 'p.*', 'sdm.*')
-            ->get();
+        $role = auth()->user()->role;
+        if($role == '1'){
+            $data = DB::table('penempatan_sdm_ruang as psr')
+                ->join('ruangan as r', 'psr.id_ruang', '=', 'r.id')
+                ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
+                ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
+                ->leftJoin('sumber_daya_manusia as sdm', 'psr.id_sdm', '=', 'sdm.id')
+                ->select('psr.*', 'r.*', 'p.*', 'sdm.*')
+                ->get();
+        } else {
+            $data = DB::table('penempatan_sdm_ruang as psr')
+                ->join('ruangan as r', 'psr.id_ruang', '=', 'r.id')
+                ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
+                ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
+                ->leftJoin('sumber_daya_manusia as sdm', 'psr.id_sdm', '=', 'sdm.id')
+                ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
+                ->select('psr.*', 'r.*', 'p.*', 'sdm.*')
+                ->get();
+        }
+
 
         // dd($data);
 

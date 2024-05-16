@@ -11,10 +11,11 @@
             <!-- <button type="button" class="btn btn-primary" data-toggle="kocak" data-target="kocak">
                 Tambah
             </button> -->
+            @if (auth()->user()->role == '2')
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Tambah
             </button>
-
+            @endif
         </div>
     </div>
     {{-- <table id="dataTable" class="table table-bordered table-striped">

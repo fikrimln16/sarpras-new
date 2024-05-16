@@ -8,13 +8,11 @@
         @endif
         <div class="ibox-title">
             <div class="fright">
-                <!-- <button id="tambahBtn" class='btn btn-sm btn-primary noborder-radius' data-toggle="tooltip" data-placement="top">
-                    <i class='fa fa-plus'></i> <b>Tambah Data</b>
-                </button> -->
+                @if (auth()->user()->role == '2')
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
                     Tambah
                 </button>
-
+                @endif
             </div>
         </div>
         <div class="table-container">
