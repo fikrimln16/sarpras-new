@@ -358,9 +358,6 @@ class SarprasManajemenAset extends Controller
             ->select('s.*', 'p.*', 'r.*', 'ps.id')
             ->get();
 
-        // // dd($penempatanSarana);
-        //     ->get();
-
         // dd($penempatanSarana);
         $penempatanSarana = DB::table('penempatan_sarana as ps')
             ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
