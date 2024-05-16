@@ -15,13 +15,8 @@ class SumberDayaManusia extends Model
     
     protected $guarded = ['id'];
 
-    public function getDataBangunan()
-    {
-        return DB::table($this->table)->get();
-    }
-
     public function penempatan_sdm_ruang()
     {
-        return $this->hasMany(PenempatanSdmRuang::class, 'id_bangunan', 'id');
+        return $this->hasMany(PenempatanSdmRuang::class, 'id_sdm');
     }
 }
