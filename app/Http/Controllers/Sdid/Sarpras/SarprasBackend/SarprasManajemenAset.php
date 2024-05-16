@@ -23,7 +23,6 @@ use App\Models\SumberPendanaan;
 use App\Models\DataLokasiKampus;
 use App\Models\SumberDayaManusia;
 use App\Models\PenempatanSdmRuang;
-use App\Models\PenempatanSdmRuang;
 
 
 class SarprasManajemenAset extends Controller
@@ -405,7 +404,7 @@ class SarprasManajemenAset extends Controller
         //     ['id' => 2, 'nama_bangunan' => 'Bangunan B'],
         // ];
 
-        $bangunan = Prasarana::select('prasarana.*')
+        $prasarana = Prasarana::select('prasarana.*')
             ->join('penempatan_prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
             ->where('penempatan_prasarana.id_data_lokasi_kampus', $universityCode)
             ->get();
@@ -618,7 +617,7 @@ class SarprasManajemenAset extends Controller
                     'nilai_buku' => $request->nilai_buku[$key],
                     'tanggal_hapus_buku' => $request->tanggal_hapus_buku[$key] ?? null, // Handle nullable field
                 ]);
-                
+
                 for ($i = 0; $i < $request->jumlah_barang[$key]; $i++) {
                     PenempatanSarana::create([
                         'id_sarana' => $sarana->id,
