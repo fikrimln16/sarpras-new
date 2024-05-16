@@ -40,7 +40,8 @@
                 </div>
                 <div class="modal-body">
                     <!-- Form Tambah -->
-                    <form action="{{ route("manajemen_aset.inventaris.tambah_pemetaan_dosen") }}" method="POST" id="formTambahSarana">
+                    {{-- <form action="{{ route("manajemen_aset.inventaris.tambah_pemetaan_dosen") }}" method="POST" id="formTambahSarana"> --}}
+                    <form action="" method="POST" id="formTambahSarana">
                         <div class="form-group">
                             <label for="filterBangunan">Filter Bangunan:</label>
                             <select id="filterBangunanForm" class="form-select select2" name="bangunan">
@@ -69,72 +70,72 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <script>
+        {{-- <script>
 
 
-        $(document).ready(function() {
-            var counter = 0;
+            $(document).ready(function() {
+                var counter = 0;
 
-            $('#filterBangunanForm').on('change', function() {
-                var bangunanId = $(this).val();
-                var ruanganOptions = '<option value="">Semua Ruangan</option>';
-                if (bangunanId !== '') {
-                    $.get('{{ route("manajemen_aset.inventaris.getRuangan", ["id_bangunan" => ""]) }}/' + bangunanId, function(data) {
-                        data.forEach(function(value) {
-                            ruanganOptions += '<option value="' + value + '">' + value + '</option>';
+                $('#filterBangunanForm').on('change', function() {
+                    var bangunanId = $(this).val();
+                    var ruanganOptions = '<option value="">Semua Ruangan</option>';
+                    if (bangunanId !== '') {
+                        $.get('{{ route("manajemen_aset.inventaris.getRuangan", ["id_bangunan" => ""]) }}/' + bangunanId, function(data) {
+                            data.forEach(function(value) {
+                                ruanganOptions += '<option value="' + value + '">' + value + '</option>';
+                            });
+                            $('#filterRuanganForm').html(ruanganOptions);
                         });
+                    } else {
                         $('#filterRuanganForm').html(ruanganOptions);
-                    });
-                } else {
-                    $('#filterRuanganForm').html(ruanganOptions);
-                }
-            });
+                    }
+                });
 
-            $('#btnTambahSarana').click(function() {
-                counter++;
+                $('#btnTambahSarana').click(function() {
+                    counter++;
 
-                var saranaHtml = `
-                    <div class="card mb-2" id="pemetaan${counter}">
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="nama_dosen${counter}">Nama Dosen:</label>
-                                <select class="form-select select2" id="nama_dosen${counter}" name="nama_dosen[]" required>
-                                    @foreach($nama_dosen as $dosen)
-                                        <option value="{{ $dosen }}">{{ $dosen }}</option>
-                                    @endforeach
-                                </select>
+                    var saranaHtml = `
+                        <div class="card mb-2" id="pemetaan${counter}">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="nama_dosen${counter}">Nama Dosen:</label>
+                                    <select class="form-select select2" id="nama_dosen${counter}" name="nama_dosen[]" required>
+                                        @foreach($nama_dosen as $dosen)
+                                            <option value="{{ $dosen }}">{{ $dosen }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tanggal_mulai_penempatan${counter}">Tanggal Mulai Penempatan:</label>
+                                    <input type="date" class="form-control" id="tanggal_mulai_penempatan${counter}" name="tanggal_mulai_penempatan[]" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tanggal_akhir_penempatan${counter}">Tanggal Akhir Penempatan:</label>
+                                    <input type="date" class="form-control" id="tanggal_akhir_penempatan${counter}" name="tanggal_akhir_penempatan[]" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="status${counter}">Status:</label>
+                                    <input type="text" class="form-control" id="status${counter}" name="status[]" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="deskripsi${counter}">deskripsi:</label>
+                                    <input type="text" class="form-control" id="deskripsi${counter}" name="deskripsi[]">
+                                </div>
+                                <button type="button" class="btn btn-danger btnHapusSarana" data-counter="${counter}">Hapus</button>
                             </div>
-                            <div class="form-group">
-                                <label for="tanggal_mulai_penempatan${counter}">Tanggal Mulai Penempatan:</label>
-                                <input type="date" class="form-control" id="tanggal_mulai_penempatan${counter}" name="tanggal_mulai_penempatan[]" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="tanggal_akhir_penempatan${counter}">Tanggal Akhir Penempatan:</label>
-                                <input type="date" class="form-control" id="tanggal_akhir_penempatan${counter}" name="tanggal_akhir_penempatan[]" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="status${counter}">Status:</label>
-                                <input type="text" class="form-control" id="status${counter}" name="status[]" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="deskripsi${counter}">deskripsi:</label>
-                                <input type="text" class="form-control" id="deskripsi${counter}" name="deskripsi[]">
-                            </div>
-                            <button type="button" class="btn btn-danger btnHapusSarana" data-counter="${counter}">Hapus</button>
                         </div>
-                    </div>
-                `;
+                    `;
 
-                $('#pemetaanContainer').append(saranaHtml);
-                $('.select2').select2();
-            });
+                    $('#pemetaanContainer').append(saranaHtml);
+                    $('.select2').select2();
+                });
 
-            $(document).on('click', '.btnHapusSarana', function() {
-                var counter = $(this).data('counter');
-                $('#pemetaan' + counter).remove();
+                $(document).on('click', '.btnHapusSarana', function() {
+                    var counter = $(this).data('counter');
+                    $('#pemetaan' + counter).remove();
+                });
             });
-        });
-    </script>
+        </script> --}}
 </body>
 
 </html>

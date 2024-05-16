@@ -15,7 +15,7 @@
     <div class="submenu">
         <a href="{{ route('manajemen_aset.prasarana') }}" class="menu-item">Prasarana</a>
         <a href="{{ route('manajemen_aset.sarana') }}" class="menu-item">Sarana</a>
-        <a href="" class="menu-item">Inventaris</a>
+        <a href="{{ route('manajemen_aset.inventaris') }}" class="menu-item">Inventaris</a>
     </div>
     @elseif(auth()->check() && auth()->user()->role === '1')
     <div class="welcome">
@@ -31,7 +31,7 @@
     <div class="submenu">
         <a href="{{ route('manajemen_aset.prasarana') }}" class="menu-item">Prasarana</a>
         <a href="{{ route('manajemen_aset.sarana') }}" class="menu-item">Sarana</a>
-        <a href="" class="menu-item">Inventaris</a>
+        <a href="{{ route('manajemen_aset.inventaris') }}" class="menu-item">Inventaris</a>
     </div>
     @endif
 </div>
