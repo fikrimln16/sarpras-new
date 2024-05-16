@@ -411,24 +411,13 @@
         bangunanContainer.style.display = this.checked ? 'block' : 'none';
     });
 
-    // dropdownJenisLaboratorium
-
-
-
     $(document).ready(function() {
-
-
         $('#jenisPrasarana').change(function() {
             var selectedOption = $(this).val();
             if (selectedOption == 'Gedung Kuliah') {
                 $('#dropdownTerpaduProdi').removeClass('d-none');
-            } else if (selectedOption == 'Laboratorium') {
-                $('#dropdownTerpaduProdi').removeClass('d-none');
-                $('#dropdownJenisLaboratorium').removeClass('d-none');
             } else {
                 $('#dropdownTerpaduProdi').addClass('d-none');
-                $('#dropdownJenisLaboratorium').addClass('d-none');
-
             }
             console.log(selectedOption);
         });
@@ -436,22 +425,9 @@
         $('#prasaranaForm').submit(function(e) {
             var jenisPrasarana = $('#jenisPrasarana').val();
             var jenisTerpaduProdi = $('#jenisTerpaduProdi').val();
-            var jenisLaboratorium = $('#jenisLaboratorium').val();
-
 
             if (jenisPrasarana === 'Gedung Kuliah' && jenisTerpaduProdi) {
-                console.log('ini gdeung kuliah bray')
                 var gabungan = jenisPrasarana + ' ' + jenisTerpaduProdi;
-                $('<input>').attr({
-                    type: 'hidden',
-                    name: 'jenis_prasarana',
-                    value: gabungan
-                }).appendTo('#prasaranaForm');
-            }
-
-            if (jenisPrasarana === 'Laboratorium' && jenisTerpaduProdi && jenisLaboratorium) {
-                console.log('ini gedung labo bray')
-                var gabungan = jenisPrasarana + ' ' + jenisTerpaduProdi + ' ' + jenisLaboratorium;
                 $('<input>').attr({
                     type: 'hidden',
                     name: 'jenis_prasarana',
@@ -463,7 +439,6 @@
                 namaPrasarana: $('#namaPrasarana').val(),
                 jenisPrasarana: jenisPrasarana,
                 jenisTerpaduProdi: jenisTerpaduProdi,
-                jenisLaboratorium: jenisLaboratorium,
                 gabungan: gabungan
             });
         });
