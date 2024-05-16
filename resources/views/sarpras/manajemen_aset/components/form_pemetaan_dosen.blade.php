@@ -47,14 +47,20 @@
                             <select id="filterBangunanForm" class="form-select select2" name="bangunan">
                                 <option value="">Semua Bangunan</option>
                                 @foreach ($bangunan as $item)
-                                    <option value="{{ $item['id'] }}">{{ $item['nama_bangunan'] }}</option>
+                                    <option value="{{ $item['id'] }}">{{ $item['nama_prasarana'] }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="filterRuangan">Filter Ruangan:</label>
                             <select id="filterRuanganForm" class="form-select select2" name="ruangan">
                                 <option value="">Semua Ruangan</option>
+                            </select>
+                        </div> --}}
+                        <div class="form-group">
+                            <label for="ruangan">Ruangan:</label>
+                            <select class="form-control" id="ruangan" name="ruangan">
+                                <!-- Options will be dynamically populated -->
                             </select>
                         </div>
                         <div id="pemetaanContainer">
@@ -67,7 +73,37 @@
             </div>
         </div>
     </div>
-
+    <script>
+        $(document).ready(function() {
+            $('#prasarana').change(function() {
+                var idBangunan = $(this).val(); // Get selected prasarana ID
+        
+                // Clear existing options
+                $('#ruangan').empty();
+        
+                // Construct the URL for the AJAX request dynamically based on the selected ID
+                var url = '/manajemen_aset/ruangan/bangunan/' + idBangunan;
+        
+                // Fetch new options based on prasarana ID
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function(data) {
+                        if (data.length > 0) {
+                            $.each(data, function(key, value) {
+                                $('#ruangan').append('<option value="' + value.id + '">' + value.nama_ruangan + '</option>');
+                            });
+                        } else {
+                            $('#ruangan').append('<option>No Ruangan Available</option>');
+                        }
+                    },
+                    error: function() {
+                        $('#ruangan').append('<option>Error loading data</option>');
+                    }
+                });
+            });
+        });
+        </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
         {{-- <script>

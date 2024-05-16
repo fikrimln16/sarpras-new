@@ -16,9 +16,9 @@
        @foreach ($data as $item)
            <tr>
                <td>{{ $item->id }}</td>
-               <td>{{ $item->sumber_daya_manusia->Nama_SDM }}</td>
-               <td>{{ $item->ruang->nama_ruangan }}</td>
-               <td>{{ $item->ruang->prasarana->nama_prasarana }}</td>
+               <td>{{ $item->Nama_SDM }}</td>
+               <td>{{ $item->nama_ruangan }}</td>
+               <td>{{ $item->nama_prasarana }}</td>
                <td>{{ $item->tanggal_mulai_penempatan }}</td>
                <td>{{ $item->tanggal_selesai_penempatan }}</td>
                {{-- <td>{{ $item['status'] }}</td>

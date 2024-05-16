@@ -386,15 +386,36 @@ class SarprasManajemenAset extends Controller
     public function index_inventaris()
     {
 
-        $data = PenempatanSdmRuang::with(['sumber_daya_manusia', 'ruang.prasarana'])
-        ->get();
+        // $data = PenempatanSdmRuang::with(['sumber_daya_manusia', 'ruang.prasarana'])
+        // ->get();
         // $data = SumberDayaManusia::all();
         // dd($data);
 
-        $bangunan = [
-            ['id' => 1, 'nama_bangunan' => 'Bangunan A'],
-            ['id' => 2, 'nama_bangunan' => 'Bangunan B'],
-        ];
+        $universities = auth()->user()->universities;
+        $universityCode = $universities->first()->id;
+
+        $data = DB::table('penempatan_sdm_ruang as psr')
+            ->join('ruangan as r', 'psr.id_ruang', '=', 'r.id')
+            ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
+            ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
+            ->leftJoin('sumber_daya_manusia as sdm', 'psr.id_sdm', '=', 'sdm.id')
+            ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
+            ->select('psr.*', 'r.*', 'p.*', 'sdm.*')
+            ->get();
+
+        // dd($data);
+
+        // $bangunan = [
+        //     ['id' => 1, 'nama_bangunan' => 'Bangunan A'],
+        //     ['id' => 2, 'nama_bangunan' => 'Bangunan B'],
+        // ];
+
+        $bangunan = Prasarana::select('prasarana.*')
+            ->join('penempatan_prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
+            ->where('penempatan_prasarana.id_data_lokasi_kampus', $universityCode)
+            ->get();
+
+        // dd($bangunan);
 
         $nama_dosen = [
             'John Doe',

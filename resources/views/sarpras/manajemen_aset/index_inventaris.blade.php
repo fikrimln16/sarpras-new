@@ -1,9 +1,9 @@
 @extends('layout')
 
 @section('content')
-<!-- <button id="tambahBtn" class="btn btn-primary mb-2">Tambah</button> -->
+<button id="tambahBtn" class="btn btn-primary mb-2">Tambah</button>
 <div class="row">
-   <div class="col-md-6 mb-2">
+   {{-- <div class="col-md-6 mb-2">
        <label for="filterBangunan">Filter Bangunan:</label>
        <select id="filterBangunan" class="form-select">
            <option value="">Semua Bangunan</option>
@@ -17,7 +17,7 @@
        <select id="filterRuangan" class="form-select">
            <option value="" disabled>Semua Ruangan</option>
        </select>
-   </div>
+   </div> --}}
 </div>
 @include('sarpras.manajemen_aset.components.form_pemetaan_dosen')
 @include('sarpras.manajemen_aset.components.inventaris_table')
