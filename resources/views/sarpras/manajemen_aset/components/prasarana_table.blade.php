@@ -1,9 +1,6 @@
 @extends('sarpras.manajemen_aset.index_prasarana')
 
 @section('prasarana_table')
-    <!-- Button trigger modal -->
-
-
 
     <div class="ibox float-e-margins">
         @if (session('success'))
