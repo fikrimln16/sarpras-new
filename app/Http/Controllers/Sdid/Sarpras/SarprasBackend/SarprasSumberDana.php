@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 
 use App\Models\Sbsn;
+use App\Models\Phln;
 
 
 class SarprasSumberDana extends Controller
@@ -350,8 +351,9 @@ class SarprasSumberDana extends Controller
 
     public function index_pendanaan_phln()
     {
-        $data_phln = $this->data_phln;
-        return view('sarpras.sumber_dana.components.phln_table', compact('data_phln'));
+        $data_phln = Phln::all();
+        $data_lokasi_kampus = DataLokasiKampus::all();
+        return view('sarpras.sumber_dana.components.phln_table', compact('data_phln', 'data_lokasi_kampus'));
     }
 
     public function index_data_paket()
@@ -411,33 +413,76 @@ class SarprasSumberDana extends Controller
         }
     }
 
+    // public function insert_phln(Request $request)
+    // {
+    //     // Mengambil data dari request tanpa validasi
+    //     $data = $request->all();
+    //     dd($data);
+
+    //     // Mengambil tahun dari tanggal_mulai_kontrak dan tanggal_akhir_kontrak
+    //     $tahunStart = date('Y', strtotime($data['tanggal_mulai_kontrak']));
+    //     $tahunEnd = date('Y', strtotime($data['tanggal_mulai_kontrak']));
+    //     if ($data['tanggal_akhir_kontrak']) {
+    //         $tahunEnd = date('Y', strtotime($data['tanggal_akhir_kontrak']));
+    //     }
+
+    //      $response = [
+    //          'nama_proyek' => $data['nama_proyek'],
+    //          'jenis_kontrak' => $data['jenis_kontrak'],
+    //          'tanggal_mulai_kontrak' => $data['tanggal_mulai_kontrak'],
+    //          'tanggal_akhir_kontrak' => $data['tanggal_akhir_kontrak'],
+    //          'tahun_start' => $tahunStart,
+    //          'tahun_end' => $tahunEnd,
+    //          'perguruan_tinggi' => $data['perguruan_tinggi'],
+    //          'penanda_aset' => $data['penanda_aset'],
+    //          'nilai_dpp' => $data['nilai_dpp'],
+    //          'no_registrasi' => $data['no_registrasi'],
+    //      ];
+
+
+    //     // Mengembalikan response dengan data yang diterima
+    //     return redirect()->route('perolehan_aset.pendanaan.phln')->with('success', 'Data berhasil ditambahkan');
+    // }
     public function insert_phln(Request $request)
     {
-        // Mengambil data dari request tanpa validasi
-        $data = $request->all();
+        // Validasi data
+        // $validatedData = $request->validate([
+        //     'nama_proyek' => 'required|string|max:255',
+        //     'singkatan_proyek' => 'nullable|string|max:100',
+        //     'pemberi_pinjaman' => 'nullable|string|max:255',
+        //     'jenis_kontrak' => 'required|string|max:255',
+        //     'tanggal_mulai_kontrak' => 'required|date',
+        //     'tanggal_akhir_kontrak' => 'nullable|date|after_or_equal:tanggal_mulai_kontrak',
+        //     'pagu_loan' => 'nullable|numeric',
+        //     'mata_uang_pagu_loan' => 'nullable|string|max:50',
+        //     'pagu_goi' => 'nullable|numeric',
+        //     'mata_uang_pagu_goi' => 'nullable|string|max:50',
+        //     'mata_uang_valas' => 'nullable|string|max:50',
+        //     'kode_loan' => 'nullable|string|max:50',
+        //     'no_registrasi' => 'nullable|string|max:25',
+        // ]);
 
-        // Mengambil tahun dari tanggal_mulai_kontrak dan tanggal_akhir_kontrak
-        $tahunStart = date('Y', strtotime($data['tanggal_mulai_kontrak']));
-        $tahunEnd = date('Y', strtotime($data['tanggal_mulai_kontrak']));
-        if ($data['tanggal_akhir_kontrak']) {
-            $tahunEnd = date('Y', strtotime($data['tanggal_akhir_kontrak']));
-        }
+        // // Membuat data untuk dimasukkan ke database
+        // $phlnData = [
+        //     'nama_proyek' => $validatedData['nama_proyek'],
+        //     'singkatan_proyek' => $validatedData['singkatan_proyek'],
+        //     'pemberi_pinjaman' => $validatedData['pemberi_pinjaman'],
+        //     'jenis_kontrak' => $validatedData['jenis_kontrak'],
+        //     'sign_date' => $validatedData['tanggal_mulai_kontrak'],
+        //     'closed_date' => $validatedData['tanggal_akhir_kontrak'],
+        //     'pagu_loan' => $validatedData['pagu_loan'],
+        //     'mata_uang_pagu_loan' => $validatedData['mata_uang_pagu_loan'],
+        //     'pagu_goi' => $validatedData['pagu_goi'],
+        //     'mata_uang_pagu_goi' => $validatedData['mata_uang_pagu_goi'],
+        //     'mata_uang_valas' => $validatedData['mata_uang_valas'],
+        //     'kode_loan' => $validatedData['kode_loan'],
+        //     'no_registrasi' => $validatedData['no_registrasi'],
+        // ];
+        // dd($phlnData);
+        // Memasukkan data ke database
+        Phln::create($request->all());
 
-        // Membuat array response dengan data yang sama seperti yang dimasukkan
-        //  $response = [
-        //      'nama_proyek' => $data['nama_proyek'],
-        //      'jenis_kontrak' => $data['jenis_kontrak'],
-        //      'tanggal_mulai_kontrak' => $data['tanggal_mulai_kontrak'],
-        //      'tanggal_akhir_kontrak' => $data['tanggal_akhir_kontrak'],
-        //      'tahun_start' => $tahunStart,
-        //      'tahun_end' => $tahunEnd,
-        //      'perguruan_tinggi' => $data['perguruan_tinggi'],
-        //      'penanda_aset' => $data['penanda_aset'],
-        //      'nilai_dpp' => $data['nilai_dpp'],
-        //      'no_registrasi' => $data['no_registrasi'],
-        //  ];
-
-        // Mengembalikan response dengan data yang diterima
+        // Mengembalikan response dengan pesan sukses
         return redirect()->route('perolehan_aset.pendanaan.phln')->with('success', 'Data berhasil ditambahkan');
     }
 

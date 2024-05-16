@@ -11,7 +11,8 @@
            <div class="modal-body">
                <!-- Form Tambah -->
                <form id="myForm" action="{{ route('perolehan_aset.tambah_phln') }}" method="POST">
-                   <div class="form-group">
+                @csrf   
+                <div class="form-group">
                        <label for="nama_proyek">Nama Proyek:</label>
                        <input type="text" class="form-control" id="nama_proyek" name="nama_proyek">
                    </div>
@@ -32,15 +33,15 @@
                    </div>
                    <div class="form-group">
                        <label for="tanggal_mulai_kontrak">Tanggal Mulai Kontrak:</label>
-                       <input type="date" class="form-control" id="tanggal_mulai_kontrak" name="tanggal_mulai_kontrak">
+                       <input type="date" class="form-control" id="tanggal_mulai_kontrak" name="sign_date">
                    </div>
                    <div class="form-group" id="tanggal_akhir_group_phln" style="display: none;">
                        <label for="tanggal_akhir_kontrak">Tanggal Akhir Kontrak:</label>
-                       <input type="date" class="form-control" id="tanggal_akhir_kontrak" name="tanggal_akhir_kontrak">
+                       <input type="date" class="form-control" id="tanggal_akhir_kontrak" name="closed_date">
                    </div>
                    <div class="form-group">
                        <label for="currency">Currency:</label>
-                       <select class="form-select" id="currency" name="currency">
+                       <select class="form-select" id="currency" name="mata_uang_pagu_loan">
                            <option value="IDR">IDR</option>
                            <option value="USD">USD</option>
                            <option value="EUR">EUR</option>
@@ -48,7 +49,7 @@
                    </div>
                    <div class="form-group">
                        <label for="nilai_pagu_loan">Nilai Pagu Loan:</label>
-                       <input type="number" class="form-control" id="nilai_pagu_loan" name="nilai_pagu_loan">
+                       <input type="number" class="form-control" id="nilai_pagu_loan" name="pagu_loan">
                    </div>
                    <div class="form-check">
                        <input class="form-check-input" type="checkbox" value="" id="showAdditionalForm">
@@ -60,7 +61,7 @@
                        <!-- Form tambahan -->
                        <div class="form-group">
                            <label for="currency">Currency:</label>
-                           <select class="form-select" id="currency" name="currency">
+                           <select class="form-select" id="currency" name="mata_uang_pagu_goi">
                                <option value="IDR">IDR</option>
                                <option value="USD">USD</option>
                                <option value="EUR">EUR</option>
@@ -68,7 +69,7 @@
                        </div>
                        <div class="form-group">
                            <label for="nilai_pagu_goi">Nilai Pagu GOI:</label>
-                           <input type="number" class="form-control" id="nilai_pagu_goi" name="nilai_pagu_goi">
+                           <input type="number" class="form-control" id="nilai_pagu_goi" name="pagu_goi">
                        </div>
                    </div>
                    <div id="universitasContainer"></div>
