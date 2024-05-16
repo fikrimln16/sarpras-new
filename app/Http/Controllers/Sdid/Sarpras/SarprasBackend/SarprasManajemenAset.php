@@ -302,8 +302,6 @@ class SarprasManajemenAset extends Controller
         } else {
             return view('sarpras.manajemen_aset.components.ruangan_table', compact('ruangan', 'prasarana'));
         }
-
-
     }
 
     public function create_ruangan(Request $request)
@@ -359,6 +357,9 @@ class SarprasManajemenAset extends Controller
             ->get();
 
         // dd($penempatanSarana);
+            ->get();
+
+        // dd($penempatanSarana);
         $penempatanSarana = DB::table('penempatan_sarana as ps')
             ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
             ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
@@ -369,10 +370,14 @@ class SarprasManajemenAset extends Controller
             ->get();
 
         // dd($penempatanSarana);
+            ->get();
+
+        // dd($penempatanSarana);
         return view('sarpras.manajemen_aset.index_sarana', compact('penempatanSarana', 'prasarana'));
     }
 
     public function delete_sarana($id)
+    {
     {
         // $sarana = Sarana::findOrFail($id);
         PenempatanSarana::where('id', $id)->delete();
@@ -589,10 +594,16 @@ class SarprasManajemenAset extends Controller
             'prasarana' => 'required|integer|exists:prasarana,id',
             'ruangan' => 'required|integer|exists:ruangan,id',
             'nama_sarana.*' => 'required|string|max:255',
+            'kategori.*' => 'required|string|max:255',
             'jenis_sarana.*' => 'required|string|max:255',
+            'spesifikasi.*' => 'required|string|max:255',
             'tanggal_perolehan.*' => 'required|date',
+            'tahun_produksi.*' => 'required|numeric',
             'nilai_perolehan.*' => 'required|numeric',
+            'nilai_buku.*' => 'required|numeric',
+            'penggunaan.*' => 'required|string|max:255',
             'kondisi.*' => 'required|string|max:255',
+            'tanggal_hapus_buku.*' => 'required|numeric',
             'status.*' => 'required|string|max:255',
             'jumlah_barang.*' => 'required|integer|min:1'
         ]);
@@ -608,10 +619,16 @@ class SarprasManajemenAset extends Controller
             foreach ($request->nama_sarana as $key => $value) {
                 $sarana = Sarana::create([
                     'nama_sarana' => $value,
+                    'kategori' => $request->kategori[$key],
                     'jenis_sarana' => $request->jenis_sarana[$key],
+                    'spesifikasi' => $request->spesifikasi[$key],
                     'tanggal_perolehan' => $request->tanggal_perolehan[$key],
+                    'tahun_produksi' => $request->tahun_produksi[$key],
                     'nilai_perolehan' => $request->nilai_perolehan[$key],
+                    'nilai_buku' => $request->nilai_buku[$key],
+                    'penggunaan' => $request->penggunaan[$key],
                     'kondisi' => $request->kondisi[$key],
+                    'tanggal_hapus_buku' => $request->tanggal_hapus_buku[$key] ?? null, // Handle nullable field
                     'status' => $request->status[$key]
                 ]);
 
@@ -636,7 +653,7 @@ class SarprasManajemenAset extends Controller
             }
 
             DB::commit();
-            return response()->json(['message' => 'Data diterima', 'data_sarana' => $data_sarana], 200);
+            // return response()->json(['message' => 'Data diterima', 'data_sarana' => $data_sarana], 200);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
