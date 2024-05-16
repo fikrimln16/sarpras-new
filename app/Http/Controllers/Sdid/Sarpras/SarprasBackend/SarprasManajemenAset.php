@@ -358,6 +358,9 @@ class SarprasManajemenAset extends Controller
             ->select('s.*', 'p.*', 'r.*', 'ps.id')
             ->get();
 
+        // // dd($penempatanSarana);
+        //     ->get();
+
         // dd($penempatanSarana);
         $penempatanSarana = DB::table('penempatan_sarana as ps')
             ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
@@ -367,6 +370,9 @@ class SarprasManajemenAset extends Controller
             ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
             ->select('s.*', 'p.*', 'r.*', 'ps.id')
             ->get();
+
+        // dd($penempatanSarana);
+        // ->get();
 
         // dd($penempatanSarana);
         return view('sarpras.manajemen_aset.index_sarana', compact('penempatanSarana', 'prasarana'));
@@ -582,7 +588,7 @@ class SarprasManajemenAset extends Controller
     //     }
     // }
 
-    public function tambah_sarana(Request $request): JsonResponse
+    public function tambah_sarana(Request $request)
     {
         // Validation rules
         $validator = Validator::make($request->all(), [
@@ -633,22 +639,10 @@ class SarprasManajemenAset extends Controller
                         'id_ruang' => $request->ruangan
                     ]);
                 }
-
-                // $data_sarana[] = [
-                //     'id' => $sarana->id,
-                //     'nama_sarana' => $value,
-                //     'jenis_sarana' => $request->jenis_sarana[$key],
-                //     'tanggal_perolehan' => $request->tanggal_perolehan[$key],
-                //     'nilai_perolehan' => $request->nilai_perolehan[$key],
-                //     'kondisi' => $request->kondisi[$key],
-                //     'status' => $request->status[$key],
-                //     'prasarana' => $request->prasarana,
-                //     'ruangan' => $request->ruangan,
-                // ];
             }
 
             DB::commit();
-            // return response()->json(['message' => 'Data diterima', 'data_sarana' => $data_sarana], 200);
+            return redirect()->route('manajemen_aset.sarana')->with('success', 'sarana created successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
