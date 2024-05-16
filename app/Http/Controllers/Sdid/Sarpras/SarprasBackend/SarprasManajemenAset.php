@@ -264,13 +264,26 @@ class SarprasManajemenAset extends Controller
 
 
 
-    public function index_ruangan()
+    public function index_ruangan(Request $request)
     {
-
-        $ruangan = Ruangan::with('bangunan')->get();
+        $id = $request->query('id');
+        $ruangan = Ruangan::with('prasarana')->get();
         $prasarana = Prasarana::all();
         // dd($ruangan);
-        return view('sarpras.manajemen_aset.components.ruangan_table', compact('ruangan', 'prasarana'));
+
+        if ($id) {
+            $ruangan = Ruangan::find($id);
+
+            if (!$ruangan) {
+                abort(404, 'Ruangan tidak ditemukan');
+            }
+
+            return view('sarpras.manajemen_aset.components.ruangan_detail', compact('ruangan', 'id'));
+        } else {
+            return view('sarpras.manajemen_aset.components.ruangan_table', compact('ruangan', 'prasarana'));
+        }
+
+        
     }
 
     public function create_ruangan(Request $request)

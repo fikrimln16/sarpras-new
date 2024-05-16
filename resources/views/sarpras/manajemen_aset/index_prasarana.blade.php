@@ -3,15 +3,7 @@
 @section('content')
 
 <div class="content">
-    <!-- Tab navigasi -->
-    <!-- <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
-        <li class="nav-item">
-            <a href="{{route('manajemen_aset.prasarana')}}" role="tab" aria-controls="bangunan" aria-selected="true">Bangunan</a>
-        </li>
-        <li class="nav-item">
-            <a href="{{route('manajemen_aset.ruangan')}}" role="tab" aria-controls="ruang" aria-selected="false">Ruang</a>
-        </li>
-    </ul> -->
+   
     <ul class="nav nav-underline">
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('manajemen_aset.prasarana') ? 'active' : '' }}" aria-current="page" href="{{ route('manajemen_aset.prasarana') }}">Prasarana</a>
@@ -25,6 +17,19 @@
         @yield('prasarana_table')
     </div>
 </div>
+
+<style>
+   .nav-link {
+        color: black !important; /* Ensures the text color is black */
+    }
+    .nav-link.active {
+        font-weight: bold; /* Optional: Makes the active link bold */
+        border-bottom: 2px solid black; /* Optional: Adds an underline to the active link */
+    }
+    .nav-link:hover {
+        color: black !important; /* Ensures the text color remains black on hover */
+    }
+</style>
 
 
 @endsection
