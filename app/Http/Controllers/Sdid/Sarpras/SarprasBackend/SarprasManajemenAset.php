@@ -22,6 +22,7 @@ use App\Models\Prasarana;
 use App\Models\SumberPendanaan;
 use App\Models\DataLokasiKampus;
 use App\Models\SumberDayaManusia;
+use App\Models\PenempatanSdmRuang;
 
 
 class SarprasManajemenAset extends Controller
@@ -267,7 +268,8 @@ class SarprasManajemenAset extends Controller
 
     public function index_ruangan(Request $request)
     {
-        $universities = auth()->user()->universities;        $id = $request->query('id');
+        $universities = auth()->user()->universities;
+        $id = $request->query('id');
         $universityCode = $universities->first()->id;
         // $ruangan = Ruangan::with('prasarana')->get();
 
@@ -301,7 +303,7 @@ class SarprasManajemenAset extends Controller
             return view('sarpras.manajemen_aset.components.ruangan_table', compact('ruangan', 'prasarana'));
         }
 
-        
+
     }
 
     public function create_ruangan(Request $request)
@@ -354,9 +356,9 @@ class SarprasManajemenAset extends Controller
             ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
             ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
             ->select('s.*', 'p.*', 'r.*', 'ps.id')
-            ->get();    
-            
-            // dd($penempatanSarana);
+            ->get();
+
+        // dd($penempatanSarana);
         $penempatanSarana = DB::table('penempatan_sarana as ps')
             ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
             ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
@@ -364,14 +366,14 @@ class SarprasManajemenAset extends Controller
             ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
             ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
             ->select('s.*', 'p.*', 'r.*', 'ps.id')
-            ->get();    
-            
-            // dd($penempatanSarana);
+            ->get();
+
+        // dd($penempatanSarana);
         return view('sarpras.manajemen_aset.index_sarana', compact('penempatanSarana', 'prasarana'));
     }
 
     public function delete_sarana($id)
-    {        
+    {
         // $sarana = Sarana::findOrFail($id);
         PenempatanSarana::where('id', $id)->delete();
 
@@ -383,32 +385,11 @@ class SarprasManajemenAset extends Controller
 
     public function index_inventaris()
     {
-        
-        // $data = [
-        //     [
-        //         'kode_penempatan' => 'KP001',
-        //         'Nama Dosen' => 'John Doe',
-        //         'Ruangan' => 'A-1',
-        //         'tanggal_mulai_penempatan' => '2024-05-10',
-        //         'tanggal_akhir_penempatan' => '2024-06-10',
-        //         'status' => 'aktif',
-        //         'deskripsi' => 'digunakan untuk penelitian',
-        //         'detail' => 'Lorem ipsum dolor sit amet'
-        //     ],
-        //     [
-        //         'kode_penempatan' => 'KP002',
-        //         'Nama Dosen' => 'Jane Doe',
-        //         'Ruangan' => 'B-1',
-        //         'tanggal_mulai_penempatan' => '2024-05-15',
-        //         'tanggal_akhir_penempatan' => '2024-06-15',
-        //         'status' => 'aktif',
-        //         'deskripsi' => 'digunakan untuk asisten lab',
-        //         'detail' => 'Consectetur adipiscing elit'
-        //     ],
-        // ];
 
-        $data = SumberDayaManusia::all();
-        dd($data);
+        $data = PenempatanSdmRuang::with(['sumber_daya_manusia', 'ruang.prasarana'])
+        ->get();
+        // $data = SumberDayaManusia::all();
+        // dd($data);
 
         $bangunan = [
             ['id' => 1, 'nama_bangunan' => 'Bangunan A'],
