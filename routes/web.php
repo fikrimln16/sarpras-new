@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Sdid\Sarpras\SarprasBackend\SarprasManajemenAset;
+use App\Http\Controllers\Sdid\Sarpras\SarprasBackend\SarprasSumberDana;
 use App\Http\Controllers\AuthController;
 use App\Http\Middleware\AuthenticateUser;
 
@@ -60,3 +61,25 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 //      Route::get('/manajamen_aset/prasarana', [AuthController::class, 'index']);
 //      Route::delete('/logout', [AuthController::class, 'logout'])->name('logout');
 //      });
+
+Route::get('perolehan_aset/pendanaan', [SarprasSumberDana::class, 'index_pendanaan'])
+     ->name('perolehan_aset.pendanaan');
+
+Route::get('perolehan_aset/pendanaan/sbsn', [SarprasSumberDana::class, 'index_pendanaan_sbsn'])
+     ->name('perolehan_aset.pendanaan.sbsn');
+
+Route::get('perolehan_aset/pendanaan/phln', [SarprasSumberDana::class, 'index_pendanaan_phln'])
+     ->name('perolehan_aset.pendanaan.phln');
+
+Route::get('perolehan_aset/data_paket', [SarprasSumberDana::class, 'index_data_paket'])
+     ->name('perolehan_aset.data_paket');
+
+Route::get('perolehan_aset/data_realisasi', [SarprasSumberDana::class, 'index_data_realisasi'])
+     ->name('perolehan_aset.data_realisasi');
+
+// POST routes
+Route::post('perolehan_aset/createSBSN', [SarprasSumberDana::class, 'insert_sbsn'])
+     ->name('perolehan_aset.tambah_sbsn');
+
+Route::post('perolehan_aset/createPHLN', [SarprasSumberDana::class, 'insert_phln'])
+     ->name('perolehan_aset.tambah_phln');

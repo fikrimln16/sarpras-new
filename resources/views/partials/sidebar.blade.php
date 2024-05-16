@@ -24,8 +24,8 @@
     </div>
     <div class="menu-item" data-toggle="submenu">Sumber Perolehan Aset</div>
     <div class="submenu">
-        <a href="" class="menu-item">Pendanaan</a>
-        <a href="" class="menu-item">Data Paket</a>
+        <a href="{{ route('perolehan_aset.pendanaan.sbsn') }}" class="menu-item">Pendanaan</a>
+        <a href="{{ route('perolehan_aset.data_paket') }}" class="menu-item">Data Paket</a>
     </div>
     <div class="menu-item" data-toggle="submenu">Manajemen Aset</div>
     <div class="submenu">

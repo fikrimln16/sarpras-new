@@ -27,8 +27,10 @@
                     <div class="form-group">
                         <label for="skema_biaya">Skema Biaya:</label>
                         <select class="form-control" id="skema_biaya" name="skema_biaya">
-                            <option value="PHLN">PHLN</option>
-                            <option value="SBSN">SBSN</option>
+                            <option value="" disabled selected>Pilih Skema Biaya</option>
+                            @foreach ( $skema_biaya as $data)
+                            <option value="{{ $data->uuid_sbsn }}">{{ $data->nama_proyek }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div id="saranaContainer">

@@ -14,15 +14,16 @@ return new class extends Migration
         Schema::create('sbsn', function (Blueprint $table) {
             $table->id('uuid_sbsn');  // Using 'id' method for auto-incrementing primary key
             $table->string('nama_proyek', 255);
-            $table->string('jenis_kontrak', 100);
-            $table->integer('tahun_start');
-            $table->integer('tahun_end');
-            $table->date('tgl_mulai_kontrak');
-            $table->date('tgl_selesai_kontrak');
-            $table->string('penanda_aset', 5);
-            $table->string('perguruan_tinggi', 26);
-            $table->integer('nilai_dpp');
-            $table->string('no_registrasi', 20);
+            $table->string('jenis_kontrak', 100)->nullable();
+            $table->integer('tahun_start')->nullable();
+            $table->integer('tahun_end')->nullable();
+            $table->date('tgl_mulai_kontrak')->nullable();
+            $table->date('tgl_selesai_kontrak')->nullable();
+            $table->string('penanda_aset', 5)->nullable();
+            $table->unsignedBigInteger('id_data_lokasi_kampus');
+            $table->foreign('id_data_lokasi_kampus')->references('id')->on('data_lokasi_kampus')->onDelete('cascade');
+            $table->integer('nilai_dpp')->nullable();
+            $table->string('no_registrasi', 20)->nullable();
             $table->timestamps();  
         });
     }

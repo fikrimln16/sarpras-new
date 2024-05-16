@@ -23,6 +23,7 @@ use App\Models\SumberPendanaan;
 use App\Models\DataLokasiKampus;
 use App\Models\SumberDayaManusia;
 use App\Models\PenempatanSdmRuang;
+use App\Models\Sbsn;
 
 
 class SarprasManajemenAset extends Controller
@@ -359,11 +360,14 @@ class SarprasManajemenAset extends Controller
             ->select('s.*', 'p.*', 'r.*', 'ps.*')
             ->get();
 
+        $skema_biaya = Sbsn::where('id_data_lokasi_kampus', $universityCode)->get();
+        // dd($skema_biaya);
+
         // dd($penempatanSarana);
         // ->get();
 
         // dd($penempatanSarana);
-        return view('sarpras.manajemen_aset.index_sarana', compact('penempatanSarana', 'prasarana'));
+        return view('sarpras.manajemen_aset.index_sarana', compact('penempatanSarana', 'prasarana', 'skema_biaya'));
     }
 
     public function delete_sarana($id)
@@ -563,6 +567,7 @@ class SarprasManajemenAset extends Controller
 
     public function tambah_sarana(Request $request)
     {
+        // dd($request->all());
         // Validation rules
         $validator = Validator::make($request->all(), [
             'prasarana' => 'required|integer|exists:prasarana,id',
@@ -601,6 +606,11 @@ class SarprasManajemenAset extends Controller
                     'nilai_perolehan' => $request->nilai_perolehan[$key],
                     'nilai_buku' => $request->nilai_buku[$key],
                     'tanggal_hapus_buku' => $request->tanggal_hapus_buku[$key] ?? null, // Handle nullable field
+                ]);
+
+                SumberPendanaan::create([
+                    'uuid_sbsn' => $request->skema_biaya,
+                    'id_sarana' => $sarana->id
                 ]);
 
                 for ($i = 0; $i < $request->jumlah_barang[$key]; $i++) {

@@ -13,18 +13,16 @@ return new class extends Migration
     {
         Schema::create('sumber_pendanaan', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('uuid_sbsn')->nullable(); // Default NULL
-            $table->unsignedBigInteger('id_phln')->nullable(); // Default NULL
-            $table->unsignedBigInteger('id_prasarana');
-            $table->unsignedBigInteger('id_sarana');
-            $table->date('tanggal_ditambahkan');
+            $table->unsignedBigInteger('uuid_sbsn')->nullable();
+            $table->unsignedBigInteger('id_phln')->nullable(); 
+            $table->unsignedBigInteger('id_prasarana')->nullable();
+            $table->unsignedBigInteger('id_sarana')->nullable();
+            $table->timestamps();
 
             $table->foreign('uuid_sbsn')->references('uuid_sbsn')->on('sbsn')->onDelete('set null');
             $table->foreign('id_phln')->references('id')->on('phln')->onDelete('set null');
             $table->foreign('id_prasarana')->references('id')->on('prasarana')->onDelete('restrict');
             $table->foreign('id_sarana')->references('id')->on('sarana')->onDelete('restrict');
-
-            $table->timestamps();
         });
     }
 

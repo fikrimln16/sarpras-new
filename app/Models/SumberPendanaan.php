@@ -12,6 +12,10 @@ class SumberPendanaan extends Model
 
     protected $table = 'sumber_pendanaan';
 
+    public $incrementing = true;
+    
+    protected $guarded = ['id'];
+
     public function getSumberPendanaan()
     {
         return DB::table($this->table)->get();
