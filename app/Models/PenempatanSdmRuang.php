@@ -26,4 +26,9 @@ class PenempatanSdmRuang extends Model
     {
         return $this->belongsTo(SumberDayaManusia::class, 'id_sdm');
     }
+
+    public function prasarana()
+    {
+        return $this->ruang->prasarana();
+    }
 }

@@ -4,24 +4,26 @@
            <th>kode_penempatan</th>
            <th>Nama Dosen</th>
            <th>Ruangan</th>
+           <th>Prasarana</th>
            <th>tanggal_mulai_penempatan</th>
-           <th>tanggal_akhir_penempatan</th>
-           <th>status</th>
-           <th>deskripsi</th>
-           <th>detail</th>
+           <th>tanggal_selesai_penempatan</th>
+           {{-- <th>status</th>
+           <th>deskripsi</th> --}}
+           {{-- <th>detail</th> --}}
        </tr>
    </thead>
    <tbody>
        @foreach ($data as $item)
            <tr>
-               <td>{{ $item['kode_penempatan'] }}</td>
-               <td>{{ $item['Nama Dosen'] }}</td>
-               <td>{{ $item['Ruangan'] }}</td>
-               <td>{{ $item['tanggal_mulai_penempatan'] }}</td>
-               <td>{{ $item['tanggal_akhir_penempatan'] }}</td>
-               <td>{{ $item['status'] }}</td>
-               <td>{{ $item['deskripsi'] }}</td>
-               <td>{{ $item['detail'] }}</td>
+               <td>{{ $item->id }}</td>
+               <td>{{ $item->sumber_daya_manusia->Nama_SDM }}</td>
+               <td>{{ $item->ruang->nama_ruangan }}</td>
+               <td>{{ $item->ruang->prasarana->nama_prasarana }}</td>
+               <td>{{ $item->tanggal_mulai_penempatan }}</td>
+               <td>{{ $item->tanggal_selesai_penempatan }}</td>
+               {{-- <td>{{ $item['status'] }}</td>
+               <td>{{ $item['deskripsi'] }}</td> --}}
+               {{-- <td>{{ $item['detail'] }}</td> --}}
            </tr>
        @endforeach
    </tbody>
