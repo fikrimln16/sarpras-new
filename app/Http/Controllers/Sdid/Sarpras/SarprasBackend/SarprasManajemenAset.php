@@ -416,7 +416,7 @@ class SarprasManajemenAset extends Controller
         //     ['id' => 2, 'nama_bangunan' => 'Bangunan B'],
         // ];
 
-        $bangunan = Prasarana::select('prasarana.*')
+        $prasarana = Prasarana::select('prasarana.*')
             ->join('penempatan_prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
             ->where('penempatan_prasarana.id_data_lokasi_kampus', $universityCode)
             ->get();
@@ -430,7 +430,7 @@ class SarprasManajemenAset extends Controller
             'Bob'
         ];
 
-        return view('sarpras.manajemen_aset.index_inventaris', compact('data', 'bangunan', 'nama_dosen'));
+        return view('sarpras.manajemen_aset.index_inventaris', compact('data', 'prasarana', 'nama_dosen'));
     }
 
     public function getRuangan($id_bangunan)

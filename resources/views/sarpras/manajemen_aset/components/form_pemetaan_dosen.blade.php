@@ -8,49 +8,95 @@
     <title>Modal Tambah</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
     <style>
-      .modal-content {
-        /* background-color: blue; */
-        width: fit-content;
-    }
+        .card-body {
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            gap: 5px;
+        }
+
+        .btnHapusSarana {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 30px;
+            padding: 10px;
+            align-self: flex-end;
+        }
+
+        .modal-content {
+            /* background-color: blue; */
+            min-width: 100%;
+            width: fit-content;
+        }
 
 
-    #pemetaanContainer {
-        /* background-color: orange; */
-    }
 
 
-    .card-body {
+
+        /* .card-body {
+        background-color: orange;
         display: flex;
         align-items: center;
         justify-content: start;
         gap: 5px;
-    }
+    } */
+
+        .card {
+            /* background-color: red; */
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .card-body {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+
+        .card-body .form-group {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            /* Menghilangkan margin bawah untuk mengurangi ruang kosong */
+        }
+
+        .card-body label {
+            width: fit-content;
+            /* Atur lebar label sesuai kebutuhan Anda */
+            margin-bottom: 0;
+            /* Menghilangkan margin bawah untuk mengurangi ruang kosong */
+        }
     </style>
 </head>
 
 <body>
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="tambahModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="tambahModalLabel">Tambah Pemetaan Dosen</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Sarana</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <!-- Form Tambah -->
                     {{-- <form action="{{ route("manajemen_aset.inventaris.tambah_pemetaan_dosen") }}" method="POST" id="formTambahSarana"> --}}
                     <form action="" method="POST" id="formTambahSarana">
-                        <div class="form-group">
-                            <label for="filterBangunan">Filter Bangunan:</label>
-                            <select id="filterBangunanForm" class="form-select select2" name="bangunan">
-                                <option value="">Semua Bangunan</option>
-                                @foreach ($bangunan as $item)
-                                    <option value="{{ $item['id'] }}">{{ $item['nama_prasarana'] }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <div class="form-group">
+                        <label for="prasarana">Prasarana:</label>
+                        <select class="form-control" id="prasarana" name="prasarana">
+                            <option disabled selected>Pilih Prasarana</option> <!-- asumsikan kolom nama ada di tabel bangunan -->
+                            @foreach($prasarana as $b)
+                            <option value="{{ $b->id }}">{{ $b->nama_prasarana }}</option> <!-- asumsikan kolom nama ada di tabel bangunan -->
+                            @endforeach
+                        </select>
                         {{-- <div class="form-group">
                             <label for="filterRuangan">Filter Ruangan:</label>
                             <select id="filterRuanganForm" class="form-select select2" name="ruangan">
@@ -77,13 +123,13 @@
         $(document).ready(function() {
             $('#prasarana').change(function() {
                 var idBangunan = $(this).val(); // Get selected prasarana ID
-        
+
                 // Clear existing options
                 $('#ruangan').empty();
-        
+
                 // Construct the URL for the AJAX request dynamically based on the selected ID
                 var url = '/manajemen_aset/ruangan/bangunan/' + idBangunan;
-        
+
                 // Fetch new options based on prasarana ID
                 $.ajax({
                     url: url,
@@ -103,75 +149,60 @@
                 });
             });
         });
-        </script>
+    </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-        {{-- <script>
+    <script>
+        $(document).ready(function() {
+            var counter = 0;
 
 
-            $(document).ready(function() {
-                var counter = 0;
 
-                $('#filterBangunanForm').on('change', function() {
-                    var bangunanId = $(this).val();
-                    var ruanganOptions = '<option value="">Semua Ruangan</option>';
-                    if (bangunanId !== '') {
-                        $.get('{{ route("manajemen_aset.inventaris.getRuangan", ["id_bangunan" => ""]) }}/' + bangunanId, function(data) {
-                            data.forEach(function(value) {
-                                ruanganOptions += '<option value="' + value + '">' + value + '</option>';
-                            });
-                            $('#filterRuanganForm').html(ruanganOptions);
-                        });
-                    } else {
-                        $('#filterRuanganForm').html(ruanganOptions);
-                    }
-                });
+            $('#btnTambahSarana').click(function() {
+                counter++;
 
-                $('#btnTambahSarana').click(function() {
-                    counter++;
+                var saranaHtml = `
+    <div class="card mb-2" id="pemetaan${counter}">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nama_dosen${counter}">Nama Dosen:</label>
+                <select class="form-select select2" id="nama_dosen${counter}" name="nama_dosen[]" required>
+                    @foreach($nama_dosen as $dosen)
+                    <option value="{{ $dosen }}">{{ $dosen }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="tanggal_mulai_penempatan${counter}">Tanggal Mulai Penempatan:</label>
+                <input type="date" class="form-control" id="tanggal_mulai_penempatan${counter}" name="tanggal_mulai_penempatan[]" required>
+            </div>
+            <div class="form-group">
+                <label for="tanggal_akhir_penempatan${counter}">Tanggal Akhir Penempatan:</label>
+                <input type="date" class="form-control" id="tanggal_akhir_penempatan${counter}" name="tanggal_akhir_penempatan[]" required>
+            </div>
+            <div class="form-group">
+                <label for="status${counter}">Status:</label>
+                <input type="text" class="form-control" id="status${counter}" name="status[]" required>
+            </div>
+            <div class="form-group">
+                <label for="deskripsi${counter}">deskripsi:</label>
+                <input type="text" class="form-control" id="deskripsi${counter}" name="deskripsi[]">
+            </div>
+            <button type="button" class="btn btn-danger btnHapusSarana" data-counter="${counter}">Hapus</button>
+        </div>
+    </div>
+    `;
 
-                    var saranaHtml = `
-                        <div class="card mb-2" id="pemetaan${counter}">
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="nama_dosen${counter}">Nama Dosen:</label>
-                                    <select class="form-select select2" id="nama_dosen${counter}" name="nama_dosen[]" required>
-                                        @foreach($nama_dosen as $dosen)
-                                            <option value="{{ $dosen }}">{{ $dosen }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="tanggal_mulai_penempatan${counter}">Tanggal Mulai Penempatan:</label>
-                                    <input type="date" class="form-control" id="tanggal_mulai_penempatan${counter}" name="tanggal_mulai_penempatan[]" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="tanggal_akhir_penempatan${counter}">Tanggal Akhir Penempatan:</label>
-                                    <input type="date" class="form-control" id="tanggal_akhir_penempatan${counter}" name="tanggal_akhir_penempatan[]" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="status${counter}">Status:</label>
-                                    <input type="text" class="form-control" id="status${counter}" name="status[]" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="deskripsi${counter}">deskripsi:</label>
-                                    <input type="text" class="form-control" id="deskripsi${counter}" name="deskripsi[]">
-                                </div>
-                                <button type="button" class="btn btn-danger btnHapusSarana" data-counter="${counter}">Hapus</button>
-                            </div>
-                        </div>
-                    `;
-
-                    $('#pemetaanContainer').append(saranaHtml);
-                    $('.select2').select2();
-                });
-
-                $(document).on('click', '.btnHapusSarana', function() {
-                    var counter = $(this).data('counter');
-                    $('#pemetaan' + counter).remove();
-                });
+                $('#pemetaanContainer').append(saranaHtml);
+                $('.select2').select2();
             });
-        </script> --}}
+
+            $(document).on('click', '.btnHapusSarana', function() {
+                var counter = $(this).data('counter');
+                $('#pemetaan' + counter).remove();
+            });
+        });
+    </script>
 </body>
 
 </html>
