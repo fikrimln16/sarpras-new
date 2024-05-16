@@ -12,8 +12,6 @@ class Sarana extends Model
     use HasFactory;
 
     protected $table = 'sarana';
-
-    // public $timestamps = false; 
     public $incrementing = true;
     
     protected $guarded = ['id'];

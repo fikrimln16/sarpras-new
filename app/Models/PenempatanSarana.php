@@ -12,7 +12,6 @@ class PenempatanSarana extends Model
 
     protected $table = 'penempatan_sarana';
 
-    public $timestamps = false; 
     public $incrementing = true;
     
     protected $guarded = ['id'];
