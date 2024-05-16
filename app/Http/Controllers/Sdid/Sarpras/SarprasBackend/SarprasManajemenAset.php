@@ -23,6 +23,7 @@ use App\Models\SumberPendanaan;
 use App\Models\DataLokasiKampus;
 use App\Models\SumberDayaManusia;
 use App\Models\PenempatanSdmRuang;
+use App\Models\PenempatanSdmRuang;
 
 
 class SarprasManajemenAset extends Controller
