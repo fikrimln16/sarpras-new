@@ -52,9 +52,12 @@
                     <th>Nama Prasarana</th>
                     <th>Nama Ruangan</th>
                     <th>Nama Sarana</th>
-                    <th>Spesifikasi</th>
-                    <th>Tanggal Perolehan</th>
-                    <th>Nilai Peroleham</th>
+                    <th>Penggunaan</th>
+                    <th>Kondisi</th>
+                    <th>Status</th>
+                    {{-- <th>Spesifikasi</th> --}}
+                    {{-- <th>Tanggal Perolehan</th> --}}
+                    <th>Nilai Perolehan</th>
                     {{-- <th>Detail Ruangan</th> --}}
                     {{-- <th>Detail Sarana</th> --}}
                     <th>Aksi</th>
@@ -68,8 +71,11 @@
                     <td>{{ $penempatan->nama_prasarana }}</td>
                     <td>{{ $penempatan->nama_ruangan }}</td>
                     <td>{{ $penempatan->nama_sarana }}</td>
-                    <td>{{ $penempatan->spesifikasi }}</td>
-                    <td>{{ $penempatan->tanggal_perolehan }}</td>
+                    <td>{{ $penempatan->penggunaan }}</td>
+                    <td>{{ $penempatan->kondisi }}</td>
+                    <td>{{ $penempatan->status }}</td>
+                    {{-- <td>{{ $penempatan->spesifikasi }}</td> --}}
+                    {{-- <td>{{ $penempatan->tanggal_perolehan }}</td> --}}
                     <td>{{ $penempatan->nilai_perolehan }}</td>
                     {{-- <td>{{ $penempatan->ruangan->detail }}</td> tambahkan untuk kolom lainnya --}}
                     {{-- <td>{{ $penempatan->sarana->detail }}</td> --}}

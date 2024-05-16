@@ -349,18 +349,6 @@ class SarprasManajemenAset extends Controller
             ->where('penempatan_prasarana.id_data_lokasi_kampus', $universityCode)
             ->get();
 
-        $penempatanSarana = DB::table('penempatan_sarana as ps')
-            ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
-            ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
-            ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
-            ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
-            ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
-            ->select('s.*', 'p.*', 'r.*', 'ps.id')
-            ->get();
-
-        // // dd($penempatanSarana);
-        //     ->get();
-
         // dd($penempatanSarana);
         $penempatanSarana = DB::table('penempatan_sarana as ps')
             ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
@@ -368,7 +356,7 @@ class SarprasManajemenAset extends Controller
             ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
             ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
             ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
-            ->select('s.*', 'p.*', 'r.*', 'ps.id')
+            ->select('s.*', 'p.*', 'r.*', 'ps.*')
             ->get();
 
         // dd($penempatanSarana);
@@ -627,16 +615,16 @@ class SarprasManajemenAset extends Controller
                     'tahun_produksi' => $request->tahun_produksi[$key],
                     'nilai_perolehan' => $request->nilai_perolehan[$key],
                     'nilai_buku' => $request->nilai_buku[$key],
-                    'penggunaan' => $request->penggunaan[$key],
-                    'kondisi' => $request->kondisi[$key],
                     'tanggal_hapus_buku' => $request->tanggal_hapus_buku[$key] ?? null, // Handle nullable field
-                    'status' => $request->status[$key]
                 ]);
-
+                
                 for ($i = 0; $i < $request->jumlah_barang[$key]; $i++) {
                     PenempatanSarana::create([
                         'id_sarana' => $sarana->id,
-                        'id_ruang' => $request->ruangan
+                        'id_ruang' => $request->ruangan,
+                        'penggunaan' => $request->penggunaan[$key],
+                        'kondisi' => $request->kondisi[$key],
+                        'status' => $request->status[$key]
                     ]);
                 }
             }

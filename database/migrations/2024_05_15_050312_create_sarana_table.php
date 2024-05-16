@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('sarana', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_sarana', 255);
-            $table->string('kategori', 255);
-            $table->string('jenis_sarana', 255);
-            $table->string('spesifikasi', 255);
-            $table->date('tanggal_perolehan');
-            $table->integer('tahun_produksi');
-            $table->float('nilai_perolehan');
-            $table->float('nilai_buku');
-            $table->string('penggunaan', 255);
-            $table->string('kondisi', 255);
-            $table->string('tanggal_hapus_buku', 255);
-            $table->string('status', 255);
+            $table->string('nama_sarana', 255)->nullable();
+            $table->string('kategori', 255)->nullable();
+            $table->string('jenis_sarana', 255)->nullable();
+            $table->string('spesifikasi', 255)->nullable();
+            $table->date('tanggal_perolehan')->nullable();
+            $table->integer('tahun_produksi')->nullable();
+            $table->float('nilai_perolehan')->nullable();
+            $table->float('nilai_buku')->nullable();
+            // $table->string('penggunaan', 255);
+            // $table->string('kondisi', 255);
+            // $table->string('status', 255);
+            $table->string('tanggal_hapus_buku', 255)->nullable();
             $table->timestamps(); 
         });
     }
