@@ -23,6 +23,7 @@ use App\Models\SumberPendanaan;
 use App\Models\DataLokasiKampus;
 use App\Models\SumberDayaManusia;
 use App\Models\PenempatanSdmRuang;
+use App\Models\PenempatanSdmRuang;
 
 
 class SarprasManajemenAset extends Controller
@@ -302,6 +303,8 @@ class SarprasManajemenAset extends Controller
         } else {
             return view('sarpras.manajemen_aset.components.ruangan_table', compact('ruangan', 'prasarana'));
         }
+
+
     }
 
     public function create_ruangan(Request $request)
@@ -416,7 +419,7 @@ class SarprasManajemenAset extends Controller
             'Bob'
         ];
 
-        return view('sarpras.manajemen_aset.index_inventaris', compact('data', 'bangunan', 'nama_dosen'));
+        return view('sarpras.manajemen_aset.index_inventaris', compact('data', 'prasarana', 'nama_dosen'));
     }
 
     public function getRuangan($id_bangunan)

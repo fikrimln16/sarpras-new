@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Ruangan</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Sarana</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -85,8 +85,8 @@
 
             var saranaHtml = `
             <div class="card mb-2" id="sarana${counter}">
-    <div class="card-body">
-        <div class="form-group">
+                <div class="card-body">
+                <div class="form-group">
             <label for="nama_sarana${counter}">Nama Sarana:</label>
             <input type="text" class="form-control" id="nama_sarana${counter}" name="nama_sarana[]">
         </div>
@@ -138,12 +138,10 @@
             <label for="jumlah_barang${counter}">Jumlah Barang:</label>
             <input type="number" class="form-control" id="jumlah_barang${counter}" name="jumlah_barang[]">
         </div>
-        <button type="button" class="btn btn-danger btnHapusSarana" data-counter="${counter}">Hapus Sarana</button>
     </div>
+    <button type="button" class="btn btn-danger mb-3 btnHapusSarana" data-counter="${counter}">Hapus Sarana</button>
 </div>
-
            `;
-
             $('#saranaContainer').append(saranaHtml);
         });
 
@@ -184,9 +182,19 @@
         gap: 5px;
     } */
 
+    .card {
+        /* background-color: red; */
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
     .card-body {
         display: grid;
-        grid-template-columns: repeat(8, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: 10px;
         margin-bottom: 16px;
     }
@@ -201,7 +209,7 @@
     }
 
     .card-body label {
-        width: 60px;
+        width: fit-content;
         /* Atur lebar label sesuai kebutuhan Anda */
         margin-bottom: 0;
         /* Menghilangkan margin bawah untuk mengurangi ruang kosong */
