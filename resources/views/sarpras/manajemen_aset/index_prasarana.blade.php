@@ -4,6 +4,7 @@
 
 <div class="content">
     @yield('prasarana_table')
+    
 </div>
 
 

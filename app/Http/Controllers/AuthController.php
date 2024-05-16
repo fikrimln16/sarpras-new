@@ -28,7 +28,7 @@ class AuthController extends Controller
             'password' => $request->password,
         ];
         if (Auth::attempt($credetials)) {
-            return redirect('/manajemen_aset/prasarana')->with('success', 'Login berhasil');
+            return redirect('/manajemen_aset/prasarana')->with('success', '');
         }
         return back()->with('error', 'Email or Password salah');
     }

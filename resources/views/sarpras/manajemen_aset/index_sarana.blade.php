@@ -32,6 +32,7 @@
         <thead>
             <tr>
                 <th>ID</th>
+                <th>Nama Prasarana</th>
                 <th>Nama Ruangan</th>
                 <th>Nama Sarana</th>
                 <th>Spesifikasi</th>
@@ -45,11 +46,13 @@
             @foreach ($penempatanSarana as $penempatan)
             <tr>
                 <td>{{ $penempatan->id }}</td>
-                <td>{{ $penempatan->ruangan->nama_ruangan }}</td>
-                <td>{{ $penempatan->sarana->nama_sarana }}</td>
-                <td>{{ $penempatan->sarana->spesifikasi }}</td>
-                <td>{{ $penempatan->sarana->tanggal_perolehan }}</td>
-                <td>{{ $penempatan->sarana->nilai_perolehan }}</td>
+                {{-- <td>{{ $penempatan->ruangan->nama_ruangan }}</td> --}}
+                <td>{{ $penempatan->nama_prasarana }}</td>
+                <td>{{ $penempatan->nama_ruangan}}</td>
+                <td>{{ $penempatan->nama_sarana }}</td>
+                <td>{{ $penempatan->spesifikasi }}</td>
+                <td>{{ $penempatan->tanggal_perolehan }}</td>
+                <td>{{ $penempatan->nilai_perolehan }}</td>
                 {{-- <td>{{ $penempatan->ruangan->detail }}</td> tambahkan untuk kolom lainnya --}}
                 {{-- <td>{{ $penempatan->sarana->detail }}</td> --}}
             </tr>

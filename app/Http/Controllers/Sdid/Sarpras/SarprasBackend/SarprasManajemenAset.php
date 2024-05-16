@@ -266,9 +266,25 @@ class SarprasManajemenAset extends Controller
 
     public function index_ruangan()
     {
+        $universities = auth()->user()->universities;
+        $universityCode = $universities->first()->id;
+        // $ruangan = Ruangan::with('bangunan')->get();
 
-        $ruangan = Ruangan::with('bangunan')->get();
-        $prasarana = Prasarana::all();
+        $ruangan = Ruangan::join('penempatan_prasarana', 'ruangan.id_prasarana', '=', 'penempatan_prasarana.id_prasarana')
+            ->join('prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
+            ->where('penempatan_prasarana.id_data_lokasi_kampus', '=', $universityCode)
+            ->get(['ruangan.*']);
+
+        // $prasarana = Prasarana::all();
+        $universities = auth()->user()->universities;
+        $universityCode = $universities->first()->id;
+
+        // dd($universityCode);
+
+        $prasarana = Prasarana::select('prasarana.*')
+            ->join('penempatan_prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
+            ->where('penempatan_prasarana.id_data_lokasi_kampus', $universityCode)
+            ->get();
         // dd($ruangan);
         return view('sarpras.manajemen_aset.components.ruangan_table', compact('ruangan', 'prasarana'));
     }
@@ -312,12 +328,24 @@ class SarprasManajemenAset extends Controller
 
     public function index_sarana()
     {
-        //   $data = $this->data;
-        $prasarana = Prasarana::all();
-        //   return view('sarpras.manajemen_aset.index_sarana', compact('data'));
+        $universities = auth()->user()->universities;
+        $universityCode = $universities->first()->id;
 
-        $penempatanSarana = PenempatanSarana::with(['ruangan', 'sarana'])->get();
-        // dd($penempatanSarana);
+        $prasarana = Prasarana::select('prasarana.*')
+            ->join('penempatan_prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
+            ->where('penempatan_prasarana.id_data_lokasi_kampus', $universityCode)
+            ->get();
+
+        $penempatanSarana = DB::table('penempatan_sarana as ps')
+            ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
+            ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
+            ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
+            ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
+            ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
+            ->select('s.*', 'p.*', 'r.*')
+            ->get();    
+            
+            // dd($penempatanSarana);
         return view('sarpras.manajemen_aset.index_sarana', compact('penempatanSarana', 'prasarana'));
     }
 

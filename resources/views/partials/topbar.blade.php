@@ -10,8 +10,22 @@
     <div class="right-icon">
         <li class="peran-saat-ini">
             @if (auth()->check())
-                <p>peran saat ini: {{ auth()->user()->name }}</p>
+                <p>Peran saat ini:
+                    @switch(auth()->user()->role)
+                        @case(1)
+                            Unit Sarpras Pusat
+                        @break
+
+                        @case(2)
+                            Unit Sarpras PT
+                        @break
+
+                        @default
+                            Role tidak dikenal
+                    @endswitch
+                </p>
             @endif
+
 
             <!-- <form method="post" class="form-group change-role">
                 <input type="hidden" name="_token" value="ajUnBJubThwKOObnbK18NxVrOY5M0QnBm47TGVUn">

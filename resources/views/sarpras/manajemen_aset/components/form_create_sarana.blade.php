@@ -15,11 +15,10 @@
                     <div class="form-group">
                         <label for="prasarana">Prasarana:</label>
                         <select class="form-control" id="prasarana" name="prasarana">
-                            <option value="1">Prasarana A</option>
+                            <option disabled selected>Pilih Prasarana</option> <!-- asumsikan kolom nama ada di tabel bangunan -->
                             @foreach($prasarana as $b)
                             <option value="{{ $b->id }}">{{ $b->NM_BRG_TANAH }}</option> <!-- asumsikan kolom nama ada di tabel bangunan -->
                             @endforeach
-                            <option value="2">Prasarana B</option>
                         </select>
                     </div>
                     <div class="form-group">
