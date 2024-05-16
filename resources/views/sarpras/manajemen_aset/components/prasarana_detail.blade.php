@@ -12,17 +12,17 @@
       <p><strong>Nama Prasarana:</strong> {{ $prasarana->nama_prasarana }}</p>
       <p><strong>Jenis Prasarana:</strong> {{ $prasarana->jenis_prasarana }}</p>
       <p><strong>Alamat:</strong> {{ $prasarana->alamat }}</p>
-      <p><strong>Latitude:</strong> {{ $prasarana->latitude }}</p>
-      <p><strong>Longitude:</strong> {{ $prasarana->longitude }}</p>
+      <p><strong>lintang:</strong> {{ $prasarana->lintang }}</p>
+      <p><strong>bujur:</strong> {{ $prasarana->bujur }}</p>
       <p><strong>Panjang:</strong> {{ $prasarana->panjang }}</p>
       <p><strong>Lebar:</strong> {{ $prasarana->lebar }}</p>
       <p><strong>Luas Bangunan:</strong> {{ $prasarana->luas_bangunan }}</p>
       <p><strong>Luas Tanah:</strong> {{ $prasarana->luas_tanah }}</p>
       <p><strong>Jumlah Lantai:</strong> {{ $prasarana->jumlah_lantai }}</p>
       <p><strong>Objek Infrastruktur:</strong> {{ $prasarana->objek_infrastruktur }}</p>
-      <p><strong>BMN Satker:</strong> {{ $prasarana->BMN_satker }}</p>
-      <p><strong>BMN Kode Barang:</strong> {{ $prasarana->BMN_kode_barang }}</p>
-      <p><strong>BMN NUP:</strong> {{ $prasarana->BMN_nup }}</p>
+      <p><strong>BMN Satker:</strong> {{ $prasarana->bmn_satker }}</p>
+      <p><strong>BMN Kode Barang:</strong> {{ $prasarana->bmn_kode_barang }}</p>
+      <p><strong>BMN NUP:</strong> {{ $prasarana->bmn_nup }}</p>
       <p><strong>Tanggal Perolehan:</strong> {{ $prasarana->tanggal_perolehan }}</p>
       <p><strong>Nilai Perolehan:</strong> {{ $prasarana->nilai_perolehan }}</p>
       <p><strong>Nilai Buku:</strong> {{ $prasarana->nilai_buku }}</p>

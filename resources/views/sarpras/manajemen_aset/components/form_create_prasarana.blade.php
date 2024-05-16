@@ -215,6 +215,12 @@
                         </div>
                         <div class="col-md-6 p-2">
                             <div class="form-group">
+                                <label for="dokKepemilikan">Dok Kepemilikan:</label>
+                                <input type="text" class="form-control" id="dokKepemilikan" name="DOK_KEPEMILIKAN" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6 p-2">
+                            <div class="form-group">
                                 <label for="jnsDokKepemilikan">Jns Dok Kepemilikan:</label>
                                 <input type="text" class="form-control" id="jnsDokKepemilikan" name="JNS_DOK_KEPEMILIKAN" required>
                             </div>
@@ -411,37 +417,57 @@
         bangunanContainer.style.display = this.checked ? 'block' : 'none';
     });
 
-    $(document).ready(function() {
-        $('#jenisPrasarana').change(function() {
-            var selectedOption = $(this).val();
-            if (selectedOption == 'Gedung Kuliah') {
-                $('#dropdownTerpaduProdi').removeClass('d-none');
-            } else {
-                $('#dropdownTerpaduProdi').addClass('d-none');
-            }
-            console.log(selectedOption);
-        });
+    $('#jenisPrasarana').change(function() {
+        var selectedOption = $(this).val();
+        if (selectedOption == 'Gedung Kuliah') {
+            $('#dropdownTerpaduProdi').removeClass('d-none');
+        } else if (selectedOption == 'Laboratorium') {
+            $('#dropdownTerpaduProdi').removeClass('d-none');
+            $('#dropdownJenisLaboratorium').removeClass('d-none');
+        } else {
+            $('#dropdownTerpaduProdi').addClass('d-none');
+            $('#dropdownJenisLaboratorium').addClass('d-none');
+        }
+        console.log(selectedOption);
+    });
 
-        $('#prasaranaForm').submit(function(e) {
-            var jenisPrasarana = $('#jenisPrasarana').val();
-            var jenisTerpaduProdi = $('#jenisTerpaduProdi').val();
+    $('#prasaranaForm').submit(function(e) {
+    var jenisPrasarana = $('#jenisPrasarana').val();
+    var jenisTerpaduProdi = $('#jenisTerpaduProdi').val();
+    var jenisLaboratorium = $('#jenisLaboratorium').val();
 
-            if (jenisPrasarana === 'Gedung Kuliah' && jenisTerpaduProdi) {
-                var gabungan = jenisPrasarana + ' ' + jenisTerpaduProdi;
-                $('<input>').attr({
-                    type: 'hidden',
-                    name: 'jenis_prasarana',
-                    value: gabungan
-                }).appendTo('#prasaranaForm');
-            }
+    if (jenisPrasarana === 'Gedung Kuliah' && jenisTerpaduProdi) {
+        var gabungan = jenisPrasarana + ' ' + jenisTerpaduProdi;
+        $('<input>').attr({
+            type: 'hidden',
+            name: 'jenis_prasarana',
+            value: gabungan
+        }).appendTo('#prasaranaForm');
+    }
 
-            console.log('Form submitted with values:', {
-                namaPrasarana: $('#namaPrasarana').val(),
-                jenisPrasarana: jenisPrasarana,
-                jenisTerpaduProdi: jenisTerpaduProdi,
-                gabungan: gabungan
-            });
-        });
+    console.log('Form submitted with values:', {
+        namaPrasarana: $('#namaPrasarana').val(),
+        jenisPrasarana: jenisPrasarana,
+        jenisTerpaduProdi: jenisTerpaduProdi,
+        gabungan: gabungan
+    });
+
+    if (jenisPrasarana === 'Laboratorium' && jenisTerpaduProdi && jenisLaboratorium) {
+        console.log('ini gedung labo bray')
+        var gabungan = jenisPrasarana + ' ' + jenisTerpaduProdi + ' ' + jenisLaboratorium;
+        $('<input>').attr({
+            type: 'hidden',
+            name: 'jenis_prasarana',
+            value: gabungan
+        }).appendTo('#prasaranaForm');
+    }
+    console.log('Form submitted with values:', {
+        namaPrasarana: $('#namaPrasarana').val(),
+        jenisPrasarana: jenisPrasarana,
+        jenisTerpaduProdi: jenisTerpaduProdi,
+        jenisLaboratorium: jenisLaboratorium,
+        gabungan: gabungan
+    });
     });
 </script>
 
