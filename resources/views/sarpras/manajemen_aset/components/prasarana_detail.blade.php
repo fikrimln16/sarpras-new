@@ -3,11 +3,11 @@
 @section('content')
 <div class="wrapper">
    <div>
-      <a href="{{ route('manajemen_aset.prasarana') }}">
+      <a href="{{ route('manajemen_aset.prasarana') }}" class="btn btn-secondary mb-3">
          Kembali
       </a>
    </div>
-   <div>
+   <div class='details'>
       <p><strong>ID:</strong> {{ $prasarana->id }}</p>
       <p><strong>Nama Prasarana:</strong> {{ $prasarana->nama_prasarana }}</p>
       <p><strong>Jenis Prasarana:</strong> {{ $prasarana->jenis_prasarana }}</p>
@@ -54,8 +54,40 @@
    .wrapper {
       display: flex;
       flex-direction: column;
+      gap: 1rem;
+      padding: 1rem;
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 0.25rem;
+   }
+
+   .btn-secondary {
+      color: #fff;
+      background-color: #6c757d;
+      border-color: #6c757d;
+      text-decoration: none;
+      padding: 0.375rem 0.75rem;
+      border-radius: 0.25rem;
+      display: inline-block;
+   }
+
+   .btn-secondary:hover {
+      background-color: #5a6268;
+      border-color: #545b62;
+   }
+
+   .details p {
+      margin: 0.5rem 0;
+      font-size: 1rem;
+   }
+
+   .details strong {
+      display: inline-block;
+      width: 180px;
+      color: #343a40;
    }
 </style>
+
 
 
 @endsection

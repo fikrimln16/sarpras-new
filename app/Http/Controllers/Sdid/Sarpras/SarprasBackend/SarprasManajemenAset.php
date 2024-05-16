@@ -265,11 +265,11 @@ class SarprasManajemenAset extends Controller
 
 
 
-    public function index_ruangan()
+    public function index_ruangan(Request $request)
     {
-        $universities = auth()->user()->universities;
+        $universities = auth()->user()->universities;        $id = $request->query('id');
         $universityCode = $universities->first()->id;
-        // $ruangan = Ruangan::with('bangunan')->get();
+        // $ruangan = Ruangan::with('prasarana')->get();
 
         $ruangan = Ruangan::join('penempatan_prasarana', 'ruangan.id_prasarana', '=', 'penempatan_prasarana.id_prasarana')
             ->join('prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
@@ -286,8 +286,22 @@ class SarprasManajemenAset extends Controller
             ->join('penempatan_prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
             ->where('penempatan_prasarana.id_data_lokasi_kampus', $universityCode)
             ->get();
+
         // dd($ruangan);
-        return view('sarpras.manajemen_aset.components.ruangan_table', compact('ruangan', 'prasarana'));
+
+        if ($id) {
+            $ruangan = Ruangan::find($id);
+
+            if (!$ruangan) {
+                abort(404, 'Ruangan tidak ditemukan');
+            }
+
+            return view('sarpras.manajemen_aset.components.ruangan_detail', compact('ruangan', 'id'));
+        } else {
+            return view('sarpras.manajemen_aset.components.ruangan_table', compact('ruangan', 'prasarana'));
+        }
+
+        
     }
 
     public function create_ruangan(Request $request)
