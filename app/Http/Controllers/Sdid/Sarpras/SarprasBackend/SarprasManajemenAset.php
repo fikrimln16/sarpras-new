@@ -21,6 +21,7 @@ use App\Models\Sarana;
 use App\Models\Prasarana;
 use App\Models\SumberPendanaan;
 use App\Models\DataLokasiKampus;
+use App\Models\SumberDayaManusia;
 
 
 class SarprasManajemenAset extends Controller
@@ -315,10 +316,6 @@ class SarprasManajemenAset extends Controller
 
     public function penempatan_sarana($id_ruangan)
     {
-
-        // $sarana = (new Sarana())->getDataSaranaByIdRuang($id_ruangan);
-        // dd($sarana);
-
         $penempatanSarana = PenempatanSarana::with(['ruangan', 'sarana'])->get();
         dd($penempatanSarana);
         return view('sarpras.manajemen_aset.index_sarana', compact('penempatanSarana'));
@@ -330,35 +327,58 @@ class SarprasManajemenAset extends Controller
         $prasarana = Prasarana::all();
         //   return view('sarpras.manajemen_aset.index_sarana', compact('data'));
 
-        $penempatanSarana = PenempatanSarana::with(['ruangan', 'sarana'])->get();
-        // dd($penempatanSarana);
+        $penempatanSarana = DB::table('penempatan_sarana as ps')
+            ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
+            ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
+            ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
+            ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
+            ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
+            ->select('s.*', 'p.*', 'r.*', 'ps.id')
+            ->get();    
+            
+            // dd($penempatanSarana);
         return view('sarpras.manajemen_aset.index_sarana', compact('penempatanSarana', 'prasarana'));
+    }
+
+    public function delete_sarana($id)
+    {        
+        // $sarana = Sarana::findOrFail($id);
+        PenempatanSarana::where('id', $id)->delete();
+
+        // Lakukan penghapusan
+        // $sarana->delete();
+
+        return redirect()->route('manajemen_aset.sarana')->with('success', 'Sarana deleted successfully.');
     }
 
     public function index_inventaris()
     {
-        $data = [
-            [
-                'kode_penempatan' => 'KP001',
-                'Nama Dosen' => 'John Doe',
-                'Ruangan' => 'A-1',
-                'tanggal_mulai_penempatan' => '2024-05-10',
-                'tanggal_akhir_penempatan' => '2024-06-10',
-                'status' => 'aktif',
-                'deskripsi' => 'digunakan untuk penelitian',
-                'detail' => 'Lorem ipsum dolor sit amet'
-            ],
-            [
-                'kode_penempatan' => 'KP002',
-                'Nama Dosen' => 'Jane Doe',
-                'Ruangan' => 'B-1',
-                'tanggal_mulai_penempatan' => '2024-05-15',
-                'tanggal_akhir_penempatan' => '2024-06-15',
-                'status' => 'aktif',
-                'deskripsi' => 'digunakan untuk asisten lab',
-                'detail' => 'Consectetur adipiscing elit'
-            ],
-        ];
+        
+        // $data = [
+        //     [
+        //         'kode_penempatan' => 'KP001',
+        //         'Nama Dosen' => 'John Doe',
+        //         'Ruangan' => 'A-1',
+        //         'tanggal_mulai_penempatan' => '2024-05-10',
+        //         'tanggal_akhir_penempatan' => '2024-06-10',
+        //         'status' => 'aktif',
+        //         'deskripsi' => 'digunakan untuk penelitian',
+        //         'detail' => 'Lorem ipsum dolor sit amet'
+        //     ],
+        //     [
+        //         'kode_penempatan' => 'KP002',
+        //         'Nama Dosen' => 'Jane Doe',
+        //         'Ruangan' => 'B-1',
+        //         'tanggal_mulai_penempatan' => '2024-05-15',
+        //         'tanggal_akhir_penempatan' => '2024-06-15',
+        //         'status' => 'aktif',
+        //         'deskripsi' => 'digunakan untuk asisten lab',
+        //         'detail' => 'Consectetur adipiscing elit'
+        //     ],
+        // ];
+
+        $data = SumberDayaManusia::all();
+        dd($data);
 
         $bangunan = [
             ['id' => 1, 'nama_bangunan' => 'Bangunan A'],

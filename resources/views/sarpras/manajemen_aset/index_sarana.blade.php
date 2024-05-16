@@ -39,24 +39,71 @@
                 <th>Nilai Peroleham</th>
                 {{-- <th>Detail Ruangan</th> --}}
                 {{-- <th>Detail Sarana</th> --}}
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($penempatanSarana as $penempatan)
-            <tr>
-                <td>{{ $penempatan->id }}</td>
-                <td>{{ $penempatan->ruangan->nama_ruangan }}</td>
-                <td>{{ $penempatan->sarana->nama_sarana }}</td>
-                <td>{{ $penempatan->sarana->spesifikasi }}</td>
-                <td>{{ $penempatan->sarana->tanggal_perolehan }}</td>
-                <td>{{ $penempatan->sarana->nilai_perolehan }}</td>
-                {{-- <td>{{ $penempatan->ruangan->detail }}</td> tambahkan untuk kolom lainnya --}}
-                {{-- <td>{{ $penempatan->sarana->detail }}</td> --}}
-            </tr>
+                <tr>
+                    <td>{{ $penempatan->id }}</td>
+                    {{-- <td>{{ $penempatan->ruangan->nama_ruangan }}</td> --}}
+                    <td>{{ $penempatan->nama_prasarana }}</td>
+                    <td>{{ $penempatan->nama_ruangan }}</td>
+                    <td>{{ $penempatan->nama_sarana }}</td>
+                    <td>{{ $penempatan->spesifikasi }}</td>
+                    <td>{{ $penempatan->tanggal_perolehan }}</td>
+                    <td>{{ $penempatan->nilai_perolehan }}</td>
+                    {{-- <td>{{ $penempatan->ruangan->detail }}</td> tambahkan untuk kolom lainnya --}}
+                    {{-- <td>{{ $penempatan->sarana->detail }}</td> --}}
+                    <td>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                            data-id="{{ $penempatan->id }}">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
             @endforeach
         </tbody>
     </table>
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this item?</p>
+                    <div id="prasaranaDetails"></div>
+                </div>
+                <!-- Modal Footer within a Bootstrap Modal -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <form id="deleteForm" action="" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
     @include('sarpras.manajemen_aset.components.form_create_sarana')
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const deleteModal = document.getElementById('deleteModal');
+            deleteModal.addEventListener('show.bs.modal', function(event) {
+                let button = event.relatedTarget; 
+                let id = button.getAttribute('data-id'); 
+                let deleteForm = deleteModal.querySelector('#deleteForm');
+                // console.log(id);
+                deleteForm.action = `/manajemen_aset/sarana/delete/${id}`; 
+            });
+        });
+    </script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
