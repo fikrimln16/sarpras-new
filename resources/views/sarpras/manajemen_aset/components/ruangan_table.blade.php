@@ -29,7 +29,6 @@
                     <th>Kapasitas</th>
                     <th>Tahun Perolehan</th>
                     <th>Nama Bangunan</th>
-                    <th>Universitas</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -42,8 +41,7 @@
                     <td>{{ $r->lantai }}</td>
                     <td>{{ $r->kapasitas }}</td>
                     <td>{{ $r->tahun_perolehan }}</td>
-                    <td>{{ $r->prasarana->NM_BRG_TANAH }}</td>
-                    <td>{{ $r->prasarana->NM_SATKER_TANAH }}</td>
+                    <td>{{ $r->prasarana->nama_prasarana }}</td>
                     {{-- <td>
                         <!-- Contoh tombol aksi -->
                         <button class="btn btn-info">Edit</button>
@@ -51,13 +49,11 @@
                     </td> --}}
                     <td>
                         <a href="{{ route('manajemen_aset.ruangan', ['id' => $r['id']]) }}" class="btn btn-primary">Details</a>
-                    </td>
-                    <td>
-                        <!-- Button trigger modal -->
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $r['id'] }}">
                             Delete
                         </button>
                     </td>
+                   
                 </tr>
                 @endforeach
             </tbody>

@@ -12,7 +12,7 @@
                         <label for="bangunan" class="form-label">Prasarana:</label>
                         <select class="form-control" id="bangunan" name="id_prasarana">
                             @foreach($prasarana as $b)
-                            <option value="{{ $b->id }}">{{ $b->NM_BRG_TANAH }}</option>
+                            <option value="{{ $b->id }}">{{ $b->nama_prasarana }}</option>
                             @endforeach
                         </select>
                     </div>

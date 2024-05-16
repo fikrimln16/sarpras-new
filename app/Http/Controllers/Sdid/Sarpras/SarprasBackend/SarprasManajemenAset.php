@@ -269,6 +269,7 @@ class SarprasManajemenAset extends Controller
         $id = $request->query('id');
         $ruangan = Ruangan::with('prasarana')->get();
         $prasarana = Prasarana::all();
+
         // dd($ruangan);
 
         if ($id) {
