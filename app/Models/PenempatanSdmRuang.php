@@ -12,7 +12,6 @@ class PenempatanSdmRuang extends Model
 
     protected $table = 'penempatan_sdm_ruang';
 
-    public $timestamps = false; 
     public $incrementing = true;
     
     protected $guarded = ['id'];

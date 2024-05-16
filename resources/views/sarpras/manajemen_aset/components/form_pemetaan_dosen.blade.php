@@ -88,7 +88,8 @@
                 <div class="modal-body">
                     <!-- Form Tambah -->
                     {{-- <form action="{{ route("manajemen_aset.inventaris.tambah_pemetaan_dosen") }}" method="POST" id="formTambahSarana"> --}}
-                    <form action="" method="POST" id="formTambahSarana">
+                    <form action="{{ route('manajemen_aset.inventaris.tambah_pemetaan_dosen') }}" method="POST" id="formTambahSarana">
+                    @csrf
                     <div class="form-group">
                         <label for="prasarana">Prasarana:</label>
                         <select class="form-control" id="prasarana" name="prasarana">
@@ -105,7 +106,7 @@
                         </div> --}}
                         <div class="form-group">
                             <label for="ruangan">Ruangan:</label>
-                            <select class="form-control" id="ruangan" name="ruangan">
+                            <select class="form-control" id="ruangan" name="id_ruang">
                                 <!-- Options will be dynamically populated -->
                             </select>
                         </div>
@@ -162,36 +163,36 @@
                 counter++;
 
                 var saranaHtml = `
-    <div class="card mb-2" id="pemetaan${counter}">
-        <div class="card-body">
-            <div class="form-group">
-                <label for="nama_dosen${counter}">Nama Dosen:</label>
-                <select class="form-select select2" id="nama_dosen${counter}" name="nama_dosen[]" required>
-                    @foreach($nama_dosen as $dosen)
-                    <option value="{{ $dosen }}">{{ $dosen }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="tanggal_mulai_penempatan${counter}">Tanggal Mulai Penempatan:</label>
-                <input type="date" class="form-control" id="tanggal_mulai_penempatan${counter}" name="tanggal_mulai_penempatan[]" required>
-            </div>
-            <div class="form-group">
-                <label for="tanggal_akhir_penempatan${counter}">Tanggal Akhir Penempatan:</label>
-                <input type="date" class="form-control" id="tanggal_akhir_penempatan${counter}" name="tanggal_akhir_penempatan[]" required>
-            </div>
-            <div class="form-group">
-                <label for="status${counter}">Status:</label>
-                <input type="text" class="form-control" id="status${counter}" name="status[]" required>
-            </div>
-            <div class="form-group">
-                <label for="deskripsi${counter}">deskripsi:</label>
-                <input type="text" class="form-control" id="deskripsi${counter}" name="deskripsi[]">
-            </div>
-            <button type="button" class="btn btn-danger btnHapusSarana" data-counter="${counter}">Hapus</button>
-        </div>
-    </div>
-    `;
+                    <div class="card mb-2" id="pemetaan${counter}">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="id_sdm${counter}">Nama Dosen:</label>
+                                <select class="form-select select2" id="id_sdm${counter}" name="id_sdm[]" required>
+                                    @foreach($nama_dosen as $dosen)
+                                    <option value="{{ $dosen->id }}">{{ $dosen->Nama_SDM }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="tanggal_mulai_penempatan${counter}">Tanggal Mulai Penempatan:</label>
+                                <input type="date" class="form-control" id="tanggal_mulai_penempatan${counter}" name="tanggal_mulai_penempatan[]" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="tanggal_selesai_penempatan${counter}">Tanggal Akhir Penempatan:</label>
+                                <input type="date" class="form-control" id="tanggal_selesai_penempatan${counter}" name="tanggal_selesai_penempatan[]" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="status${counter}">Status:</label>
+                                <input type="text" class="form-control" id="status${counter}" name="status[]" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="deskripsi${counter}">deskripsi:</label>
+                                <input type="text" class="form-control" id="deskripsi${counter}" name="deskripsi[]">
+                            </div>
+                            <button type="button" class="btn btn-danger btnHapusSarana" data-counter="${counter}">Hapus</button>
+                        </div>
+                    </div>
+                    `;
 
                 $('#pemetaanContainer').append(saranaHtml);
                 $('.select2').select2();

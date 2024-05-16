@@ -410,13 +410,7 @@ class SarprasManajemenAset extends Controller
             ->get();
 
         // dd($bangunan);
-
-        $nama_dosen = [
-            'John Doe',
-            'Jane Doe',
-            'Alice',
-            'Bob'
-        ];
+        $nama_dosen = SumberDayaManusia::all();
 
         return view('sarpras.manajemen_aset.index_inventaris', compact('data', 'prasarana', 'nama_dosen'));
     }
@@ -435,33 +429,24 @@ class SarprasManajemenAset extends Controller
         return response()->json($ruangan);
     }
 
-    public function tambah_pemetaan_dosen(Request $request): JsonResponse
+    public function tambah_pemetaan_dosen(Request $request)
     {
         try {
-            // Proses input
-            $bangunan = $request->bangunan;
-            $ruangan = $request->ruangan;
-
-            // Simpan data pemetaan dosen
             $dataPemetaan = [];
-            foreach ($request->nama_dosen as $key => $value) {
-                $dataPemetaan[] = [
-                    'nama_dosen' => $request->nama_dosen[$key],
+            foreach ($request->id_sdm as $key => $value) {
+                $pemetaan = PenempatanSdmRuang::create([
+                    'id_sdm' => $value,
                     'tanggal_mulai_penempatan' => $request->tanggal_mulai_penempatan[$key],
-                    'tanggal_akhir_penempatan' => $request->tanggal_akhir_penempatan[$key],
+                    'tanggal_selesai_penempatan' => $request->tanggal_selesai_penempatan[$key],
                     'status' => $request->status[$key],
                     'deskripsi' => $request->deskripsi[$key],
-                    'ruangan' => $ruangan,
-                ];
+                    'id_ruang' => $request->id_ruang,
+                ]);
+                $dataPemetaan[] = $pemetaan;
             }
 
-            // Berhasil
-            return response()->json([
-                'message' => 'Data diterima',
-                'data_pemetaan' => $dataPemetaan,
-            ], 200);
+            return redirect()->route('manajemen_aset.inventaris')->with('success', 'sarana created successfully.');
         } catch (\Exception $e) {
-            // Gagal
             return response()->json(['message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
         }
     }
