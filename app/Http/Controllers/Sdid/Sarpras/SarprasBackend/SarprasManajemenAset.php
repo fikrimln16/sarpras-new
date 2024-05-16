@@ -21,6 +21,8 @@ use App\Models\PenempatanPrasarana;
 use App\Models\Sarana;
 use App\Models\Prasarana;
 use App\Models\SumberPendanaan;
+use App\Models\DataLokasiKampus;
+use App\Models\SumberDayaManusia;
 
 
 class SarprasManajemenAset extends Controller
@@ -399,6 +401,7 @@ class SarprasManajemenAset extends Controller
             ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
             ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
             ->select('s.*', 'p.*', 'r.*', 'ps.id')
+            ->select('s.*', 'p.*', 'r.*', 'ps.id')
             ->get();    
             
             // dd($penempatanSarana);
@@ -416,8 +419,45 @@ class SarprasManajemenAset extends Controller
         return redirect()->route('manajemen_aset.sarana')->with('success', 'Sarana deleted successfully.');
     }
 
+    public function delete_sarana($id)
+    {        
+        // $sarana = Sarana::findOrFail($id);
+        PenempatanSarana::where('id', $id)->delete();
+
+        // Lakukan penghapusan
+        // $sarana->delete();
+
+        return redirect()->route('manajemen_aset.sarana')->with('success', 'Sarana deleted successfully.');
+    }
+
     public function index_inventaris()
     {
+        
+        // $data = [
+        //     [
+        //         'kode_penempatan' => 'KP001',
+        //         'Nama Dosen' => 'John Doe',
+        //         'Ruangan' => 'A-1',
+        //         'tanggal_mulai_penempatan' => '2024-05-10',
+        //         'tanggal_akhir_penempatan' => '2024-06-10',
+        //         'status' => 'aktif',
+        //         'deskripsi' => 'digunakan untuk penelitian',
+        //         'detail' => 'Lorem ipsum dolor sit amet'
+        //     ],
+        //     [
+        //         'kode_penempatan' => 'KP002',
+        //         'Nama Dosen' => 'Jane Doe',
+        //         'Ruangan' => 'B-1',
+        //         'tanggal_mulai_penempatan' => '2024-05-15',
+        //         'tanggal_akhir_penempatan' => '2024-06-15',
+        //         'status' => 'aktif',
+        //         'deskripsi' => 'digunakan untuk asisten lab',
+        //         'detail' => 'Consectetur adipiscing elit'
+        //     ],
+        // ];
+
+        $data = SumberDayaManusia::all();
+        dd($data);
         
         // $data = [
         //     [
