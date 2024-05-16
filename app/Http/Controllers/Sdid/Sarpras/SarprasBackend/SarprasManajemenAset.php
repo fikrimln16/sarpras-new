@@ -23,7 +23,6 @@ use App\Models\SumberPendanaan;
 use App\Models\DataLokasiKampus;
 use App\Models\SumberDayaManusia;
 use App\Models\PenempatanSdmRuang;
-use App\Models\PenempatanSdmRuang;
 
 
 class SarprasManajemenAset extends Controller
@@ -358,9 +357,6 @@ class SarprasManajemenAset extends Controller
             ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
             ->select('s.*', 'p.*', 'r.*', 'ps.id')
             ->get();
-
-        // // dd($penempatanSarana);
-        //     ->get();
 
         // dd($penempatanSarana);
         $penempatanSarana = DB::table('penempatan_sarana as ps')
