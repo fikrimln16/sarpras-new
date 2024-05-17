@@ -45,11 +45,13 @@
                     </td> --}}
                     <td>
                         <a href="{{ route('manajemen_aset.ruangan', ['id' => $r['id']]) }}" class="btn btn-primary">Details</a>
+                        @if (auth()->user()->role == '2')
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $r['id'] }}">
                             Delete
                         </button>
+                        @endif
                     </td>
-                   
+
                 </tr>
                 @endforeach
             </tbody>
