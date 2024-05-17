@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('mata_uang_pagu_goi', 50)->nullable();
             $table->string('mata_uang_valas', 50)->nullable();
             $table->string('kode_loan', 50)->nullable()->nullable();
-            $table->string('no_registrasi', 25);
+            $table->string('no_registrasi', 25)->nullable();
             $table->timestamps();
         });
     }
