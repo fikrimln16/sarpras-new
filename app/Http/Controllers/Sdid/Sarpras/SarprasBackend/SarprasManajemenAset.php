@@ -23,6 +23,7 @@ use App\Models\SumberPendanaan;
 use App\Models\DataLokasiKampus;
 use App\Models\SumberDayaManusia;
 use App\Models\PenempatanSdmRuang;
+use App\Models\Phln;
 use App\Models\Sbsn;
 
 
@@ -382,6 +383,9 @@ class SarprasManajemenAset extends Controller
         }
 
         $skema_biaya = Sbsn::where('id_data_lokasi_kampus', $universityCode)->get();
+        $phln_data = Phln::all();
+        
+        
 
 
         if ($id) {
@@ -401,7 +405,7 @@ class SarprasManajemenAset extends Controller
 
             return view('sarpras.manajemen_aset.components.sarana_detail', compact('sarana', 'id'));
         } else {
-            return view('sarpras.manajemen_aset.index_sarana', compact('penempatanSarana', 'prasarana', 'skema_biaya'));
+            return view('sarpras.manajemen_aset.index_sarana', compact('penempatanSarana', 'prasarana', 'skema_biaya', 'phln_data'));
         }
 
         // dd($skema_biaya);
@@ -621,7 +625,7 @@ class SarprasManajemenAset extends Controller
 
     public function tambah_sarana(Request $request)
     {
-        // dd($request->all());
+        dd($request->all());
         // Validation rules
         $validator = Validator::make($request->all(), [
             'prasarana' => 'required|integer|exists:prasarana,id',

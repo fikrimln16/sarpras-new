@@ -24,15 +24,36 @@
                             <!-- Options will be dynamically populated -->
                         </select>
                     </div>
+
                     <div class="form-group">
                         <label for="skema_biaya">Skema Biaya:</label>
                         <select class="form-control" id="skema_biaya" name="skema_biaya">
                             <option value="" disabled selected>Pilih Skema Biaya</option>
-                            @foreach ( $skema_biaya as $data)
+                            <option value="sbsn">SBSN</option>
+                            <option value="phln">PHLN</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="sbsn_proyek_group" style="display: none;">
+                        <label for="sbsn_proyek">Pilih Proyek</label>
+                        <select class="form-control" id="sbsn_proyek" name="uuid_sbsn">
+                            <option value="" disabled selected>Pilih Proyek SBSN</option>
+                            @foreach($skema_biaya as $data)
                             <option value="{{ $data->uuid_sbsn }}">{{ $data->nama_proyek }}</option>
                             @endforeach
                         </select>
                     </div>
+
+                    <div class="form-group" id="phln_proyek_group" style="display: none;">
+                        <label for="phln_proyek">Pilih Proyek</label>
+                        <select class="form-control" id="phln_proyek" name="id_phln">
+                            <option value="" disabled selected>Pilih Proyek PHLN</option>
+                            @foreach($phln_data as $data)
+                            <option value="{{ $data->id }}">{{ $data->nama_proyek }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     <div id="saranaContainer">
                         <!-- Sarana akan ditambahkan di sini -->
                     </div>
@@ -47,6 +68,21 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
+        $('#skema_biaya').change(function() {
+            var selectedValue = $(this).val();
+           
+
+            if (selectedValue === 'sbsn') {
+                $('#sbsn_proyek_group').show();
+                $('#phln_proyek_group').hide();
+
+            } else if (selectedValue === 'phln') {
+                $('#phln_proyek_group').show();
+                $('#sbsn_proyek_group').hide();
+
+            }
+        });
+
         $('#prasarana').change(function() {
             var idBangunan = $(this).val(); // Get selected prasarana ID
 
