@@ -625,7 +625,7 @@ class SarprasManajemenAset extends Controller
 
     public function tambah_sarana(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         // Validation rules
         $validator = Validator::make($request->all(), [
             'prasarana' => 'required|integer|exists:prasarana,id',
@@ -666,10 +666,18 @@ class SarprasManajemenAset extends Controller
                     'tanggal_hapus_buku' => $request->tanggal_hapus_buku[$key] ?? null, // Handle nullable field
                 ]);
 
-                SumberPendanaan::create([
-                    'uuid_sbsn' => $request->skema_biaya,
-                    'id_sarana' => $sarana->id
-                ]);
+                if($request->skema_biaya == 'sbsn'){
+                    SumberPendanaan::create([
+                        'uuid_sbsn' => $request->uuid_sbsn,
+                        'id_sarana' => $sarana->id
+                    ]);
+                } else {
+                    SumberPendanaan::create([
+                        'id_phln' => $request->id_phln,
+                        'id_sarana' => $sarana->id
+                    ]);
+                }
+                
 
                 for ($i = 0; $i < $request->jumlah_barang[$key]; $i++) {
                     PenempatanSarana::create([
