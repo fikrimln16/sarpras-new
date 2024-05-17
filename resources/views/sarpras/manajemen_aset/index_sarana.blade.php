@@ -81,10 +81,13 @@
                     {{-- <td>{{ $penempatan->ruangan->detail }}</td> tambahkan untuk kolom lainnya --}}
                     {{-- <td>{{ $penempatan->sarana->detail }}</td> --}}
                     <td>
+                        <a href="{{ route('manajemen_aset.sarana', ['id' => $penempatan->id]) }}" class="btn btn-primary">Details</a>
                         <!-- Button trigger modal -->
+                        @if (auth()->user()->role == '2')
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $penempatan->id }}">
                             Delete
                         </button>
+                        @endif
                     </td>
                 </tr>
                 @endforeach

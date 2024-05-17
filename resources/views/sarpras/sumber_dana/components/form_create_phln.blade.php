@@ -27,7 +27,6 @@
                    <div class="form-group">
                        <label for="jenis_kontrak_phln">Jenis Kontrak:</label>
                        <select class="form-select" id="jenis_kontrak_phln" name="jenis_kontrak" onchange="toggleTanggalAkhirPHLN()">
-                           <option value="single_year">Single Year</option>
                            <option value="multi_year">Multi Year</option>
                        </select>
                    </div>
@@ -35,7 +34,7 @@
                        <label for="tanggal_mulai_kontrak">Tanggal Mulai Kontrak:</label>
                        <input type="date" class="form-control" id="tanggal_mulai_kontrak" name="sign_date">
                    </div>
-                   <div class="form-group" id="tanggal_akhir_group_phln" style="display: none;">
+                   <div class="form-group" id="tanggal_akhir_group_phln">
                        <label for="tanggal_akhir_kontrak">Tanggal Akhir Kontrak:</label>
                        <input type="date" class="form-control" id="tanggal_akhir_kontrak" name="closed_date">
                    </div>

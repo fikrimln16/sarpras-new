@@ -130,7 +130,7 @@
         </div>
         <div class="form-group">
             <label for="tanggal_hapus_buku${counter}">Tanggal Hapus Buku:</label>
-            <input type="number" class="form-control" id="tanggal_hapus_buku${counter}" name="tanggal_hapus_buku[]">
+            <input type="date" class="form-control" id="tanggal_hapus_buku${counter}" name="tanggal_hapus_buku[]">
         </div>
         <div class="form-group">
             <label for="status${counter}">Status:</label>

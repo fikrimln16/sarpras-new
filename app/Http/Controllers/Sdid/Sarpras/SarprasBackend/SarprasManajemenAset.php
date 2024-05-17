@@ -126,15 +126,15 @@ class SarprasManajemenAset extends Controller
         $role = auth()->user()->role;
         // dd($role);
         // dd($universityCode);
-        
+
         $data = Prasarana::all();
-        if($role == "2"){
+        if ($role == "2") {
             $data = Prasarana::select('prasarana.*')
                 ->join('penempatan_prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
                 ->where('penempatan_prasarana.id_data_lokasi_kampus', $universityCode)
                 ->get();
-        } 
-        
+        }
+
 
         // dd($data);
         $bangunan = DataLokasiKampus::find($universityCode)->prasarana;
@@ -283,7 +283,7 @@ class SarprasManajemenAset extends Controller
         $role = auth()->user()->role;
 
         $ruangan = Ruangan::all();
-        if($role == "2"){
+        if ($role == "2") {
             $ruangan = Ruangan::join('penempatan_prasarana', 'ruangan.id_prasarana', '=', 'penempatan_prasarana.id_prasarana')
                 ->join('prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
                 ->where('penempatan_prasarana.id_data_lokasi_kampus', '=', $universityCode)
@@ -314,8 +314,6 @@ class SarprasManajemenAset extends Controller
         } else {
             return view('sarpras.manajemen_aset.components.ruangan_table', compact('ruangan', 'prasarana'));
         }
-
-
     }
 
     public function create_ruangan(Request $request)
@@ -351,8 +349,9 @@ class SarprasManajemenAset extends Controller
         return view('sarpras.manajemen_aset.index_sarana', compact('penempatanSarana'));
     }
 
-    public function index_sarana()
+    public function index_sarana(Request $request)
     {
+        $id = $request->query('id');
         $universities = auth()->user()->universities;
         $universityCode = $universities->first()->id;
 
@@ -363,7 +362,7 @@ class SarprasManajemenAset extends Controller
 
         // dd($penempatanSarana);
         $role = auth()->user()->role;
-        if($role == '1'){
+        if ($role == '1') {
             $penempatanSarana = DB::table('penempatan_sarana as ps')
                 ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
                 ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
@@ -383,13 +382,34 @@ class SarprasManajemenAset extends Controller
         }
 
         $skema_biaya = Sbsn::where('id_data_lokasi_kampus', $universityCode)->get();
+
+
+        if ($id) {
+            $sarana = DB::table('penempatan_sarana as ps')
+            ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
+            ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
+            ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
+            ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
+            ->where('ps.id', '=', $id)
+            ->select('s.*', 'p.*', 'r.*', 'ps.*')
+            ->first(); // Mengubah dari get() ke first()
+
+            if (!$sarana) {
+                abort(404, 'Sarana tidak ditemukan');
+            }
+            // dd($sarana);
+
+            return view('sarpras.manajemen_aset.components.sarana_detail', compact('sarana', 'id'));
+        } else {
+            return view('sarpras.manajemen_aset.index_sarana', compact('penempatanSarana', 'prasarana', 'skema_biaya'));
+        }
+
         // dd($skema_biaya);
 
         // dd($penempatanSarana);
         // ->get();
 
         // dd($penempatanSarana);
-        return view('sarpras.manajemen_aset.index_sarana', compact('penempatanSarana', 'prasarana', 'skema_biaya'));
     }
 
     public function delete_sarana($id)
@@ -415,7 +435,7 @@ class SarprasManajemenAset extends Controller
         $universityCode = $universities->first()->id;
 
         $role = auth()->user()->role;
-        if($role == '1'){
+        if ($role == '1') {
             $data = DB::table('penempatan_sdm_ruang as psr')
                 ->join('ruangan as r', 'psr.id_ruang', '=', 'r.id')
                 ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
@@ -616,7 +636,7 @@ class SarprasManajemenAset extends Controller
             'nilai_buku.*' => 'required|numeric',
             'penggunaan.*' => 'required|string|max:255',
             'kondisi.*' => 'required|string|max:255',
-            'tanggal_hapus_buku.*' => 'required|numeric',
+            'tanggal_hapus_buku.*' => 'required|date',
             'status.*' => 'required|string|max:255',
             'jumlah_barang.*' => 'required|integer|min:1'
         ]);
