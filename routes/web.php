@@ -41,6 +41,9 @@ Route::delete('manajemen_aset/sarana/delete/{id}', [SarprasManajemenAset::class,
      ->name('manajemen_aset.sarana.delete');
 Route::get('manajemen_aset/sarana/{id}', [SarprasManajemenAset::class, 'get_data_ruangan'])
      ->name('manajemen_aset.sarana.getData');
+Route::put('/manajemen_aset/sarana', [SarprasManajemenAset::class, 'update_sarana'])
+     ->name('manajemen_aset.sarana.update');
+
 
 Route::get('manajemen_aset/inventaris', [SarprasManajemenAset::class, 'index_inventaris'])
      ->name('manajemen_aset.inventaris');

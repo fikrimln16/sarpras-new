@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('penempatan_sarana', function (Blueprint $table) {
             $table->id();
+            $table->string('kode_unik', 255)->unique();
             $table->unsignedBigInteger('id_ruang');
             $table->unsignedBigInteger('id_sarana');
             $table->string('penggunaan', 255);

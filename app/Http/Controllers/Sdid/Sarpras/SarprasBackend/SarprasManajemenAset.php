@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 //import models
 use App\Models\Bangunan;
@@ -384,19 +385,19 @@ class SarprasManajemenAset extends Controller
 
         $skema_biaya = Sbsn::where('id_data_lokasi_kampus', $universityCode)->get();
         $phln_data = Phln::all();
-        
-        
+
+
 
 
         if ($id) {
             $sarana = DB::table('penempatan_sarana as ps')
-            ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
-            ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
-            ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
-            ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
-            ->where('ps.id', '=', $id)
-            ->select('s.*', 'p.*', 'r.*', 'ps.*')
-            ->first(); // Mengubah dari get() ke first()
+                ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
+                ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
+                ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
+                ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
+                ->where('ps.id', '=', $id)
+                ->select('s.*', 'p.*', 'r.*', 'ps.*')
+                ->first(); // Mengubah dari get() ke first()
 
             if (!$sarana) {
                 abort(404, 'Sarana tidak ditemukan');
@@ -666,7 +667,7 @@ class SarprasManajemenAset extends Controller
                     'tanggal_hapus_buku' => $request->tanggal_hapus_buku[$key] ?? null, // Handle nullable field
                 ]);
 
-                if($request->skema_biaya == 'sbsn'){
+                if ($request->skema_biaya == 'sbsn') {
                     SumberPendanaan::create([
                         'uuid_sbsn' => $request->uuid_sbsn,
                         'id_sarana' => $sarana->id
@@ -677,10 +678,11 @@ class SarprasManajemenAset extends Controller
                         'id_sarana' => $sarana->id
                     ]);
                 }
-                
+
 
                 for ($i = 0; $i < $request->jumlah_barang[$key]; $i++) {
                     PenempatanSarana::create([
+                        'kode_unik' => strtoupper(Str::random(10)),
                         'id_sarana' => $sarana->id,
                         'id_ruang' => $request->ruangan,
                         'penggunaan' => $request->penggunaan[$key],
@@ -696,5 +698,16 @@ class SarprasManajemenAset extends Controller
             DB::rollBack();
             return response()->json(['message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
         }
+    }
+
+    public function update_sarana(Request $request)
+    {
+        $penempatan = PenempatanSarana::find($request->id);
+        $penempatan->penggunaan = $request->penggunaan;
+        $penempatan->kondisi = $request->kondisi;
+        $penempatan->status = $request->status;
+        $penempatan->save();
+
+        return redirect()->back()->with('success', 'Data sarana berhasil diupdate');
     }
 }
