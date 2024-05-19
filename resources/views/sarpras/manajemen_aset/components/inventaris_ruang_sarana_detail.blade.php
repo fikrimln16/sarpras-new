@@ -44,7 +44,9 @@
                             <th>Penggunaan</th>
                             <th>Status</th>
                             <th>Kondisi</th>
-                            <th>Aksi</th>
+                            @if (auth()->user()->role != '1')
+                                <th>Aksi</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -57,22 +59,25 @@
                                 <td>{{ $item->penggunaan }}</td>
                                 <td>{{ $item->status }}</td>
                                 <td>{{ $item->kondisi }}</td>
-                                <td>
-                                    @if (auth()->user()->role == '2')
-                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal" data-id="{{ $item->id }}" data-id-ruang="{{ $item->id_ruang }}">
-                                            Delete
-                                        </button>
-                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                            data-bs-target="#editModal" data-id="{{ $item->id }}"
-                                            data-kode-unik="{{ $item->kode_unik }}"
-                                            data-nama-sarana="{{ $item->sarana->nama_sarana }}"
-                                            data-penggunaan="{{ $item->penggunaan }}" data-kondisi="{{ $item->status }}"
-                                            data-status="{{ $item->kondisi }}">
-                                            Edit
-                                        </button>
-                                    @endif
-                                </td>
+                                @if (auth()->user()->role != '1')
+                                    <td>
+                                        @if (auth()->user()->role == '2')
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal" data-id="{{ $item->id }}"
+                                                data-id-ruang="{{ $item->id_ruang }}">
+                                                Delete
+                                            </button>
+                                            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                                data-bs-target="#editModal" data-id="{{ $item->id }}"
+                                                data-kode-unik="{{ $item->kode_unik }}"
+                                                data-nama-sarana="{{ $item->sarana->nama_sarana }}"
+                                                data-penggunaan="{{ $item->penggunaan }}"
+                                                data-kondisi="{{ $item->kondisi }}" data-status="{{ $item->status }}">
+                                                Edit
+                                            </button>
+                                        @endif
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>
@@ -120,15 +125,16 @@
             });
         </script>
         <script>
-         document.addEventListener("DOMContentLoaded", function() {
-             const deleteModal = document.getElementById('deleteModal');
-             deleteModal.addEventListener('show.bs.modal', function(event) {
-                 let button = event.relatedTarget;
-                 let id = button.getAttribute('data-id');
-                 let id_ruang = button.getAttribute('data-id-ruang');
-                 let deleteForm = deleteModal.querySelector('#deleteForm');
-                 // console.log(id);
-                 deleteForm.action = `{{ url('manajemen_aset/sarana/delete') }}/${id_ruang}/${id}`;             });
-         });
-     </script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const deleteModal = document.getElementById('deleteModal');
+                deleteModal.addEventListener('show.bs.modal', function(event) {
+                    let button = event.relatedTarget;
+                    let id = button.getAttribute('data-id');
+                    let id_ruang = button.getAttribute('data-id-ruang');
+                    let deleteForm = deleteModal.querySelector('#deleteForm');
+                    // console.log(id);
+                    deleteForm.action = `{{ url('manajemen_aset/sarana/delete') }}/${id_ruang}/${id}`;
+                });
+            });
+        </script>
     @endsection
