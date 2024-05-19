@@ -8,6 +8,7 @@
                     <th>Nama Ruangan</th>
                     <th>Kapasitas</th>
                     <th>Terisi</th>
+                    <th>Tersisa</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -105,6 +106,10 @@
                 {
                     data: 'jumlah_orang_terisi',
                     name: 'jumlah_orang_terisi'
+                },
+                {
+                    data: 'tersisa',
+                    name: 'tersisa'
                 },
                 {
                     data: 'aksi',

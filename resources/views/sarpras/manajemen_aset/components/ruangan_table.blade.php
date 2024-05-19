@@ -1,5 +1,6 @@
 @extends('sarpras.manajemen_aset.index_prasarana')
 
+
 @section('prasarana_table')
 <div class="ibox float-e-margins">
     <div class="ibox-title">

@@ -1,5 +1,7 @@
 @extends('layout')
 
+@section('title', 'Prasarana')
+
 @section('content')
 
 <div class="content">
