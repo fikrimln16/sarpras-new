@@ -21,10 +21,10 @@ return new class extends Migration
             $table->integer('tahun_perolehan');
             $table->string('kelompok_ruangan', 255);
             $table->date('tgl_mulai_kontrak');
-            $table->date('tgl_selesai_kontrak')->nullable();  // Default null as in SQL schema
-            $table->unsignedBigInteger('id_prasarana');
+            $table->date('tgl_selesai_kontrak')->nullable();
+            $table->unsignedBigInteger('id_bangunan');
 
-            $table->foreign('id_prasarana')->references('id')->on('prasarana')->onDelete('cascade');
+            $table->foreign('id_bangunan')->references('id')->on('bangunan')->onDelete('cascade');
             $table->timestamps();
         });
     }

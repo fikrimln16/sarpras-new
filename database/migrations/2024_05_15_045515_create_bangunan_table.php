@@ -23,10 +23,11 @@ return new class extends Migration
             $table->unsignedInteger('kapasitas');
             $table->string('tanggal_hapus_buku', 20)->nullable();
             $table->string('keterangan', 255);
+            $table->string('kategori', 50)->nullable();
+            
+            
             $table->unsignedBigInteger('id_prasarana');
             $table->unsignedBigInteger('id_tanah');
-            $table->string('kategori', 50)->nullable();
-
             $table->foreign('id_prasarana')->references('id')->on('prasarana');
             $table->foreign('id_tanah')->references('id')->on('tanah');
 

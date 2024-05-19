@@ -566,10 +566,20 @@ class SarprasManajemenAset extends Controller
     public function get_data_inventaris_ruang_sdm()
     {
         $data = DB::table('ruangan as r')
-            ->leftJoin('penempatan_sdm_ruang as prs', 'r.id', '=', 'prs.id_ruang')
-            ->select('r.kode_ruang', 'r.id', 'r.nama_ruangan', 'r.kapasitas', DB::raw('COUNT(prs.id_sdm) as jumlah_orang_terisi'))
-            ->groupBy('r.kode_ruang', 'r.id', 'r.nama_ruangan', 'r.kapasitas')
-            ->get();
+        ->leftJoin('penempatan_sdm_ruang as prs', 'r.id', '=', 'prs.id_ruang')
+        ->select(
+            'r.id',
+            'r.kode_ruang',
+            'r.nama_ruangan',
+            'r.kapasitas',
+            DB::raw('COUNT(prs.id_sdm) as jumlah_orang_terisi')
+        )
+        ->groupBy('r.id', 'r.kode_ruang', 'r.nama_ruangan', 'r.kapasitas')
+        ->get()
+        ->map(function ($item) {
+            $item->tersisa = $item->kapasitas - $item->jumlah_orang_terisi;
+            return $item;
+        });
 
         return datatables()->of($data)
             ->addColumn('aksi', function ($row) {
