@@ -18,7 +18,7 @@ Route::get('manajemen_aset/prasarana/{id}', [SarprasManajemenAset::class, 'get_d
 Route::delete('manajemen_aset/prasarana/delete/{id}', [SarprasManajemenAset::class, 'delete_prasarana'])
      ->name('manajemen_aset.prasarana.delete');
 
-     
+
 Route::get('manajemen_aset/ruangan', [SarprasManajemenAset::class, 'index_ruangan'])
      ->name('manajemen_aset.ruangan');
 Route::get('manajemen_aset/ruangan/{id}', [SarprasManajemenAset::class, 'get_data_ruangan'])
@@ -30,7 +30,7 @@ Route::post('manajemen_aset/ruangan', [SarprasManajemenAset::class, 'create_ruan
 Route::delete('manajemen_aset/ruangan/delete/{id}', [SarprasManajemenAset::class, 'delete_ruangan'])
      ->name('manajemen_aset.ruangan.delete');
 
-     
+
 Route::get('manajemen_aset/penempatansarana/{id_ruangan}', [SarprasManajemenAset::class, 'penempatan_sarana'])
      ->name('manajemen_aset.penempatansarana');
 Route::post('manajemen_aset/sarana', [SarprasManajemenAset::class, 'tambah_sarana'])
@@ -54,6 +54,13 @@ Route::get('manajemen_aset/inventaris/{id_bangunan}', [SarprasManajemenAset::cla
      ->name('manajemen_aset.inventaris.getRuangan');
 Route::post('manajemen_aset/inventaris', [SarprasManajemenAset::class, 'tambah_pemetaan_dosen'])
      ->name('manajemen_aset.inventaris.tambah_pemetaan_dosen');
+Route::get('manajemen_aset/inventaris/serverside/ruang_sdm', [SarprasManajemenAset::class, 'get_data_inventaris_ruang_sdm'])
+     ->name('manajemen_aset.inventaris.getDataRuangSdm');
+Route::delete('manajemen_aset/inventaris/delete/{id_ruang}/{id}', [SarprasManajemenAset::class, 'hapus_pemetaan_dosen'])
+     ->name('manajemen_aset.inventaris.delete');
+// Route::get('manajemen_aset/inventaris/detailed/ruang_sdm', [SarprasManajemenAset::class, 'get_detail_inventaris_ruang_sdm'])
+//      ->name('manajemen_aset.inventaris.getDetailRuangSdm');
+
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');

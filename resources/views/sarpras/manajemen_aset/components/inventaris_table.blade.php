@@ -1,51 +1,16 @@
 <div class="ibox float-e-margins">
-    <div class="ibox-title">
-        <div class="fright">
-            <!-- <button id="tambahBtn" class='btn btn-sm btn-primary noborder-radius' data-toggle="tooltip" data-placement="top">
-                <i class='fa fa-plus'></i> <b>Tambah Data</b>
-            </button> -->
-            <!-- <button type="button" class="btn btn-primary" data-toggle="kocak" data-target="kocak">
-                Tambah
-            </button> -->
-            @if (auth()->user()->role == '2')
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Tambah
-            </button>
-            @endif
-        </div>
-    </div>
-
     <div class="table-container">
-
-        <table id="dataTable" class="table table-bordered table-striped">
+        <table id="ruangan-table" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>kode_penempatan</th>
-                    <th>Nama Dosen</th>
-                    <th>Ruangan</th>
-                    <th>Prasarana</th>
-                    <th>tanggal_mulai_penempatan</th>
-                    <th>tanggal_selesai_penempatan</th>
-                    {{-- <th>status</th>
-           <th>deskripsi</th> --}}
-                    {{-- <th>detail</th> --}}
+                    <th>ID</th>
+                    <th>Kode Ruang</th>
+                    <th>Nama Ruangan</th>
+                    <th>Kapasitas</th>
+                    <th>Terisi</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach ($data as $item)
-                <tr>
-                    <td>{{ $item->id }}</td>
-                    <td>{{ $item->Nama_SDM }}</td>
-                    <td>{{ $item->nama_ruangan }}</td>
-                    <td>{{ $item->nama_prasarana }}</td>
-                    <td>{{ $item->tanggal_mulai_penempatan }}</td>
-                    <td>{{ $item->tanggal_selesai_penempatan }}</td>
-                    {{-- <td>{{ $item['status'] }}</td>
-                    <td>{{ $item['deskripsi'] }}</td> --}}
-                    {{-- <td>{{ $item['detail'] }}</td> --}}
-                </tr>
-                @endforeach
-            </tbody>
         </table>
     </div>
 </div>
@@ -113,9 +78,43 @@
         /* Align text to the left in table header */
     }
 </style>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('#dataTable').DataTable();
+    $(function() {
+        $('#ruangan-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: '{!! route('manajemen_aset.inventaris.getDataRuangSdm') !!}',
+            columns: [{
+                    data: 'id',
+                    name: 'id'
+                },
+                {
+                    data: 'kode_ruang',
+                    name: 'kode_ruang'
+                },
+                {
+                    data: 'nama_ruangan',
+                    name: 'nama_ruangan'
+                },
+                {
+                    data: 'kapasitas',
+                    name: 'kapasitas'
+                },
+                {
+                    data: 'jumlah_orang_terisi',
+                    name: 'jumlah_orang_terisi'
+                },
+                {
+                    data: 'aksi',
+                    name: 'aksi',
+                    orderable: false,
+                    searchable: false
+                }
+            ]
+        });
+
     });
 </script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

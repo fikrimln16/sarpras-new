@@ -342,13 +342,22 @@ class SarprasManajemenAset extends Controller
         return redirect()->route('manajemen_aset.sarana')->with('success', 'Sarana deleted successfully.');
     }
 
-    public function index_inventaris()
+    public function index_inventaris(Request $request)
     {
 
         // $data = PenempatanSdmRuang::with(['sumber_daya_manusia', 'ruang.prasarana'])
         // ->get();
         // $data = SumberDayaManusia::all();
         // dd($data);
+        $id = $request->query('id_ruang');
+        if ($id) {
+            $ruangan = Ruangan::find($id);
+            $penempatan_sdm_ruang = PenempatanSdmRuang::where('id_ruang', $id)->get();
+            $sdm_list = SumberDayaManusia::all();
+
+            return view('sarpras.manajemen_aset.components.inventaris_detail', compact('id', 'ruangan', 'penempatan_sdm_ruang', 'sdm_list'));
+        }
+
 
         $universities = auth()->user()->universities;
         $universityCode = $universities->first()->id;
@@ -408,25 +417,41 @@ class SarprasManajemenAset extends Controller
 
     public function tambah_pemetaan_dosen(Request $request)
     {
+        // $request->validate([
+        //     'id_ruang' => 'required|exists:ruangan,id',
+        //     'id_sdm' => 'required|array',
+        //     'id_sdm.*' => 'required|exists:sdm,id',
+        //     'tanggal_mulai_penempatan' => 'required|array',
+        //     'tanggal_mulai_penempatan.*' => 'required|date',
+        // ]);
+
         try {
-            $dataPemetaan = [];
             foreach ($request->id_sdm as $key => $value) {
-                $pemetaan = PenempatanSdmRuang::create([
+                PenempatanSdmRuang::create([
                     'id_sdm' => $value,
                     'tanggal_mulai_penempatan' => $request->tanggal_mulai_penempatan[$key],
-                    'tanggal_selesai_penempatan' => $request->tanggal_selesai_penempatan[$key],
-                    'status' => $request->status[$key],
-                    'deskripsi' => $request->deskripsi[$key],
                     'id_ruang' => $request->id_ruang,
                 ]);
-                $dataPemetaan[] = $pemetaan;
             }
 
-            return redirect()->route('manajemen_aset.inventaris')->with('success', 'sarana created successfully.');
+            return redirect()->route('manajemen_aset.inventaris', ['id_ruang' => $request->id_ruang])->with('success', 'Pemetaan dosen berhasil ditambahkan.');
         } catch (\Exception $e) {
             return response()->json(['message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
         }
     }
+
+    public function hapus_pemetaan_dosen($id_ruang, $id)
+    {
+        try {
+            $pemetaan = PenempatanSdmRuang::findOrFail($id);
+            $pemetaan->delete();
+
+            return redirect()->route('manajemen_aset.inventaris', ['id_ruang' => $id_ruang])->with('success', 'SDM deleted successfully.');
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
+        }
+    }
+
 
     public function tambah_sarana(Request $request)
     {
@@ -520,7 +545,7 @@ class SarprasManajemenAset extends Controller
         $request->validate([
             'file' => 'required|mimes:xlsx'
         ]);
-        
+
         $file = $request->file('file');
         // dd($file);
         $data = Excel::toArray([], $file);
@@ -534,7 +559,42 @@ class SarprasManajemenAset extends Controller
                 'spesifikasi' => $row[1]
             ];
         }
-        
-        return response()->json(['data' => $data_file],200);
+
+        return response()->json(['data' => $data_file], 200);
     }
+
+    public function get_data_inventaris_ruang_sdm()
+    {
+        $data = DB::table('ruangan as r')
+            ->leftJoin('penempatan_sdm_ruang as prs', 'r.id', '=', 'prs.id_ruang')
+            ->select('r.kode_ruang', 'r.id', 'r.nama_ruangan', 'r.kapasitas', DB::raw('COUNT(prs.id_sdm) as jumlah_orang_terisi'))
+            ->groupBy('r.kode_ruang', 'r.id', 'r.nama_ruangan', 'r.kapasitas')
+            ->get();
+
+        return datatables()->of($data)
+            ->addColumn('aksi', function ($row) {
+                return '
+                <a href="' . route('manajemen_aset.inventaris', ['id_ruang' => $row->id]) . '" class="btn btn-sm btn-primary">Details</a>
+            ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
+    }
+
+    public function get_detail_inventaris_ruang_sdm($id)
+    {
+        $ruangan = DB::table('ruangan as r')
+            ->leftJoin('penempatan_sdm_ruang as prs', 'r.id', '=', 'prs.id_ruang')
+            ->leftJoin('sdm as s', 'prs.id_sdm', '=', 's.id')
+            ->select('r.id', 'r.kode_ruang', 'r.nama_ruangan', 'r.kapasitas', 's.nama as nama_sdm', 'prs.id_sdm')
+            ->where('r.id', $id)
+            ->get();
+
+        if ($ruangan->isEmpty()) {
+            return redirect()->back()->with('error', 'Data tidak ditemukan.');
+        }
+
+        return view('ruangan.detail', compact('ruangan'));
+    }
+
 }
