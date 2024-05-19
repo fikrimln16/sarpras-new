@@ -12,6 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 //import models
 use App\Models\Bangunan;
@@ -56,66 +57,6 @@ class SarprasManajemenAset extends Controller
             })
             ->make(true);
     }
-
-
-
-
-    // public function index_ruang()
-    // {
-    //     return view('sarpras.manajemen_aset.index_ruang');
-    // }
-
-    #nanti ambil data dari db di fungsi index
-    protected $data = [
-        [
-            "id_sarana" => 1,
-            "Nama Sarana" => "Laptop HP ProBook 450 G8",
-            "Kategori" => "Alat",
-            "Kategori" => null,
-            "jenis_sarana" => "Laptop",
-            "spesifikasi" => "Intel Core i5-1135G7, RAM 8GB, SSD 512GB, Layar 15.6\" FHD",
-            "tanggal_perolehan" => "2023-01-10",
-            "tahun_produksi" => 2023,
-            "nilai_perolehan" => "13.000.000",
-            "nilai_buku" => "13.000.000",
-            "penggunaan" => "Laboratorium Informatika",
-            "kondisi" => "Baik",
-            "tanggal_hapus_buku" => "-",
-            "status" => "Aktif"
-        ],
-        [
-            "id_sarana" => 2,
-            "Nama Sarana" => "Laptop Lenovo ThinkPad E14 Gen 4",
-            "Kategori" => "Mebeulair",
-            "Kategori" => null,
-            "jenis_sarana" => "Laptop",
-            "spesifikasi" => "AMD Ryzen 5 5500U, RAM 8GB, SSD 256GB, Layar 14\" FHD",
-            "tanggal_perolehan" => "2023-03-05",
-            "tahun_produksi" => 2023,
-            "nilai_perolehan" => "9.500.000",
-            "nilai_buku" => "9.500.000",
-            "penggunaan" => "Ruang Kelas A1",
-            "kondisi" => "Baik",
-            "tanggal_hapus_buku" => "-",
-            "status" => "Aktif"
-        ],
-        [
-            "id_sarana" => 3,
-            "Nama Sarana" => "Epson EB-S41",
-            "Kategori" => "Alat",
-            "Kategori" => null,
-            "jenis_sarana" => "Proyektor",
-            "spesifikasi" => "WXGA (1280x800), 3.300 Lumens, Kontras 15.000:1",
-            "tanggal_perolehan" => "2022-12-15",
-            "tahun_produksi" => 2022,
-            "nilai_perolehan" => "7.000.000",
-            "nilai_buku" => "5.600.000",
-            "penggunaan" => "Aula",
-            "kondisi" => "Baik",
-            "tanggal_hapus_buku" => "-",
-            "status" => "Aktif"
-        ]
-    ];
 
 
     public function index_prasarana(Request $request)
@@ -196,33 +137,6 @@ class SarprasManajemenAset extends Controller
             return back()->withErrors('Error creating Prasarana: ' . $e->getMessage());
         }
     }
-    // public function create_prasarana(Request $request)
-    // {
-    //     // Validate and store data
-    //     // dd($request);
-    //     Prasarana::create($request->all());
-
-    //     // $rules = [
-    //     //     'kode_paket' => 'required|string|max:50',
-    //     //     'KD_SATKER_TANAH' => 'required|integer',
-    //     //     'NM_SATKER_TANAH' => 'required|string|max:255',
-    //     //     'KD_BRG_TANAH' => 'required|integer',
-    //     //     'NM_BRG_TANAH' => 'required|string|max:255',
-    //     //     'NUP_BRG_TANAH' => 'required|integer',
-    //     //     'TGL_SK_PEMAKAIAN' => 'required|date',
-    //     //     'kapasitas' => 'required|integer',
-    //     //     'tanggal_hapus_buku' => 'nullable|string|max:20',
-    //     //     'keterangan' => 'required|string|max:255',
-    //     //     // 'id_prasarana' => 'required|integer|exists:prasarana,id',
-    //     //     // 'id_tanah' => 'required|integer|exists:tanah,id',
-    //     //     'kategori' => 'nullable|string|max:50'
-    //     // ];
-
-    //     // $validatedData = $request->validate($rules);
-    //     // Bangunan::create($validatedData);
-
-    //     return redirect()->route('manajemen_aset.prasarana')->with('success', 'Prasarana created successfully.');
-    // }
 
     public function delete_prasarana($id)
     {
@@ -514,116 +428,6 @@ class SarprasManajemenAset extends Controller
         }
     }
 
-    // public function tambah_sarana(Request $request): JsonResponse
-    // {
-    //     try {
-    //         // Validasi input (jika diperlukan)
-
-    //         // Proses input untuk universitas, bangunan, dan ruangan
-    //         $bangunan = $request->prasarana;
-    //         $ruangan = $request->ruangan;
-
-    //         // Masukkan data barang ke tabel 'sarana' dan ambil UUID
-    //         $data_sarana = [];
-    //         $data_penempatan = [];
-    //         foreach ($request->nama_sarana as $key => $value) {
-    //             $uuid = uniqid('', true); // Menghasilkan UUID yang unik
-
-    //             // Simpan data barang
-    //             $data_sarana[] = [
-    //                 'uuid' => $uuid,
-    //                 'nama_sarana' => $value,
-    //                 'jenis_sarana' => $request->jenis_sarana[$key],
-    //                 'tanggal_perolehan' => $request->tanggal_perolehan[$key],
-    //                 'nilai_perolehan' => $request->nilai_perolehan[$key],
-    //                 'kondisi' => $request->kondisi[$key],
-    //                 'status' => $request->status[$key],
-    //                 //    'universitas' => $universitas,
-    //                 //    'bangunan' => $bangunan,
-    //                 //    'ruangan' => $ruangan,
-    //             ];
-
-    //             // Simpan data penempatan barang
-    //             for ($i = 0; $i < $request->jumlah_barang[$key]; $i++) {
-    //                 $data_penempatan[] = [
-    //                     'uuid_sarana' => $uuid,
-    //                     'lokasi' => $ruangan // Contoh field lokasi, sesuaikan dengan kebutuhan
-    //                 ];
-    //             }
-    //         }
-
-    //         // Berhasil
-    //         return response()->json([
-    //             'message' => 'Data diterima',
-    //             'data_sarana' => $data_sarana,
-    //             'data_penempatan' => $data_penempatan,
-    //         ], 200);
-    //     } catch (\Exception $e) {
-    //         // Gagal
-    //         return response()->json(['message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
-    //     }
-    // }
-
-
-    // public function tambah_sarana(Request $request): JsonResponse
-    // {
-    //     try {
-    //         // Validasi input (jika diperlukan)
-    //         dd($request);
-    //         // Proses input untuk universitas, bangunan, dan ruangan
-    //         // $universitas = $request->nama_universitas;
-    //         $prasarana = $request->prasarana;
-    //         $ruangan = $request->ruangan;
-
-    //         // Masukkan data barang ke tabel 'sarana' dan ambil UUID
-    //         $data_sarana = [];
-    //         $data_penempatan = [];
-    //         foreach ($request->nama_sarana as $key => $value) {
-    //             $uuid = uniqid('', true); // Menghasilkan UUID yang unik
-
-    //             // Simpan data barang ke dalam model Sarana
-    //             $sarana = new Sarana();
-    //             $sarana->nama_sarana = $value;
-    //             $sarana->jenis_sarana = $request->jenis_sarana[$key];
-    //             $sarana->tanggal_perolehan = $request->tanggal_perolehan[$key];
-    //             $sarana->nilai_perolehan = $request->nilai_perolehan[$key];
-    //             $sarana->kondisi = $request->kondisi[$key];
-    //             $sarana->status = $request->status[$key];
-    //             $sarana->save();
-
-    //             // Simpan data penempatan barang ke dalam model PenempatanSarana
-    //             for ($i = 0; $i < $request->jumlah_barang[$key]; $i++) {
-    //                 $penempatan = new PenempatanSarana();
-    //                 $penempatan->uuid_sarana = $uuid;
-    //                 $penempatan->lokasi = $ruangan; // Contoh field lokasi, sesuaikan dengan kebutuhan
-    //                 $penempatan->save();
-    //             }
-
-    //             // Simpan data barang untuk response JSON
-    //             $data_sarana[] = [
-    //                 'uuid' => $uuid,
-    //                 'nama_sarana' => $value,
-    //                 'jenis_sarana' => $request->jenis_sarana[$key],
-    //                 'tanggal_perolehan' => $request->tanggal_perolehan[$key],
-    //                 'nilai_perolehan' => $request->nilai_perolehan[$key],
-    //                 'kondisi' => $request->kondisi[$key],
-    //                 'status' => $request->status[$key],
-    //                 'bangunan' => $prasarana,
-    //                 'ruangan' => $ruangan,
-    //             ];
-    //         }
-
-    //         // Berhasil
-    //         return response()->json([
-    //             'message' => 'Data diterima',
-    //             'data_sarana' => $data_sarana,
-    //         ], 200);
-    //     } catch (\Exception $e) {
-    //         // Gagal
-    //         return response()->json(['message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
-    //     }
-    // }
-
     public function tambah_sarana(Request $request)
     {
         // dd($request->all());
@@ -709,5 +513,28 @@ class SarprasManajemenAset extends Controller
         $penempatan->save();
 
         return redirect()->back()->with('success', 'Data sarana berhasil diupdate');
+    }
+
+    public function tambah_sarana_import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx'
+        ]);
+        
+        $file = $request->file('file');
+        // dd($file);
+        $data = Excel::toArray([], $file);
+        // dd($data);
+
+        $data_file = [];
+
+        foreach ($data[0] as $row) {
+            $data_file[] = [
+                'nama' => $row[0],
+                'spesifikasi' => $row[1]
+            ];
+        }
+        
+        return response()->json(['data' => $data_file],200);
     }
 }

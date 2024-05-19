@@ -43,6 +43,9 @@ Route::get('manajemen_aset/sarana/{id}', [SarprasManajemenAset::class, 'get_data
      ->name('manajemen_aset.sarana.getData');
 Route::put('/manajemen_aset/sarana', [SarprasManajemenAset::class, 'update_sarana'])
      ->name('manajemen_aset.sarana.update');
+Route::post('/manajemen_aset/sarana/import', [SarprasManajemenAset::class, 'tambah_sarana_import'])
+     ->name('manajemen_aset.sarana.import');
+
 
 
 Route::get('manajemen_aset/inventaris', [SarprasManajemenAset::class, 'index_inventaris'])

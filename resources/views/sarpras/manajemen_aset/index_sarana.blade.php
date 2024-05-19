@@ -88,6 +88,7 @@
                                 @if (auth()->user()->role == '2')
                                     <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                         data-bs-target="#editModal" data-id="{{ $penempatan->id }}"
+                                        data-kode-unik="{{ $penempatan->kode_unik }}"
                                         data-nama-prasarana="{{ $penempatan->nama_prasarana }}"
                                         data-nama-ruangan="{{ $penempatan->nama_ruangan }}"
                                         data-nama-sarana="{{ $penempatan->nama_sarana }}"
@@ -100,6 +101,16 @@
                                         data-bs-target="#deleteModal" data-id="{{ $penempatan->id }}">
                                         Delete
                                     </button>
+                                    <form action="{{ route('manajemen_aset.sarana.import') }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <div>
+                                            <label for="file">Upload Excel File:</label>
+                                            <input type="file" name="file" id="file" required>
+                                        </div>
+                                        <div>
+                                            <button type="submit">Upload</button>
+                                        </div>
+                                    </form>
                                 @endif
                             </td>
                         </tr>

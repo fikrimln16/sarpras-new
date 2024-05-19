@@ -5,7 +5,6 @@
 
 @section('biayaTabel')
 <div>
-   <h3>Test Section SBSN</h3>
    <hr>
    <table id="dataTable" class="display">
       <thead id="tableHead">
@@ -17,7 +16,7 @@
               <th>Tanggal Mulai Kontrak</th>
               <th>Tanggal Selesai Kontrak</th>
               <th>Penanda Aset</th>
-              <th>Perguruan Tinggi</th>
+              {{-- <th>Perguruan Tinggi</th> --}}
               <th>Nama Proyek</th>
               <th>Nilai DPP</th>
               <th>No Registrasi</th>
@@ -34,13 +33,13 @@
                   <td>{{ $item['tgl_mulai_kontrak'] }}</td>
                   <td>{{ $item['tgl_selesai_kontrak'] }}</td>
                   <td>{{ $item['penanda_aset'] }}</td>
-                  <td>{{ $item['perguruan_tinggi'] }}</td>
+                  {{-- <td>{{ $item['perguruan_tinggi'] }}</td> --}}
                   <td>{{ $item['nama_proyek'] }}</td>
                   <td>{{ $item['nilai_dpp'] }}</td>
                   <td>{{ $item['no_registrasi'] }}</td>
                   <td>
-                     <button onclick="showDataPagu('{{ $item['uuid_sbsn'] }}')">Show Data Pagu</button>
-                     <button onclick="editForm('{{ $item['uuid_sbsn'] }}')">Edit Data SBSN</button>
+                     <button class="btn btn-primary" onclick="showDataPagu('{{ $item['uuid_sbsn'] }}')">Show Data Pagu</button>
+                     <button class="btn btn-warning" onclick="editForm('{{ $item['uuid_sbsn'] }}')">Edit Data SBSN</button>
                  </td>
               </tr>
           @endforeach

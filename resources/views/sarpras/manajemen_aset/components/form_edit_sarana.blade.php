@@ -12,6 +12,11 @@
                <div class="modal-body">
                    <input type="hidden" id="edit-id" name="id">
                    <div class="mb-3">
+                       <label for="edit-kode-unik" class="form-label">Kode Unik</label>
+                       <input type="text" class="form-control" id="edit-kode-unik" name="kode_unik"
+                           disabled>
+                   </div>
+                   <div class="mb-3">
                        <label for="edit-nama-prasarana" class="form-label">Nama Prasarana</label>
                        <input type="text" class="form-control" id="edit-nama-prasarana" name="nama_prasarana"
                            disabled>
@@ -57,6 +62,7 @@
             editModal.addEventListener('show.bs.modal', function(event) {
                 var button = event.relatedTarget;
                 var id = button.getAttribute('data-id');
+                var kodeUnik = button.getAttribute('data-kode-unik');
                 var namaPrasarana = button.getAttribute('data-nama-prasarana');
                 var namaRuangan = button.getAttribute('data-nama-ruangan');
                 var namaSarana = button.getAttribute('data-nama-sarana');
@@ -67,6 +73,7 @@
 
                 var modalTitle = editModal.querySelector('.modal-title');
                 var idInput = editModal.querySelector('#edit-id');
+                var namaKodeUnik = editModal.querySelector('#edit-kode-unik');
                 var namaPrasaranaInput = editModal.querySelector('#edit-nama-prasarana');
                 var namaRuanganInput = editModal.querySelector('#edit-nama-ruangan');
                 var namaSaranaInput = editModal.querySelector('#edit-nama-sarana');
@@ -75,8 +82,9 @@
                 var statusInput = editModal.querySelector('#edit-status');
                 var nilaiPerolehanInput = editModal.querySelector('#edit-nilai-perolehan');
 
-                modalTitle.textContent = 'Edit Data Sarana: ' + namaSarana;
+                modalTitle.textContent = 'Edit Data Sarana: ' + kodeUnik;
                 idInput.value = id;
+                namaKodeUnik.value = kodeUnik;
                 namaPrasaranaInput.value = namaPrasarana;
                 namaRuanganInput.value = namaRuangan;
                 namaSaranaInput.value = namaSarana;

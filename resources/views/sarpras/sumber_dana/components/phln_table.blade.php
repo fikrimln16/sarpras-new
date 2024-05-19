@@ -5,7 +5,6 @@
 
 @section('biayaTabel')
 <div>
-   <h3>Test Section PHLN</h3>
    <table id="dataTable" class="display">
       <thead id="tableHead">
          <tr>
@@ -22,7 +21,7 @@
              <!-- <th>Mata Uang Pagu Goi</th> -->
              <!-- <th>Mata Uang Valas</th> -->
              <!-- <th>Kode LOAN</th> -->
-             <th>No Regis</th>
+             {{-- <th>No Regis</th> --}}
              <th>Aksi</th>
          </tr>
      </thead>
@@ -42,10 +41,10 @@
                   <!-- <td>{{ $item['mata_uang_pagu_goi'] }}</td> -->
                   <!-- <td>{{ $item['mata_uang_valas'] }}</td> -->
                   <!-- <td>{{ $item['kode_loan'] }}</td> -->
-                  <td>{{ $item['no_registrasi'] }}</td>
+                  {{-- <td>{{ $item['no_registrasi'] }}</td> --}}
                   <td>
-                     <button onclick="showDataPagu('{{ $item['uuid_phln'] }}')">Show Data Pagu</button>
-                     <button onclick="editFormPHLN('{{ $item['uuid_phln'] }}')">Edit Data PHLN</button>
+                     <button class="btn btn-primary" onclick="showDataPagu('{{ $item['uuid_phln'] }}')">Show Data Pagu</button>
+                     <button class="btn btn-warning" onclick="editFormPHLN('{{ $item['uuid_phln'] }}')">Edit Data PHLN</button>
                  </td>
               </tr>
           @endforeach

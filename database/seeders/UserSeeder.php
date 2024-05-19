@@ -23,6 +23,12 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'role' => '2',
             ],
+            [
+                'name' => 'Fikri Maulana',
+                'email' => 'fikri@gmail.com',
+                'password' => Hash::make('fikri123'),
+                'role' => '2',
+            ],
         ]);
     }
 }
