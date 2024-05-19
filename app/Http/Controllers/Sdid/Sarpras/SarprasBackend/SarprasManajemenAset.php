@@ -349,25 +349,6 @@ class SarprasManajemenAset extends Controller
         // dd($penempatanSarana);
     }
 
-    public function get_data_sarana()
-    {
-        $sarana = Sarana::leftJoin('penempatan_sarana', 'sarana.id', '=', 'penempatan_sarana.id_sarana')
-            ->select(
-                'sarana.id',
-                'sarana.nama_sarana',
-                'penempatan_sarana.id_sarana as mapped_id'
-            )
-            ->get();
-
-        $sarana = $sarana->map(function ($item) {
-            $item->is_mapped = is_null($item->mapped_id) ? 'no' : 'yes';
-            return $item;
-        });
-
-        return datatables()->of($sarana)
-            ->make(true);
-    }
-
     public function delete_sarana($id)
     {
         // $sarana = Sarana::findOrFail($id);
@@ -376,8 +357,7 @@ class SarprasManajemenAset extends Controller
         // Lakukan penghapusan
         // $sarana->delete();
 
-        return redirect()->route('manajemen_aset.sarana')->with('success', 'Sarana deleted successfully.');
-    }
+        return redirect()->route('manajemen.aset.inventaris.index_ruang_sarana', ['id_ruang' => $id_ruang])->with('success', 'Sarana deleted successfully.');    }
 
     public function index_inventaris(Request $request)
     {
@@ -703,5 +683,48 @@ class SarprasManajemenAset extends Controller
         }
 
         return view('ruangan.detail', compact('ruangan'));
+    }
+
+    public function index_inventaris_ruang_sarana(Request $request)
+    {
+
+        $id = $request->query('id_ruang');
+        if ($id) {
+            $ruangan = Ruangan::find($id);
+            $penempatan_sarana = PenempatanSarana::where('id_ruang', $id)->get();
+            // $sdm_list = SumberDayaManusia::all();
+
+            return view('sarpras.manajemen_aset.components.inventaris_ruang_sarana_detail', compact('id', 'ruangan', 'penempatan_sarana'));
+        }
+        return view('sarpras.manajemen_aset.components.inventaris_table_ruang_sarana');
+    }
+
+    public function get_data_inventaris_ruang_sarana()
+    {
+        $data = DB::table('ruangan as r')
+        ->leftJoin('penempatan_sarana as ps', 'r.id', '=', 'ps.id_ruang')
+        ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
+        ->select(
+            'r.id',
+            'r.kode_ruang',
+            'r.nama_ruangan',
+            DB::raw('COUNT(ps.id_sarana) as jumlah_sarana_terisi'),
+            DB::raw('SUM(s.nilai_perolehan) as total_biaya')
+        )
+        ->groupBy('r.id', 'r.kode_ruang', 'r.nama_ruangan')
+        ->get();
+        // ->map(function ($item) {
+        //     $item->tersisa = $item->kapasitas - $item->jumlah_orang_terisi;
+        //     return $item;
+        // });
+
+        return datatables()->of($data)
+            ->addColumn('aksi', function ($row) {
+                return '
+                <a href="' . route('manajemen.aset.inventaris.index_ruang_sarana', ['id_ruang' => $row->id]) . '" class="btn btn-sm btn-primary">Details</a>
+            ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
     }
 }
