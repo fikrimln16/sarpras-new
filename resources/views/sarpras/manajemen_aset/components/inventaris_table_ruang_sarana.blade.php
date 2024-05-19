@@ -105,7 +105,11 @@
                     },
                     {
                         data: 'total_biaya',
-                        name: 'total_biaya'
+                        name: 'total_biaya',
+                        render: function(data, type, row) {
+                            if (!data) return '0';
+                            return new Intl.NumberFormat('id-ID').format(data);
+                        }
                     },
                     {
                         data: 'aksi',
