@@ -46,6 +46,12 @@ Route::put('/manajemen_aset/sarana', [SarprasManajemenAset::class, 'update_saran
 Route::post('/manajemen_aset/sarana/import', [SarprasManajemenAset::class, 'tambah_sarana_import'])
      ->name('manajemen_aset.sarana.import');
 
+Route::get('/manajemen_aset/sarana/get/download', [SarprasManajemenAset::class, 'downloadTemplateExcel'])->name('manajemen_aset.sarana.download_template');
+Route::get('/manajemen_aset/sarana/serverside/get_data_sarana', [SarprasManajemenAset::class, 'get_data_sarana'])->name('manajemen_aset.sarana.get_data_sarana');
+Route::post('/manajemen_aset/sarana/tambah_pemetaan_sarana', [SarprasManajemenAset::class, 'tambah_pemetaan_sarana'])->name('manajemen_aset.sarana.tambah_pemetaan_sarana');
+
+
+
 
 
 Route::get('manajemen_aset/inventaris', [SarprasManajemenAset::class, 'index_inventaris'])

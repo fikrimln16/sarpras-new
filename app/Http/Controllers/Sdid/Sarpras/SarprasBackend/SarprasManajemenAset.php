@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 //import models
 use App\Models\Bangunan;
@@ -265,6 +268,7 @@ class SarprasManajemenAset extends Controller
         return view('sarpras.manajemen_aset.index_sarana', compact('penempatanSarana'));
     }
 
+
     public function index_sarana(Request $request)
     {
         $id = $request->query('id');
@@ -278,24 +282,38 @@ class SarprasManajemenAset extends Controller
 
         // dd($penempatanSarana);
         $role = auth()->user()->role;
-        if ($role == '1') {
-            $penempatanSarana = DB::table('penempatan_sarana as ps')
-                ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
-                ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
-                ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
-                ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
-                ->select('s.*', 'p.*', 'r.*', 'ps.*')
-                ->get();
-        } else {
-            $penempatanSarana = DB::table('penempatan_sarana as ps')
-                ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
-                ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
-                ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
-                ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
-                ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
-                ->select('s.*', 'p.*', 'r.*', 'ps.*')
-                ->get();
-        }
+        // if ($role == '1') {
+        //     $penempatanSarana = DB::table('penempatan_sarana as ps')
+        //         ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
+        //         ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
+        //         ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
+        //         ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
+        //         ->select('s.*', 'p.*', 'r.*', 'ps.*')
+        //         ->get();
+        // } else {
+        //     $penempatanSarana = DB::table('penempatan_sarana as ps')
+        //         ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
+        //         ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
+        //         ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
+        //         ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
+        //         ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
+        //         ->select('s.*', 'p.*', 'r.*', 'ps.*')
+        //         ->get();
+        // }
+
+        $penempatanSarana = Sarana::all();
+        // $penempatanSarana = Sarana::leftJoin('penempatan_sarana', 'sarana.id', '=', 'penempatan_sarana.id_sarana')
+        //                 ->whereNull('penempatan_sarana.id_sarana')
+        //                 ->select('sarana.*')
+        //                 ->get();
+        // dd($saranaUnmapped);
+
+
+
+        // Return the data as a DataTable
+
+
+
 
         $skema_biaya = Sbsn::where('id_data_lokasi_kampus', $universityCode)->get();
         $phln_data = Phln::all();
@@ -329,6 +347,25 @@ class SarprasManajemenAset extends Controller
         // ->get();
 
         // dd($penempatanSarana);
+    }
+
+    public function get_data_sarana()
+    {
+        $sarana = Sarana::leftJoin('penempatan_sarana', 'sarana.id', '=', 'penempatan_sarana.id_sarana')
+            ->select(
+                'sarana.id',
+                'sarana.nama_sarana',
+                'penempatan_sarana.id_sarana as mapped_id'
+            )
+            ->get();
+
+        $sarana = $sarana->map(function ($item) {
+            $item->is_mapped = is_null($item->mapped_id) ? 'no' : 'yes';
+            return $item;
+        });
+
+        return datatables()->of($sarana)
+            ->make(true);
     }
 
     public function delete_sarana($id)
@@ -457,27 +494,27 @@ class SarprasManajemenAset extends Controller
     {
         // dd($request->all());
         // Validation rules
-        $validator = Validator::make($request->all(), [
-            'prasarana' => 'required|integer|exists:prasarana,id',
-            'ruangan' => 'required|integer|exists:ruangan,id',
-            'nama_sarana.*' => 'required|string|max:255',
-            'kategori.*' => 'required|string|max:255',
-            'jenis_sarana.*' => 'required|string|max:255',
-            'spesifikasi.*' => 'required|string|max:255',
-            'tanggal_perolehan.*' => 'required|date',
-            'tahun_produksi.*' => 'required|numeric',
-            'nilai_perolehan.*' => 'required|numeric',
-            'nilai_buku.*' => 'required|numeric',
-            'penggunaan.*' => 'required|string|max:255',
-            'kondisi.*' => 'required|string|max:255',
-            'tanggal_hapus_buku.*' => 'required|date',
-            'status.*' => 'required|string|max:255',
-            'jumlah_barang.*' => 'required|integer|min:1'
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'prasarana' => 'required|integer|exists:prasarana,id',
+        //     'ruangan' => 'required|integer|exists:ruangan,id',
+        //     'nama_sarana.*' => 'required|string|max:255',
+        //     'kategori.*' => 'required|string|max:255',
+        //     'jenis_sarana.*' => 'required|string|max:255',
+        //     'spesifikasi.*' => 'required|string|max:255',
+        //     'tanggal_perolehan.*' => 'required|date',
+        //     'tahun_produksi.*' => 'required|numeric',
+        //     'nilai_perolehan.*' => 'required|numeric',
+        //     'nilai_buku.*' => 'required|numeric',
+        //     'penggunaan.*' => 'required|string|max:255',
+        //     'kondisi.*' => 'required|string|max:255',
+        //     'tanggal_hapus_buku.*' => 'required|date',
+        //     'status.*' => 'required|string|max:255',
+        //     'jumlah_barang.*' => 'required|integer|min:1'
+        // ]);
 
-        if ($validator->fails()) {
-            return response()->json(['message' => 'Validation errors', 'errors' => $validator->errors()], 422);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json(['message' => 'Validation errors', 'errors' => $validator->errors()], 422);
+        // }
 
         try {
             DB::beginTransaction();
@@ -542,44 +579,108 @@ class SarprasManajemenAset extends Controller
 
     public function tambah_sarana_import(Request $request)
     {
+        // dd($request);
         $request->validate([
-            'file' => 'required|mimes:xlsx'
+            'file' => 'required|mimes:xlsx,xls,csv',
         ]);
 
         $file = $request->file('file');
-        // dd($file);
-        $data = Excel::toArray([], $file);
-        // dd($data);
+        $path = $file->store('temp'); // Menyimpan file sementara
 
-        $data_file = [];
+        $data = Excel::toArray([], storage_path('app/' . $path));
 
-        foreach ($data[0] as $row) {
-            $data_file[] = [
-                'nama' => $row[0],
-                'spesifikasi' => $row[1]
-            ];
+        // Assuming the first sheet
+        $rows = $data[0];
+
+        if (
+            isset($rows[0][0]) && $rows[0][0] === 'nama_sarana' &&
+            isset($rows[0][1]) && $rows[0][1] === 'kategori' &&
+            isset($rows[0][2]) && $rows[0][2] === 'spesifikasi' &&
+            isset($rows[0][3]) && $rows[0][3] === 'nilai_perolehan'
+        ) {
+            // Melewati baris pertama (header)
+            array_shift($rows);
+
+            // Proses setiap baris data
+            foreach ($rows as $row) {
+                // Memeriksa apakah kedua elemen dalam baris sudah diset
+                if (isset($row[0]) && isset($row[1])) {
+                    // Tambahkan data ke dalam database
+                    Sarana::create([
+                        'nama_sarana' => $row[0] ?? null,
+                        'kategori' => $row[1] ?? null,
+                        'spesifikasi' => $row[2] ?? null,
+                        'nilai_perolehan' => $row[3] ?? null,
+
+                    ]);
+                }
+            }
+            return redirect()->route('manajemen_aset.sarana')->with('success', 'Prasarana created successfully.');
+        } else {
+            // Jika format header tidak sesuai, tampilkan pesan error
+            dd('yang bener kocak');
         }
+    }
 
-        return response()->json(['data' => $data_file], 200);
+    public function downloadTemplateExcel()
+    {
+        $spreadsheet = new Spreadsheet();
+
+        // Set the active sheet and populate it with headers
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'nama_sarana');
+        $sheet->setCellValue('B1', 'kategori');
+        $sheet->setCellValue('C1', 'spesifikasi');
+        $sheet->setCellValue('D1', 'nilai_perolehan');
+
+        // Create a writer to output the spreadsheet
+        $writer = new Xlsx($spreadsheet);
+
+        // Prepare a temporary file to save the spreadsheet
+        $filename = 'template.xlsx';
+        $temp_file = tempnam(sys_get_temp_dir(), $filename);
+        $writer->save($temp_file);
+
+        // Return the file as a response for download
+        return response()->download($temp_file, $filename)->deleteFileAfterSend(true);
+    }
+
+
+    public function tambah_pemetaan_sarana(Request $request)
+    {
+
+        foreach ($request->id_sarana as $key => $value) {
+            for ($i = 0; $i < $request->jumlah_barang[$key]; $i++) {
+                PenempatanSarana::create([
+                    'kode_unik' => strtoupper(Str::random(10)),
+                    'id_sarana' => $value,
+                    'id_ruang' => $request->ruangan,
+                    'penggunaan' => "iodjwadioad",
+                    'kondisi' => "dwdadjioa",
+                    'status' => "aktif"
+                ]);
+            }
+        }
+        dd('berhasil');
     }
 
     public function get_data_inventaris_ruang_sdm()
     {
         $data = DB::table('ruangan as r')
-        ->leftJoin('penempatan_sdm_ruang as prs', 'r.id', '=', 'prs.id_ruang')
-        ->select(
-            'r.id',
-            'r.kode_ruang',
-            'r.nama_ruangan',
-            'r.kapasitas',
-            DB::raw('COUNT(prs.id_sdm) as jumlah_orang_terisi')
-        )
-        ->groupBy('r.id', 'r.kode_ruang', 'r.nama_ruangan', 'r.kapasitas')
-        ->get()
-        ->map(function ($item) {
-            $item->tersisa = $item->kapasitas - $item->jumlah_orang_terisi;
-            return $item;
-        });
+            ->leftJoin('penempatan_sdm_ruang as prs', 'r.id', '=', 'prs.id_ruang')
+            ->select(
+                'r.id',
+                'r.kode_ruang',
+                'r.nama_ruangan',
+                'r.kapasitas',
+                DB::raw('COUNT(prs.id_sdm) as jumlah_orang_terisi')
+            )
+            ->groupBy('r.id', 'r.kode_ruang', 'r.nama_ruangan', 'r.kapasitas')
+            ->get()
+            ->map(function ($item) {
+                $item->tersisa = $item->kapasitas - $item->jumlah_orang_terisi;
+                return $item;
+            });
 
         return datatables()->of($data)
             ->addColumn('aksi', function ($row) {
@@ -606,5 +707,4 @@ class SarprasManajemenAset extends Controller
 
         return view('ruangan.detail', compact('ruangan'));
     }
-
 }
