@@ -37,10 +37,10 @@
                 <table id="dataTable" class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>ID Penempatan Sarana</th>
+                            {{-- <th>ID Penempatan Sarana</th> --}}
                             <th>Kode Sarana</th>
                             <th>Nama Sarana</th>
-                            <th>Kategori</th>
+                            {{-- <th>Kategori</th> --}}
                             <th>Penggunaan</th>
                             <th>Status</th>
                             <th>Kondisi</th>
@@ -52,13 +52,13 @@
                     <tbody>
                         @foreach ($penempatan_sarana as $item)
                             <tr>
-                                <td>{{ $item->id }}</td>
+                                {{-- <td>{{ $item->id }}</td> --}}
                                 <td>{{ $item->kode_unik }}</td>
-                                <td>{{ $item->sarana->nama_sarana }}</td>
-                                <td>{{ $item->sarana->kategori }}</td>
-                                <td>{{ $item->penggunaan }}</td>
-                                <td>{{ $item->status }}</td>
-                                <td>{{ $item->kondisi }}</td>
+                                <td>{{ $item->nama_sarana }}</td>
+                                {{-- <td>{{ $item->sarana->kategori }}</td> --}}
+                                <td>{{ $item->penggunaan ?: 'belum diisi' }}</td>
+                                <td>{{ $item->status ?: 'belum diisi' }}</td>
+                                <td>{{ $item->kondisi ?: 'belum diisi' }}</td>
                                 @if (auth()->user()->role != '1')
                                     <td>
                                         @if (auth()->user()->role == '2')
@@ -68,9 +68,9 @@
                                                 Delete
                                             </button>
                                             <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                                data-bs-target="#editModal" data-id="{{ $item->id }}"
+                                                data-bs-target="#editModal" data-id="{{ $item->id_alat }}"
                                                 data-kode-unik="{{ $item->kode_unik }}"
-                                                data-nama-sarana="{{ $item->sarana->nama_sarana }}"
+                                                data-nama-sarana="{{ $item->nama_sarana }}"
                                                 data-penggunaan="{{ $item->penggunaan }}"
                                                 data-kondisi="{{ $item->kondisi }}" data-status="{{ $item->status }}">
                                                 Edit

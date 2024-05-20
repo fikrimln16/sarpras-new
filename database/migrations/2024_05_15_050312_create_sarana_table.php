@@ -21,9 +21,8 @@ return new class extends Migration
             $table->integer('tahun_produksi')->nullable();
             $table->float('nilai_perolehan')->nullable();
             $table->float('nilai_buku')->nullable();
-            // $table->string('penggunaan', 255);
-            // $table->string('kondisi', 255);
-            // $table->string('status', 255);
+            $table->string('penggunaan', 255)->nullable();
+            $table->string('kondisi', 255)->nullable();
             $table->string('tanggal_hapus_buku', 255)->nullable();
             $table->timestamps(); 
         });
