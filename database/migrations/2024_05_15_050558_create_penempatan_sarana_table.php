@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('kode_unik', 255)->unique();
             $table->unsignedBigInteger('id_ruang');
             $table->unsignedBigInteger('id_sarana');
-            $table->string('penggunaan', 255);
-            $table->string('kondisi', 255);
-            $table->string('status', 255);
+            $table->string('penggunaan', 255)->nullable();
+            $table->string('kondisi', 255)->nullable();
+            $table->string('status', 255)->nullable();
             
             $table->foreign('id_ruang')->references('id')->on('ruangan')->onDelete('cascade');
             $table->foreign('id_sarana')->references('id')->on('sarana')->onDelete('cascade');

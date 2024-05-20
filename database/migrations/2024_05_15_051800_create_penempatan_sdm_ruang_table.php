@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_sdm');
             $table->unsignedBigInteger('id_ruang');
-            $table->date('tanggal_mulai_penempatan');
-            $table->date('tanggal_selesai_penempatan');
+            $table->date('tanggal_mulai_penempatan')->nullable();
+            $table->date('tanggal_selesai_penempatan')->nullable();
 
             $table->foreign('id_sdm')->references('id')->on('sumber_daya_manusia')->onDelete('cascade');
             $table->foreign('id_ruang')->references('id')->on('ruangan')->onDelete('cascade');

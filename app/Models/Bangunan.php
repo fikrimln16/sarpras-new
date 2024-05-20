@@ -24,4 +24,9 @@ class Bangunan extends Model
     {
         return $this->hasMany(Ruangan::class, 'id_bangunan', 'id');
     }
+
+    public function prasarana()
+    {
+        return $this->belongsTo(Prasarana::class, 'id_prasarana');
+    }
 }

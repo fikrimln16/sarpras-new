@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('tanah', function (Blueprint $table) {
             $table->id();
-            $table->date('tanggal_mutasi_keluar');
-            $table->string('batas_tanah', 255);
-            $table->string('keterangan', 255);
+            $table->date('tanggal_mutasi_keluar')->nullable();
+            $table->string('batas_tanah', 255)->nullable();
+            $table->string('keterangan', 255)->nullable();
             $table->timestamps();
         });
     }

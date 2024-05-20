@@ -17,8 +17,8 @@
       <p><strong>Kelompok Ruangan:</strong> {{ $ruangan->kelompok_ruangan }}</p>
       <p><strong>Tanggal Mulai Kontrak:</strong> {{ $ruangan->tgl_mulai_kontrak }}</p>
       <p><strong>Tanggal Selesai Kontrak:</strong> {{ $ruangan->tgl_selesai_kontrak }}</p>
-      <p><strong>Nama Prasarana:</strong> {{ $ruangan->prasarana->nama_prasarana }}</p>
-      <p><strong>Jenis Prasarana:</strong> {{ $ruangan->prasarana->jenis_prasarana }}</p>
+      <p><strong>Nama Prasarana:</strong> {{ $ruangan->bangunan->prasarana->nama_prasarana }}</p>
+      <p><strong>Jenis Prasarana:</strong> {{ $ruangan->bangunan->prasarana->jenis_prasarana }}</p>
 
 
    </div>

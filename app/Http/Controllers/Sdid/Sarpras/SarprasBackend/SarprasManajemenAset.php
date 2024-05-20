@@ -190,38 +190,77 @@ class SarprasManajemenAset extends Controller
 
 
 
+    // public function index_ruangan(Request $request)
+    // {
+    //     $universities = auth()->user()->universities;
+    //     $id = $request->query('id');
+    //     $universityCode = $universities->first()->id;
+    //     // $ruangan = Ruangan::with('prasarana')->get();
+    //     $role = auth()->user()->role;
+
+    //     $ruangan = Ruangan::with(['bangunan.prasarana'])->get();
+    //     // dd($ruangan);
+    //     if ($role == "2") {
+    //         $ruangan = Ruangan::join('penempatan_prasarana', 'ruangan.id_prasarana', '=', 'penempatan_prasarana.id_prasarana')
+    //             ->join('prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
+    //             ->where('penempatan_prasarana.id_data_lokasi_kampus', '=', $universityCode)
+    //             ->get(['ruangan.*']);
+    //     }
+
+    //     // $prasarana = Prasarana::all();
+    //     $universities = auth()->user()->universities;
+    //     $universityCode = $universities->first()->id;
+
+    //     // dd($universityCode);
+
+    //     $prasarana = Prasarana::select('prasarana.*')
+    //         ->join('penempatan_prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
+    //         ->where('penempatan_prasarana.id_data_lokasi_kampus', $universityCode)
+    //         ->get();
+
+    //     // dd($ruangan);
+
+    //     if ($id) {
+    //         $ruangan = Ruangan::find($id);
+
+    //         if (!$ruangan) {
+    //             abort(404, 'Ruangan tidak ditemukan');
+    //         }
+
+    //         return view('sarpras.manajemen_aset.components.ruangan_detail', compact('ruangan', 'id'));
+    //     } else {
+    //         return view('sarpras.manajemen_aset.components.ruangan_table', compact('ruangan', 'prasarana'));
+    //     }
+    // }
+
     public function index_ruangan(Request $request)
     {
-        $universities = auth()->user()->universities;
+        $user = auth()->user();
+        $universities = $user->universities;
         $id = $request->query('id');
         $universityCode = $universities->first()->id;
-        // $ruangan = Ruangan::with('prasarana')->get();
-        $role = auth()->user()->role;
+        $role = $user->role;
 
-        $ruangan = Ruangan::all();
+        // Mengambil ruangan dengan relasi prasarana dan bangunan
+        $ruanganQuery = Ruangan::with(['bangunan.prasarana']);
+
         if ($role == "2") {
-            $ruangan = Ruangan::join('penempatan_prasarana', 'ruangan.id_prasarana', '=', 'penempatan_prasarana.id_prasarana')
-                ->join('prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
-                ->where('penempatan_prasarana.id_data_lokasi_kampus', '=', $universityCode)
-                ->get(['ruangan.*']);
+            $ruanganQuery = $ruanganQuery->whereHas('bangunan.prasarana.penempatan_prasarana', function ($query) use ($universityCode) {
+                $query->where('id_data_lokasi_kampus', $universityCode);
+            });
         }
 
-        // $prasarana = Prasarana::all();
-        $universities = auth()->user()->universities;
-        $universityCode = $universities->first()->id;
+        $ruangan = $ruanganQuery->get();
 
-        // dd($universityCode);
-
+        // Mengambil prasarana terkait dengan lokasi kampus
         $prasarana = Prasarana::select('prasarana.*')
             ->join('penempatan_prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
             ->where('penempatan_prasarana.id_data_lokasi_kampus', $universityCode)
             ->get();
 
-        // dd($ruangan);
-
         if ($id) {
-            $ruangan = Ruangan::find($id);
-
+            $ruangan = Ruangan::with(['bangunan.prasarana'])->find($id);
+            // dd($ruangan);
             if (!$ruangan) {
                 abort(404, 'Ruangan tidak ditemukan');
             }
@@ -231,6 +270,7 @@ class SarprasManajemenAset extends Controller
             return view('sarpras.manajemen_aset.components.ruangan_table', compact('ruangan', 'prasarana'));
         }
     }
+
 
     public function create_ruangan(Request $request)
     {
@@ -281,7 +321,8 @@ class SarprasManajemenAset extends Controller
         if ($role == '1') {
             $penempatanSarana = DB::table('penempatan_sarana as ps')
                 ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
-                ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
+                ->join('bangunan as b', 'r.id_bangunan', '=', 'b.id')
+                ->join('prasarana as p', 'b.id_prasarana', '=', 'p.id')
                 ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
                 ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
                 ->select('s.*', 'p.*', 'r.*', 'ps.*')
@@ -289,7 +330,8 @@ class SarprasManajemenAset extends Controller
         } else {
             $penempatanSarana = DB::table('penempatan_sarana as ps')
                 ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
-                ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
+                ->join('bangunan as b', 'r.id_bangunan', '=', 'b.id')
+                ->join('prasarana as p', 'b.id_prasarana', '=', 'p.id')
                 ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
                 ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
                 ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
@@ -306,7 +348,8 @@ class SarprasManajemenAset extends Controller
         if ($id) {
             $sarana = DB::table('penempatan_sarana as ps')
                 ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
-                ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
+                ->join('bangunan as b', 'r.id_bangunan', '=', 'b.id')
+                ->join('prasarana as p', 'b.id_prasarana', '=', 'p.id')
                 ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
                 ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
                 ->where('ps.id', '=', $id)
@@ -339,10 +382,22 @@ class SarprasManajemenAset extends Controller
         // Lakukan penghapusan
         // $sarana->delete();
 
-        return redirect()->route('manajemen.aset.inventaris.index_ruang_sarana', ['id_ruang' => $id_ruang])->with('success', 'Sarana deleted successfully.');    }
+        return redirect()->route('manajemen.aset.inventaris.index_ruang_sarana', ['id_ruang' => $id_ruang])->with('success', 'Sarana deleted successfully.');
+    }
 
     public function index_inventaris(Request $request)
     {
+
+        $universities = auth()->user()->universities;
+        $universityCode = $universities->first()->id;
+
+        $list_ruangan = DB::table('bangunan as b')
+            // ->join('bangunan as b', 'r.id_bangunan', '=', 'b.id')
+            ->join('prasarana as p', 'b.id_prasarana', '=', 'p.id')
+            ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
+            ->where('pp.id_data_lokasi_kampus', $universityCode)
+            ->select('b.id as id_bangunan', 'p.nama_prasarana')
+            ->get();
 
         // $data = PenempatanSdmRuang::with(['sumber_daya_manusia', 'ruang.prasarana'])
         // ->get();
@@ -357,15 +412,12 @@ class SarprasManajemenAset extends Controller
             return view('sarpras.manajemen_aset.components.inventaris_detail', compact('id', 'ruangan', 'penempatan_sdm_ruang', 'sdm_list'));
         }
 
-
-        $universities = auth()->user()->universities;
-        $universityCode = $universities->first()->id;
-
         $role = auth()->user()->role;
         if ($role == '1') {
             $data = DB::table('penempatan_sdm_ruang as psr')
                 ->join('ruangan as r', 'psr.id_ruang', '=', 'r.id')
-                ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
+                ->join('bangunan as b', 'r.id_bangunan', '=', 'b.id')
+                ->join('prasarana as p', 'b.id_prasarana', '=', 'p.id')
                 ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
                 ->leftJoin('sumber_daya_manusia as sdm', 'psr.id_sdm', '=', 'sdm.id')
                 ->select('psr.*', 'r.*', 'p.*', 'sdm.*')
@@ -373,7 +425,8 @@ class SarprasManajemenAset extends Controller
         } else {
             $data = DB::table('penempatan_sdm_ruang as psr')
                 ->join('ruangan as r', 'psr.id_ruang', '=', 'r.id')
-                ->join('prasarana as p', 'r.id_prasarana', '=', 'p.id')
+                ->join('bangunan as b', 'r.id_bangunan', '=', 'b.id')
+                ->join('prasarana as p', 'b.id_prasarana', '=', 'p.id')
                 ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
                 ->leftJoin('sumber_daya_manusia as sdm', 'psr.id_sdm', '=', 'sdm.id')
                 ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
@@ -384,11 +437,6 @@ class SarprasManajemenAset extends Controller
 
         // dd($data);
 
-        // $bangunan = [
-        //     ['id' => 1, 'nama_bangunan' => 'Bangunan A'],
-        //     ['id' => 2, 'nama_bangunan' => 'Bangunan B'],
-        // ];
-
         $prasarana = Prasarana::select('prasarana.*')
             ->join('penempatan_prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
             ->where('penempatan_prasarana.id_data_lokasi_kampus', $universityCode)
@@ -397,7 +445,7 @@ class SarprasManajemenAset extends Controller
         // dd($bangunan);
         $nama_dosen = SumberDayaManusia::all();
 
-        return view('sarpras.manajemen_aset.index_inventaris', compact('data', 'prasarana', 'nama_dosen'));
+        return view('sarpras.manajemen_aset.index_inventaris', compact('data', 'prasarana', 'nama_dosen', 'list_ruangan'));
     }
 
     public function getRuangan($id_bangunan)
@@ -562,25 +610,63 @@ class SarprasManajemenAset extends Controller
         return response()->json(['data' => $data_file], 200);
     }
 
-    public function get_data_inventaris_ruang_sdm()
+    public function get_data_inventaris_ruang_sdm(Request $request)
     {
-        $data = DB::table('ruangan as r')
-        ->leftJoin('penempatan_sdm_ruang as prs', 'r.id', '=', 'prs.id_ruang')
-        ->select(
-            'r.id',
-            'r.kode_ruang',
-            'r.nama_ruangan',
-            'r.kapasitas',
-            DB::raw('COUNT(prs.id_sdm) as jumlah_orang_terisi')
-        )
-        ->groupBy('r.id', 'r.kode_ruang', 'r.nama_ruangan', 'r.kapasitas')
-        ->get()
-        ->map(function ($item) {
-            $item->tersisa = $item->kapasitas - $item->jumlah_orang_terisi;
-            return $item;
-        });
 
-        return datatables()->of($data)
+        $universities = auth()->user()->universities;
+        $universityCode = $universities->first()->id;
+
+
+        $data = DB::table('ruangan as r')
+            ->leftJoin('penempatan_sdm_ruang as prs', 'r.id', '=', 'prs.id_ruang')
+            ->join('bangunan as b', 'r.id_bangunan', '=', 'b.id')
+            ->join('prasarana as p', 'b.id_prasarana', '=', 'p.id')
+            ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
+            ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
+            ->select(
+                'r.id',
+                'r.kode_ruang',
+                'r.nama_ruangan',
+                'r.kapasitas',
+                DB::raw('COUNT(prs.id_sdm) as jumlah_orang_terisi')
+            )
+            ->groupBy('r.id', 'r.kode_ruang', 'r.nama_ruangan', 'r.kapasitas');
+            // ->get()
+            // ->map(function ($item) {
+            //     $item->tersisa = $item->kapasitas - $item->jumlah_orang_terisi;
+            //     return $item;
+            // });
+
+        if ($request->has('building_id') && $request->building_id != '') {
+            $data->where('r.id_bangunan', $request->building_id)->get()
+            ->map(function ($item) {
+                $item->tersisa = $item->kapasitas - $item->jumlah_orang_terisi;
+                return $item;
+            });;
+        }
+
+        // if (auth()->user()->role != '1') {
+        //     $data = DB::table('ruangan as r')
+        //         ->leftJoin('penempatan_sdm_ruang as prs', 'r.id', '=', 'prs.id_ruang')
+        //         ->join('bangunan as b', 'r.id_bangunan', '=', 'b.id')
+        //         ->join('prasarana as p', 'b.id_prasarana', '=', 'p.id')
+        //         ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
+        //         ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
+        //         ->select(
+        //             'r.id',
+        //             'r.kode_ruang',
+        //             'r.nama_ruangan',
+        //             'r.kapasitas',
+        //             DB::raw('COUNT(prs.id_sdm) as jumlah_orang_terisi')
+        //         )
+        //         ->groupBy('r.id', 'r.kode_ruang', 'r.nama_ruangan', 'r.kapasitas')
+        //         ->get()
+        //         ->map(function ($item) {
+        //             $item->tersisa = $item->kapasitas - $item->jumlah_orang_terisi;
+        //             return $item;
+        //         });
+        // }
+        return datatables()->of($data->get())
             ->addColumn('aksi', function ($row) {
                 return '
                 <a href="' . route('manajemen_aset.inventaris', ['id_ruang' => $row->id]) . '" class="btn btn-sm btn-primary">Details</a>
@@ -609,6 +695,18 @@ class SarprasManajemenAset extends Controller
     public function index_inventaris_ruang_sarana(Request $request)
     {
 
+        $universities = auth()->user()->universities;
+        $universityCode = $universities->first()->id;
+
+        $list_ruangan = DB::table('bangunan as b')
+            // ->join('bangunan as b', 'r.id_bangunan', '=', 'b.id')
+            ->join('prasarana as p', 'b.id_prasarana', '=', 'p.id')
+            ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
+            ->where('pp.id_data_lokasi_kampus', $universityCode)
+            ->select('b.id as id_bangunan', 'p.nama_prasarana')
+            ->get();
+        // dd($list_ruangan);
+
         $id = $request->query('id_ruang');
         if ($id) {
             $ruangan = Ruangan::find($id);
@@ -617,29 +715,42 @@ class SarprasManajemenAset extends Controller
 
             return view('sarpras.manajemen_aset.components.inventaris_ruang_sarana_detail', compact('id', 'ruangan', 'penempatan_sarana'));
         }
-        return view('sarpras.manajemen_aset.components.inventaris_table_ruang_sarana');
+        return view('sarpras.manajemen_aset.components.inventaris_table_ruang_sarana', compact('list_ruangan'));
     }
 
-    public function get_data_inventaris_ruang_sarana()
+    public function get_data_inventaris_ruang_sarana(Request $request)
     {
+
+        $universities = auth()->user()->universities;
+        $universityCode = $universities->first()->id;
+
         $data = DB::table('ruangan as r')
-        ->leftJoin('penempatan_sarana as ps', 'r.id', '=', 'ps.id_ruang')
-        ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
-        ->select(
-            'r.id',
-            'r.kode_ruang',
-            'r.nama_ruangan',
-            DB::raw('COUNT(ps.id_sarana) as jumlah_sarana_terisi'),
-            DB::raw('SUM(s.nilai_perolehan) as total_biaya')
-        )
-        ->groupBy('r.id', 'r.kode_ruang', 'r.nama_ruangan')
-        ->get();
+            ->leftJoin('penempatan_sarana as ps', 'r.id', '=', 'ps.id_ruang')
+            ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
+            ->join('bangunan as b', 'r.id_bangunan', '=', 'b.id')
+            ->join('prasarana as p', 'b.id_prasarana', '=', 'p.id')
+            ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
+            ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
+            ->select(
+                'r.id',
+                'r.kode_ruang',
+                'r.nama_ruangan',
+                DB::raw('COUNT(ps.id_sarana) as jumlah_sarana_terisi'),
+                DB::raw('SUM(s.nilai_perolehan) as total_biaya')
+            )
+            ->groupBy('r.id', 'r.kode_ruang', 'r.nama_ruangan');
+        // ->get();
         // ->map(function ($item) {
         //     $item->tersisa = $item->kapasitas - $item->jumlah_orang_terisi;
         //     return $item;
         // });
 
-        return datatables()->of($data)
+        if ($request->has('building_id') && $request->building_id != '') {
+            $data->where('r.id_bangunan', $request->building_id);
+        }
+
+
+        return datatables()->of($data->get())
             ->addColumn('aksi', function ($row) {
                 return '
                 <a href="' . route('manajemen.aset.inventaris.index_ruang_sarana', ['id_ruang' => $row->id]) . '" class="btn btn-sm btn-primary">Details</a>
@@ -648,4 +759,42 @@ class SarprasManajemenAset extends Controller
             ->rawColumns(['aksi'])
             ->make(true);
     }
+
+    // public function get_data_inventaris_ruang_sarana(Request $request)
+    // {
+    //     $universities = auth()->user()->universities;
+    //     $universityCode = $universities->first()->id;
+    //     // dd($request->all());
+    //     $data = DB::table('ruangan as r')
+    //         ->leftJoin('penempatan_sarana as ps', 'r.id', '=', 'ps.id_ruang')
+    //         ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
+    //         ->join('bangunan as b', 'r.id_bangunan', '=', 'b.id')
+    //         ->join('prasarana as p', 'b.id_prasarana', '=', 'p.id')
+    //         ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
+    //         ->where('pp.id_data_lokasi_kampus', '=', $universityCode);
+
+    //         // Filter by building if building_id is provided
+    //         if ($request->has('building_id') && $request->building_id != '') {
+    //             $data->where('r.id_bangunan', $request->building_id);
+    //         }
+
+    //     dd($data->get());
+
+    //     $data = $data->select(
+    //             'r.id',
+    //             'r.kode_ruang',
+    //             'r.nama_ruangan',
+    //             DB::raw('COUNT(ps.id_sarana) as jumlah_sarana_terisi'),
+    //             DB::raw('SUM(s.nilai_perolehan) as total_biaya')
+    //         )
+    //         ->groupBy('r.id', 'r.kode_ruang', 'r.nama_ruangan')
+    //         ->get();
+
+    //     return DataTables::of($data)
+    //         ->addColumn('aksi', function ($row) {
+    //             return '<a href="' . route('manajemen.aset.inventaris.index_ruang_sarana', ['id_ruang' => $row->id]) . '" class="btn btn-sm btn-primary">Details</a>';
+    //         })
+    //         ->rawColumns(['aksi'])
+    //         ->make(true);
+    // }
 }

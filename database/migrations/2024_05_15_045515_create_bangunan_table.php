@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('bangunan', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_paket', 50);
-            $table->unsignedInteger('KD_SATKER_TANAH');
-            $table->string('NM_SATKER_TANAH', 255);
-            $table->unsignedInteger('KD_BRG_TANAH');
-            $table->string('NM_BRG_TANAH', 255);
-            $table->unsignedInteger('NUP_BRG_TANAH');
-            $table->date('TGL_SK_PEMAKAIAN');
-            $table->unsignedInteger('kapasitas');
+            $table->string('kode_paket', 50)->nullable();
+            $table->unsignedInteger('KD_SATKER_TANAH')->nullable();
+            $table->string('NM_SATKER_TANAH', 255)->nullable();
+            $table->unsignedInteger('KD_BRG_TANAH')->nullable();
+            $table->string('NM_BRG_TANAH', 255)->nullable();
+            $table->unsignedInteger('NUP_BRG_TANAH')->nullable();
+            $table->date('TGL_SK_PEMAKAIAN')->nullable();
+            $table->unsignedInteger('kapasitas')->nullable();
             $table->string('tanggal_hapus_buku', 20)->nullable();
-            $table->string('keterangan', 255);
+            $table->string('keterangan', 255)->nullable();
             $table->string('kategori', 50)->nullable();
             
             

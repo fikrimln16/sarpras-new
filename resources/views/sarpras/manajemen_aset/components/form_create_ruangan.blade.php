@@ -10,7 +10,7 @@
                     @csrf
                     <div class="mb-3">
                         <label for="bangunan" class="form-label">Prasarana:</label>
-                        <select class="form-control" id="bangunan" name="id_prasarana" required>
+                        <select class="form-control" id="bangunan" name="id_bangunan" required>
                             <option value="">Pilih Prasarana</option>
                             @foreach ($prasarana as $b)
                                 <option value="{{ $b->id }}" data-jumlah-lantai="{{ $b->jumlah_lantai }}">

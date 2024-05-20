@@ -25,10 +25,10 @@ class Ruangan extends Model
         return $this->belongsTo(Bangunan::class, 'id_bangunan', 'id');
     }
 
-    public function prasarana()
-    {
-        return $this->belongsTo(Prasarana::class, 'id_prasarana', 'id');
-    }
+    // public function prasarana()
+    // {
+    //     return $this->belongsTo(Prasarana::class, 'id_prasarana', 'id');
+    // }
 
     public function penempatanSarana()
     {
