@@ -16,6 +16,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Illuminate\Support\Facades\Storage;
 
 //import models
 use App\Models\Alat;
@@ -405,15 +406,21 @@ class SarprasManajemenAset extends Controller
 
     public function get_data_sarana()
     {
-        // Fetch sarana that are either not in alat or not in penempatan_sarana
-        $sarana = DB::table('sarana as s')
-            ->leftJoin('alat as a', 's.id', '=', 'a.id_sarana')
-            ->leftJoin('penempatan_sarana as ps', 'a.id', '=', 'ps.id_alat')
-            ->select('s.id', 's.nama_sarana', DB::raw('IF(ps.id IS NULL, "no", "yes") as is_mapped'))
+        // Fetch distinct nama_sarana from the sarana table
+        $sarana = Sarana::select('id', 'nama_sarana')
             ->distinct()
             ->get();
 
+      
+
+        // Map the results to add the is_mapped column based on the existence in penempatan_sarana
+        $sarana = $sarana->map(function ($item) {
+            $item->is_mapped = DB::table('penempatan_sarana')->where('id_sarana', $item->id)->exists() ? 'yes' : 'no';
+            return $item;
+        });
+
         return datatables()->of($sarana)
+            ->rawColumns(['is_mapped'])
             ->make(true);
     }
 
@@ -490,7 +497,7 @@ class SarprasManajemenAset extends Controller
         // dd($bangunan);
         $nama_dosen = SumberDayaManusia::all();
 
-        return view('sarpras.manajemen_aset.index_inventaris', compact('data', 'prasarana', 'nama_dosen', 'list_ruangan'));
+        return view('sarpras.manajemen_aset.components.inventaris_table', compact('data', 'prasarana', 'nama_dosen', 'list_ruangan'));
     }
 
     public function getRuangan($id_bangunan)
@@ -635,7 +642,6 @@ class SarprasManajemenAset extends Controller
 
     public function tambah_sarana_import(Request $request)
     {
-        // dd($request);
         $request->validate([
             'file' => 'required|mimes:xlsx,xls,csv',
         ]);
@@ -661,20 +667,29 @@ class SarprasManajemenAset extends Controller
             foreach ($rows as $row) {
                 // Memeriksa apakah kedua elemen dalam baris sudah diset
                 if (isset($row[0]) && isset($row[1])) {
-                    // Tambahkan data ke dalam database
-                    Sarana::create([
-                        'nama_sarana' => $row[0] ?? null,
-                        'kategori' => $row[1] ?? null,
-                        'spesifikasi' => $row[2] ?? null,
-                        'nilai_perolehan' => $row[3] ?? null,
+                    // Memeriksa apakah data sudah ada di database
+                    $existingSarana = Sarana::where('nama_sarana', $row[0])->first();
 
-                    ]);
+                    if (!$existingSarana) {
+                        // Tambahkan data ke dalam database jika tidak ada
+                        Sarana::create([
+                            'nama_sarana' => $row[0] ?? null,
+                            'kategori' => $row[1] ?? null,
+                            'spesifikasi' => $row[2] ?? null,
+                            'nilai_perolehan' => $row[3] ?? null,
+                        ]);
+                    }
                 }
             }
-            return redirect()->route('manajemen_aset.sarana')->with('success', 'Prasarana created successfully.');
+
+            // Hapus file sementara setelah proses selesai
+            Storage::delete($path);
+
+            return redirect()->route('manajemen_aset.sarana')->with('success', 'Sarana berhasil diimpor.');
         } else {
             // Jika format header tidak sesuai, tampilkan pesan error
-            dd('yang bener kocak');
+            Storage::delete($path); // Hapus file sementara jika ada error
+            return redirect()->back()->with('error', 'Format file tidak sesuai.');
         }
     }
 
@@ -760,8 +775,7 @@ class SarprasManajemenAset extends Controller
                 ->map(function ($item) {
                     $item->tersisa = $item->kapasitas - $item->jumlah_orang_terisi;
                     return $item;
-                });
-            ;
+                });;
         }
 
         // if (auth()->user()->role != '1') {
@@ -937,6 +951,7 @@ class SarprasManajemenAset extends Controller
         $tanahs = Tanah::with('prasarana')
             ->select(['id', 'tanggal_mutasi_keluar', 'batas', 'keterangan', 'id_prasarana'])
             ->get();
+
 
         return datatables()->of($tanahs)
             ->addColumn('nama_prasarana', function ($tanah) {
