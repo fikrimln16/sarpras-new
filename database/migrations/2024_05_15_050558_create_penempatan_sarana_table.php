@@ -12,7 +12,6 @@ return new class extends Migration {
     {
         Schema::create('penempatan_sarana', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_unik', 255)->unique();
             $table->unsignedBigInteger('id_ruang')->nullable();
             $table->unsignedBigInteger('id_sarana')->nullable();
             $table->unsignedBigInteger('id_alat')->nullable();
