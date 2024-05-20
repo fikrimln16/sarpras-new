@@ -56,7 +56,7 @@
                         </div>
                     </div>
                     <div id="tambahSaranaForm">
-                        <input type="hidden" name="id_sarana" value="{{ $sarana->id }}">
+                        <input type="hidden" name="id_sarana" value="{{ $sarana->id ?? null }}">
                         <div class="form-group">
                             <label for="sarana_terpilih">Dosen Terpilih</label>
                             <table class="table table-bordered" id="sarana_terpilih">
