@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreign('id_prasarana')->references('id')->on('prasarana')->onDelete('cascade');
 
             $table->date('tanggal_mutasi_keluar')->nullable();
-            $table->string('batas_tanah', 255)->nullable();
+            $table->string('batas', 255)->nullable();
             $table->string('keterangan', 255)->nullable();
             $table->timestamps();
         });
