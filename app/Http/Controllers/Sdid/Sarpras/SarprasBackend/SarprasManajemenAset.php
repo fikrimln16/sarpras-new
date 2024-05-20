@@ -655,13 +655,10 @@ class SarprasManajemenAset extends Controller
                     'kode_unik' => strtoupper(Str::random(10)),
                     'id_sarana' => $value,
                     'id_ruang' => $request->ruangan,
-                    'penggunaan' => "iodjwadioad",
-                    'kondisi' => "dwdadjioa",
-                    'status' => "aktif"
                 ]);
             }
         }
-        dd('berhasil');
+        return redirect()->route('manajemen_aset.sarana')->with('success', 'Sarana sudah dipetakan');
     }
 
     public function get_data_inventaris_ruang_sdm()

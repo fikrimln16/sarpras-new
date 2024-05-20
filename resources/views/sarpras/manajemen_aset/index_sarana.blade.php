@@ -6,14 +6,15 @@
         <div class="fright">
 
             @if (auth()->user()->role == '2')
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Metakan
-            </button>
+
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
 
                         <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Metakan
+                        </button>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal">
                             Upload Excel
                         </button>
@@ -109,20 +110,27 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script>
-    
     $('#sarana-table').DataTable({
-    processing: true,
-    serverSide: true,
-    ajax: '{!! route('manajemen_aset.sarana.get_data_sarana') !!}',
-    columns: [
-        { data: 'id', name: 'id' },
-        { data: 'nama_sarana', name: 'nama_sarana' },
-        { data: 'is_mapped', name: 'is_mapped' },
-    ]
-});
+        processing: true,
+        serverSide: true,
+        ajax: '{!!route('manajemen_aset.sarana.get_data_sarana')!!}',
+        columns: [{
+                data: 'id',
+                name: 'id'
+            },
+            {
+                data: 'nama_sarana',
+                name: 'nama_sarana'
+            },
+            {
+                data: 'is_mapped',
+                name: 'is_mapped'
+            },
+        ]
+    });
 
     $(document).ready(function() {
         $('#dataTable').DataTable();
