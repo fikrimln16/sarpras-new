@@ -379,7 +379,6 @@ class SarprasManajemenAset extends Controller
     }
 
     public function delete_sarana($id_ruang, $id)
-    public function delete_sarana($id_ruang, $id)
     {
         // $sarana = Sarana::findOrFail($id);
         PenempatanSarana::where('id', $id)->delete();
