@@ -7,7 +7,7 @@
             </div>
             <div class="modal-body">
                 <!-- Form Tambah -->
-                <form action="{{ route('manajemen_aset.sarana.create') }}" method="POST" id="formTambahSarana">
+                <form action="{{ route('manajemen_aset.sarana.tambah_pemetaan_sarana') }}" method="POST" id="formTambahSarana">
                     @csrf
                     <div class="form-group">
                         <label for="prasarana">Prasarana:</label>
@@ -25,39 +25,50 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label for="skema_biaya">Skema Biaya:</label>
-                        <select class="form-control" id="skema_biaya" name="skema_biaya">
-                            <option value="" disabled selected>Pilih Skema Biaya</option>
-                            <option value="sbsn">SBSN</option>
-                            <option value="phln">PHLN</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group" id="sbsn_proyek_group" style="display: none;">
-                        <label for="sbsn_proyek">Pilih Proyek</label>
-                        <select class="form-control" id="sbsn_proyek" name="uuid_sbsn">
-                            <option value="" disabled selected>Pilih Proyek SBSN</option>
-                            @foreach($skema_biaya as $data)
-                            <option value="{{ $data->uuid_sbsn }}">{{ $data->nama_proyek }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="form-group" id="phln_proyek_group" style="display: none;">
-                        <label for="phln_proyek">Pilih Proyek</label>
-                        <select class="form-control" id="phln_proyek" name="id_phln">
-                            <option value="" disabled selected>Pilih Proyek PHLN</option>
-                            @foreach($phln_data as $data)
-                            <option value="{{ $data->id }}">{{ $data->nama_proyek }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
                     <div id="saranaContainer">
-                        <!-- Sarana akan ditambahkan di sini -->
+                        <div class="form-group">
+                            <label for="sarana_table">Daftar Sarana</label>
+                            <table class="table table-bordered" id="sarana_table">
+                                <thead>
+                                    <tr>
+                                        <th>pilih</th>
+                                        <th>ID Sarana</th>
+                                        <th>Nama Sarana</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($penempatanSarana as $sarana)
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" class="checkbox-dosen" value="{{ $sarana->id }}" data-nama_sarana="{{ $sarana->nama_sarana }}">
+                                        </td>
+                                        <td>{{ $sarana->id }}</td>
+                                        <td>{{ $sarana->nama_sarana }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <button type="button" class="btn btn-success" id="btnTambahSarana">Tambah Sarana</button>
+                    <div id="tambahSaranaForm">
+                        <input type="hidden" name="id_sarana" value="{{ $sarana->id }}">
+                        <div class="form-group">
+                            <label for="sarana_terpilih">Dosen Terpilih</label>
+                            <table class="table table-bordered" id="sarana_terpilih">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nama Sarana</th>
+                                        <th>Jumlah</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dosen terpilih akan ditambahkan di sini -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </form>
             </div>
@@ -66,21 +77,16 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 <script>
     $(document).ready(function() {
-        $('#skema_biaya').change(function() {
-            var selectedValue = $(this).val();
-           
 
-            if (selectedValue === 'sbsn') {
-                $('#sbsn_proyek_group').show();
-                $('#phln_proyek_group').hide();
-
-            } else if (selectedValue === 'phln') {
-                $('#phln_proyek_group').show();
-                $('#sbsn_proyek_group').hide();
-
-            }
+        $('#sarana_table').DataTable({
+            "pageLength": 5,
+            "searching": true
         });
 
         $('#prasarana').change(function() {
@@ -109,6 +115,34 @@
                     $('#ruangan').append('<option>Error loading data</option>');
                 }
             });
+        });
+
+        $('#sarana_table').on('change', '.checkbox-dosen', function() {
+            var id = $(this).val();
+            var nama_sarana = $(this).data('nama_sarana');
+
+            if ($(this).is(':checked')) {
+                // Append selected dosen to the selected list with additional fields
+                $('#sarana_terpilih tbody').append(`
+                      <tr data-id="${id}">
+                          <td><input type="hidden" name="id_sarana[]" value="${id}">${id}</td>
+                          <td>${nama_sarana}</td>
+                          <td><input type="number" name="jumlah_barang[]" class="form-control"></td>
+                          <td><button type="button" class="btn btn-danger btn-sm hapus-dosen">Hapus</button></td>
+                      </tr>
+                  `);
+            } else {
+                // Remove dosen from the selected list
+                $('#sarana_terpilih tbody tr[data-id="' + id + '"]').remove();
+            }
+        });
+
+        $('#sarana_terpilih').on('click', '.hapus-dosen', function() {
+            var id = $(this).closest('tr').data('id');
+            // Uncheck the checkbox in the main table
+            $('#sarana_table .checkbox-dosen[value="' + id + '"]').prop('checked', false);
+            // Remove dosen from the selected list
+            $(this).closest('tr').remove();
         });
     });
 </script>
