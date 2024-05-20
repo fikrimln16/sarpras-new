@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -14,14 +13,13 @@ return new class extends Migration
         Schema::create('penempatan_sarana', function (Blueprint $table) {
             $table->id();
             $table->string('kode_unik', 255)->unique();
-            $table->unsignedBigInteger('id_ruang');
-            $table->unsignedBigInteger('id_sarana');
-            $table->string('penggunaan', 255)->nullable();
-            $table->string('kondisi', 255)->nullable();
-            $table->string('status', 255)->nullable();
-            
+            $table->unsignedBigInteger('id_ruang')->nullable();
+            $table->unsignedBigInteger('id_sarana')->nullable();
+            $table->unsignedBigInteger('id_alat')->nullable();
+
             $table->foreign('id_ruang')->references('id')->on('ruangan')->onDelete('cascade');
             $table->foreign('id_sarana')->references('id')->on('sarana')->onDelete('cascade');
+            $table->foreign('id_alat')->references('id')->on('alat')->onDelete('cascade');
 
             $table->timestamps();
         });
