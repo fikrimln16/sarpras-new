@@ -13,8 +13,8 @@
                         <select class="form-control" id="bangunan" name="id_bangunan" required>
                             <option value="">Pilih Prasarana</option>
                             @foreach ($prasarana as $b)
-                                <option value="{{ $b->id }}" data-jumlah-lantai="{{ $b->jumlah_lantai }}">
-                                    {{ $b->nama_prasarana }}</option>
+                                <option value="{{ $b->id }}" data-jumlah-lantai="{{ $b->prasarana->jumlah_lantai }}">
+                                    {{ $b->prasarana->nama_prasarana }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -44,13 +44,13 @@
                             <label for="kapasitas" class="form-label">Kapasitas:</label>
                             <input type="number" class="form-control" id="kapasitas" name="kapasitas" required>
                         </div>
-                        <div class="col-md-6 mb-3">
+                        {{-- <div class="col-md-6 mb-3">
                             <label for="tahun_perolehan" class="form-label">Tahun Perolehan:</label>
                             <input type="number" class="form-control" id="tahun_perolehan" name="tahun_perolehan"
                                 required>
-                        </div>
+                        </div> --}}
                     </div>
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
                         <label for="kelompok_ruangan" class="form-label">Kelompok Ruangan:</label>
                         <input type="text" class="form-control" id="kelompok_ruangan" name="kelompok_ruangan"
                             required>
@@ -66,7 +66,7 @@
                             <input type="date" class="form-control" id="tgl_selesai_kontrak"
                                 name="tgl_selesai_kontrak">
                         </div>
-                    </div>
+                    </div> --}}
                     <button type="submit" class="btn btn-primary w-100">Simpan</button>
                 </form>
             </div>

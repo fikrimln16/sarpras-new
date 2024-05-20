@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -24,12 +23,12 @@ return new class extends Migration
             $table->string('tanggal_hapus_buku', 20)->nullable();
             $table->string('keterangan', 255)->nullable();
             $table->string('kategori', 50)->nullable();
-            
-            
+
+
             $table->unsignedBigInteger('id_prasarana');
             $table->unsignedBigInteger('id_tanah');
-            $table->foreign('id_prasarana')->references('id')->on('prasarana');
-            $table->foreign('id_tanah')->references('id')->on('tanah');
+            $table->foreign('id_prasarana')->references('id')->on('prasarana')->onDelete('cascade');
+            $table->foreign('id_tanah')->references('id')->on('tanah')->onDelete('cascade');
 
             $table->timestamps();
         });

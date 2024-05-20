@@ -30,6 +30,7 @@ use App\Models\SumberDayaManusia;
 use App\Models\PenempatanSdmRuang;
 use App\Models\Phln;
 use App\Models\Sbsn;
+use App\Models\Tanah;
 
 
 class SarprasManajemenAset extends Controller
@@ -81,6 +82,8 @@ class SarprasManajemenAset extends Controller
                 ->get();
         }
 
+        $tanahList = Tanah::with('prasarana')->get();
+        // dd($tanahList);
 
         // dd($data);
         $bangunan = DataLokasiKampus::find($universityCode)->prasarana;
@@ -104,7 +107,7 @@ class SarprasManajemenAset extends Controller
 
             return view('sarpras.manajemen_aset.components.prasarana_detail', compact('prasarana', 'id'));
         } else {
-            return view('sarpras.manajemen_aset.components.prasarana_table', compact('data'));
+            return view('sarpras.manajemen_aset.components.prasarana_table', compact('data', 'tanahList'));
         }
 
         // dd($bangunan);
@@ -125,7 +128,20 @@ class SarprasManajemenAset extends Controller
         DB::beginTransaction();
 
         try {
-            $prasarana = Prasarana::create($request->all());
+            // Create a new Prasarana record
+            $prasarana = Prasarana::create([
+                'nama_prasarana' => $request->input('nama_prasarana'),
+                'luas' => $request->input('luas'),
+                'alamat' => $request->input('alamat'),
+                'nilai_perolehan' => $request->input('nilai_perolehan'),
+            ]);
+
+            Bangunan::create([
+                'id_prasarana'=> $prasarana->id,
+                'id_tanah'=> $request->input('id_tanah'),
+                'kapasitas'=> $request->input('kapasitas'),
+                'keterangan'=> $request->input('keterangan'),
+            ]);
 
             PenempatanPrasarana::create([
                 'id_prasarana' => $prasarana->id,
@@ -256,10 +272,7 @@ class SarprasManajemenAset extends Controller
         $ruangan = $ruanganQuery->get();
 
         // Mengambil prasarana terkait dengan lokasi kampus
-        $prasarana = Prasarana::select('prasarana.*')
-            ->join('penempatan_prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
-            ->where('penempatan_prasarana.id_data_lokasi_kampus', $universityCode)
-            ->get();
+        $prasarana = Bangunan::with('prasarana')->get();
 
         if ($id) {
             $ruangan = Ruangan::with(['bangunan.prasarana'])->find($id);
@@ -315,10 +328,12 @@ class SarprasManajemenAset extends Controller
         $universities = auth()->user()->universities;
         $universityCode = $universities->first()->id;
 
-        $prasarana = Prasarana::select('prasarana.*')
-            ->join('penempatan_prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
-            ->where('penempatan_prasarana.id_data_lokasi_kampus', $universityCode)
-            ->get();
+        // $prasarana = Prasarana::select('prasarana.*')
+        //     ->join('penempatan_prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
+        //     ->where('penempatan_prasarana.id_data_lokasi_kampus', $universityCode)
+        //     ->get();
+
+        $prasarana = Bangunan::with('prasarana')->get();
 
         // dd($penempatanSarana);
         $role = auth()->user()->role;
@@ -873,4 +888,89 @@ class SarprasManajemenAset extends Controller
     //         ->rawColumns(['aksi'])
     //         ->make(true);
     // }
+
+    public function index_tanah()
+    {
+        return view('sarpras.manajemen_aset.components.tanah_table');
+    }
+
+    public function getTanahData(Request $request)
+    {
+        // Fetching data with related prasarana data
+        $tanahs = Tanah::with('prasarana')
+            ->select(['id', 'tanggal_mutasi_keluar', 'batas', 'keterangan', 'id_prasarana'])
+            ->get();
+
+        return datatables()->of($tanahs)
+            ->addColumn('nama_prasarana', function ($tanah) {
+                return $tanah->prasarana ? $tanah->prasarana->nama_prasarana : '';
+            })
+            ->addColumn('luas', function ($tanah) {
+                return $tanah->prasarana ? $tanah->prasarana->luas : '';
+            })
+            ->addColumn('alamat', function ($tanah) {
+                return $tanah->prasarana ? $tanah->prasarana->alamat : '';
+            })
+            ->addColumn('nilai_perolehan', function ($tanah) {
+                return $tanah->prasarana ? $tanah->prasarana->nilai_perolehan : '';
+            })
+            ->addColumn('aksi', function ($tanah) {
+                return '
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="' . $tanah->id . '">Delete</button>
+                ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
+    }
+
+
+    public function delete_tanah($id)
+    {
+        $tanah = Tanah::findOrFail($id);
+        // Lakukan penghapusan
+        $tanah->delete();
+
+        return redirect()->route('manajemen_aset.tanah')->with('success', 'Tanah deleted successfully.');
+    }
+
+    public function tambah_tanah(Request $request)
+    {
+        // Validate the request data
+        $request->validate([
+            'nama_prasarana' => 'required|string|max:255',
+            'luas' => 'required|string|max:255',
+            'alamat' => 'required|string|max:255',
+            'nilai_perolehan' => 'required|numeric',
+            'tanggal_mutasi_keluar' => 'required|date',
+            'batas' => 'required|string|max:255',
+            'keterangan' => 'required|string|max:255',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            // Create a new Prasarana record
+            $prasarana = Prasarana::create([
+                'nama_prasarana' => $request->input('nama_prasarana'),
+                'luas' => $request->input('luas'),
+                'alamat' => $request->input('alamat'),
+                'nilai_perolehan' => $request->input('nilai_perolehan'),
+            ]);
+
+            // Create a new Tanah record with the ID of the newly created Prasarana record
+            Tanah::create([
+                'id_prasarana' => $prasarana->id,
+                'tanggal_mutasi_keluar' => $request->input('tanggal_mutasi_keluar'),
+                'batas' => $request->input('batas'),
+                'keterangan' => $request->input('keterangan'),
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('manajemen_aset.tanah')->with('success', 'Tanah created successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'There was an error creating the Tanah: ' . $e->getMessage());
+        }
+    }
 }

@@ -25,8 +25,13 @@ class Prasarana extends Model
         return $this->hasMany(PenempatanPrasarana::class, 'id_prasarana');
     }
 
-    public function ruangan()
+    public function tanah()
     {
-        return $this->hasMany(Ruangan::class, 'id_ruangan');
+        return $this->hasOne(Tanah::class, 'id_prasarana');
+    }
+
+    public function bangunan()
+    {
+        return $this->hasOne(Tanah::class, 'id_bangunan');
     }
 }

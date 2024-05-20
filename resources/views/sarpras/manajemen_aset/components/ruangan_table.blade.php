@@ -24,7 +24,7 @@
                     <th>Luas Ruang</th>
                     <th>Lantai</th>
                     <th>Kapasitas</th>
-                    <th>Tahun Perolehan</th>
+                    {{-- <th>Tahun Perolehan</th> --}}
                     <th>Nama Bangunan</th>
                     <th>Aksi</th>
                 </tr>
@@ -37,7 +37,7 @@
                     <td>{{ $r->luas_ruang }}</td>
                     <td>{{ $r->lantai }}</td>
                     <td>{{ $r->kapasitas }}</td>
-                    <td>{{ $r->tahun_perolehan }}</td>
+                    {{-- <td>{{ $r->tahun_perolehan }}</td> --}}
                     <td>{{ $r->bangunan->prasarana->nama_prasarana }}</td>
                     {{-- <td>
                         <!-- Contoh tombol aksi -->

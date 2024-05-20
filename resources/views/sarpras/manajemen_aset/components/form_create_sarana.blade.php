@@ -7,14 +7,17 @@
             </div>
             <div class="modal-body">
                 <!-- Form Tambah -->
-                <form action="{{ route('manajemen_aset.sarana.tambah_pemetaan_sarana') }}" method="POST" id="formTambahSarana">
+                <form action="{{ route('manajemen_aset.sarana.tambah_pemetaan_sarana') }}" method="POST"
+                    id="formTambahSarana">
                     @csrf
                     <div class="form-group">
                         <label for="prasarana">Prasarana:</label>
                         <select class="form-control" id="prasarana" name="prasarana">
-                            <option disabled selected>Pilih Prasarana</option> <!-- asumsikan kolom nama ada di tabel bangunan -->
-                            @foreach($prasarana as $b)
-                            <option value="{{ $b->id }}">{{ $b->nama_prasarana }}</option> <!-- asumsikan kolom nama ada di tabel bangunan -->
+                            <option disabled selected>Pilih Prasarana</option>
+                            <!-- asumsikan kolom nama ada di tabel bangunan -->
+                            @foreach ($prasarana as $b)
+                                <option value="{{ $b->id }}">{{ $b->prasarana->nama_prasarana }}</option>
+                                <!-- asumsikan kolom nama ada di tabel bangunan -->
                             @endforeach
                         </select>
                     </div>
@@ -38,13 +41,15 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($penempatanSarana as $sarana)
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox" class="checkbox-dosen" value="{{ $sarana->id }}" data-nama_sarana="{{ $sarana->nama_sarana }}">
-                                        </td>
-                                        <td>{{ $sarana->id }}</td>
-                                        <td>{{ $sarana->nama_sarana }}</td>
-                                    </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" class="checkbox-dosen"
+                                                    value="{{ $sarana->id }}"
+                                                    data-nama_sarana="{{ $sarana->nama_sarana }}">
+                                            </td>
+                                            <td>{{ $sarana->id }}</td>
+                                            <td>{{ $sarana->nama_sarana }}</td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -91,7 +96,7 @@
 
         $('#prasarana').change(function() {
             var idBangunan = $(this).val(); // Get selected prasarana ID
-
+            // console.log(idBangunan);
             // Clear existing options
             $('#ruangan').empty();
 
@@ -105,7 +110,8 @@
                 success: function(data) {
                     if (data.length > 0) {
                         $.each(data, function(key, value) {
-                            $('#ruangan').append('<option value="' + value.id + '">' + value.nama_ruangan + '</option>');
+                            $('#ruangan').append('<option value="' + value.id +
+                                '">' + value.nama_ruangan + '</option>');
                         });
                     } else {
                         $('#ruangan').append('<option>No Ruangan Available</option>');

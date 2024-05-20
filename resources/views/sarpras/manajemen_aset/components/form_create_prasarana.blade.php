@@ -3,7 +3,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah Prasarana</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Bangunan</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -15,21 +15,35 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="namaPrasarana">Nama Prasarana:</label>
-                                <input type="text" class="form-control" id="namaPrasarana" name="nama_prasarana" required>
+                                <label for="tanah_id">Pilih Tanah:</label>
+                                <select class="form-control" id="tanah_id" name="id_tanah">
+                                    <option value="" disabled selected>Pilih Tanah</option>
+                                    @foreach ($tanahList as $tanah)
+                                        <option value="{{ $tanah->id }}">{{ $tanah->prasarana->nama_prasarana }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="jenisPrasarana">Jenis Prasarana:</label>
+                                <label for="namaPrasarana">Nama Bangunan:</label>
+                                <input type="text" class="form-control" id="namaPrasarana" name="nama_prasarana">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="jenisPrasarana">Jenis Bangunan:</label>
                                 <select class="form-control" id="jenisPrasarana" name="jenis_prasarana">
                                     <option value="" disabled selected>Pilih Salah Satu</option>
                                     <option value="Gedung Kuliah">Gedung Kuliah</option>
                                     <option value="Laboratorium">Laboratorium</option>
                                     <option value="Gedung STP">Gedung STP</option>
                                     <option value="Gedung Perpustakaan">Gedung Perpustakaan</option>
-                                    <option value="Gedung Layanan Akademik dan Rektorat">Gedung Layanan Akademik dan Rektorat</option>
+                                    <option value="Gedung Layanan Akademik dan Rektorat">Gedung Layanan Akademik dan
+                                        Rektorat</option>
                                     <option value="Gedung Auditorium">Auditorium</option>
                                     <option value="Gedung Asrama">Gedung Asrama</option>
                                     <option value="Lainnya">Lainnya</option>
@@ -61,170 +75,28 @@
                             </div>
                         </div>
 
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="panjang">Panjang (m):</label>
-                                <input type="number" step="0.1" class="form-control" id="panjang" name="panjang" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="lebar">Lebar (m):</label>
-                                <input type="number" step="0.1" class="form-control" id="lebar" name="lebar" required>
-                            </div>
-                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="luas">Luas (m²):</label>
-                                <input type="number" step="0.1" class="form-control" id="luas" name="luas" required>
+                                <input type="number" step="0.1" class="form-control" id="luas" name="luas">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="alamat">Alamat:</label>
-                                <input type="text" class="form-control" id="alamat" name="alamat" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="lintang">Lintang:</label>
-                                <input type="text" class="form-control" id="lintang" name="lintang" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="bujur">Bujur:</label>
-                                <input type="text" class="form-control" id="bujur" name="bujur" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="bmnSatker">BMN Satker:</label>
-                                <input type="text" class="form-control" id="bmnSatker" name="bmn_satker" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="bmnKodeBarang">BMN Kode Barang:</label>
-                                <input type="text" class="form-control" id="bmnKodeBarang" name="bmn_kode_barang" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="bmnNup">BMN NUP:</label>
-                                <input type="number" class="form-control" id="bmnNup" name="bmn_nup" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="tanggalPerolehan">Tanggal Perolehan:</label>
-                                <input type="date" class="form-control" id="tanggalPerolehan" name="tanggal_perolehan" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="nilaiPerolehan">Nilai Perolehan (Rp):</label>
-                                <input type="number" class="form-control" id="nilaiPerolehan" name="nilai_perolehan" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="nilaiBuku">Nilai Buku (Rp):</label>
-                                <input type="number" class="form-control" id="nilaiBuku" name="nilai_buku" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="merk">MERK:</label>
-                                <input type="text" class="form-control" id="merk" name="merk" required>
+                                <input type="text" class="form-control" id="alamat" name="alamat">
                             </div>
                         </div>
 
-                        <div class="col-md-6 p-2">
+
+
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label for="luasBangunan">Luas Bangunan:</label>
-                                <input type="text" class="form-control" id="luasBangunan" name="luas_bangunan" required>
+                                <label for="nilaiPerolehan">Nilai Perolehan (Rp):</label>
+                                <input type="number" class="form-control" id="nilaiPerolehan" name="nilai_perolehan">
                             </div>
                         </div>
-                        <div class="col-md-6 p-2">
-                            <div class="form-group">
-                                <label for="luasTanah">Luas Tanah:</label>
-                                <input type="text" class="form-control" id="luasTanah" name="luas_tanah" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6 p-2">
-                            <div class="form-group">
-                                <label for="jumlahLantai">Jumlah Lantai:</label>
-                                <input type="number" class="form-control" id="jumlahLantai" name="jumlah_lantai" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6 p-2">
-                            <div class="form-group">
-                                <label for="objekInfrastruktur">Objek Infrastruktur:</label>
-                                <input type="text" class="form-control" id="objekInfrastruktur" name="objek_infrastruktur" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6 p-2">
-                            <div class="form-group">
-                                <label for="kdCabKota">Kd Cab Kota:</label>
-                                <input type="text" class="form-control" id="kdCabKota" name="KD_CAB_KOTA" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6 p-2">
-                            <div class="form-group">
-                                <label for="nmKabKota">Nm Kab Kota:</label>
-                                <input type="text" class="form-control" id="nmKabKota" name="NM_KAB_KOTA" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6 p-2">
-                            <div class="form-group">
-                                <label for="kdKabKota">Kd Kab Kota:</label>
-                                <input type="text" class="form-control" id="kdKabKota" name="KD_KAB_KOTA" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6 p-2">
-                            <div class="form-group">
-                                <label for="kdProv">Kd Prov:</label>
-                                <input type="text" class="form-control" id="kdProv" name="KD_PROV" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6 p-2">
-                            <div class="form-group">
-                                <label for="nmProv">Nm Prov:</label>
-                                <input type="text" class="form-control" id="nmProv" name="NM_PROV" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6 p-2">
-                            <div class="form-group">
-                                <label for="penggunaan">Penggunaan:</label>
-                                <input type="text" class="form-control" id="penggunaan" name="penggunaan" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6 p-2">
-                            <div class="form-group">
-                                <label for="kondisi">Kondisi:</label>
-                                <input type="text" class="form-control" id="kondisi" name="kondisi" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6 p-2">
-                            <div class="form-group">
-                                <label for="noDokKepemilikan">No Dok Kepemilikan:</label>
-                                <input type="text" class="form-control" id="noDokKepemilikan" name="NO_DOK_KEPEMILIKAN" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6 p-2">
-                            <div class="form-group">
-                                <label for="dokKepemilikan">Dok Kepemilikan:</label>
-                                <input type="text" class="form-control" id="dokKepemilikan" name="DOK_KEPEMILIKAN" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6 p-2">
-                            <div class="form-group">
-                                <label for="jnsDokKepemilikan">Jns Dok Kepemilikan:</label>
-                                <input type="text" class="form-control" id="jnsDokKepemilikan" name="JNS_DOK_KEPEMILIKAN" required>
-                            </div>
-                        </div>
+
 
                         <div class="col-md-6">
                             <div class="form-group form-check">
@@ -235,40 +107,10 @@
 
                         <!-- Dynamic Bangunan fields container -->
                         <div id="bangunanFields">
-                            <div class="form-group">
-                                <label for="kdSatkerTanah">Kode Satker Tanah:</label>
-                                <input type="text" class="form-control" id="kdSatkerTanah" name="KD_SATKER_TANAH">
-                            </div>
-                            <div class="form-group">
-                                <label for="nmSatkerTanah">Nama Satker Tanah:</label>
-                                <input type="text" class="form-control" id="nmSatkerTanah" name="NM_SATKER_TANAH">
-                            </div>
-                            <div class="form-group">
-                                <label for="kdBrgTanah">Kode Barang Tanah:</label>
-                                <input type="text" class="form-control" id="kdBrgTanah" name="KD_BRG_TANAH">
-                            </div>
-                            <div class="form-group">
-                                <label for="nmBrgTanah">Nama Barang Tanah:</label>
-                                <input type="text" class="form-control" id="nmBrgTanah" name="NM_BRG_TANAH">
-                            </div>
-                            <div class="form-group">
-                                <label for="nupBrgTanah">NUP Barang Tanah:</label>
-                                <input type="text" class="form-control" id="nupBrgTanah" name="NUP_BRG_TANAH">
-                            </div>
-                            <div class="form-group">
-                                <label for="tglSkPemakai">Tanggal SK Pemakai:</label>
-                                <input type="date" class="form-control" id="tglSkPemakai" name="TGL_SK_PEMAKAIAN">
-                            </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="kapasitas">Kapasitas:</label>
                                     <input type="number" class="form-control" id="kapasitas" name="kapasitas">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="tanggalHapusBuku">Tanggal Hapus Buku:</label>
-                                    <input type="date" class="form-control" id="tanggalHapusBuku" name="tanggal_hapus_buku">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -289,43 +131,43 @@
 
 <!-- <div>
             <label for="luas_bangunan">Luas Bangunan:</label>
-            <input type="number" id="luas_bangunan" name="luas_bangunan" required>
+            <input type="number" id="luas_bangunan" name="luas_bangunan"  >
         </div>
         <div>
             <label for="luas_tanah">Luas Tanah:</label>
-            <input type="number" id="luas_tanah" name="luas_tanah" required>
+            <input type="number" id="luas_tanah" name="luas_tanah"  >
         </div>
         <div>
             <label for="jumlah_lantai">Jumlah Lantai:</label>
-            <input type="number" id="jumlah_lantai" name="jumlah_lantai" required>
+            <input type="number" id="jumlah_lantai" name="jumlah_lantai"  >
         </div>
         <div>
             <label for="objek_infrastruktur">Objek Infrastruktur:</label>
-            <input type="text" id="objek_infrastruktur" name="objek_infrastruktur" required>
+            <input type="text" id="objek_infrastruktur" name="objek_infrastruktur"  >
         </div>
         <div>
             <label for="BMN_satker">BMN Satker:</label>
-            <input type="text" id="BMN_satker" name="BMN_satker" required>
+            <input type="text" id="BMN_satker" name="BMN_satker"  >
         </div>
         <div>
             <label for="BMN_kode_barang">BMN Kode Barang:</label>
-            <input type="number" id="BMN_kode_barang" name="BMN_kode_barang" required>
+            <input type="number" id="BMN_kode_barang" name="BMN_kode_barang"  >
         </div>
         <div>
             <label for="BMN_nup">BMN NUP:</label>
-            <input type="text" id="BMN_nup" name="BMN_nup" required>
+            <input type="text" id="BMN_nup" name="BMN_nup"  >
         </div>
         <div>
             <label for="tanggal_perolehan">Tanggal Perolehan:</label>
-            <input type="date" id="tanggal_perolehan" name="tanggal_perolehan" required>
+            <input type="date" id="tanggal_perolehan" name="tanggal_perolehan"  >
         </div>
         <div>
             <label for="nilai_perolehan">Nilai Perolehan:</label>
-            <input type="number" id="nilai_perolehan" name="nilai_perolehan" required>
+            <input type="number" id="nilai_perolehan" name="nilai_perolehan"  >
         </div>
         <div>
             <label for="nilai_buku">Nilai Buku:</label>
-            <input type="number" id="nilai_buku" name="nilai_buku" required>
+            <input type="number" id="nilai_buku" name="nilai_buku"  >
         </div>
         <div>
             <label for="merk">Merk:</label>
@@ -333,27 +175,27 @@
         </div>
         <div>
             <label for="KD_KAB_KOTA">Kode Kabupaten/Kota:</label>
-            <input type="text" id="KD_KAB_KOTA" name="KD_KAB_KOTA" required>
+            <input type="text" id="KD_KAB_KOTA" name="KD_KAB_KOTA"  >
         </div>
         <div>
             <label for="NM_KAB_KOTA">Nama Kabupaten/Kota:</label>
-            <input type="text" id="NM_KAB_KOTA" name="NM_KAB_KOTA" required>
+            <input type="text" id="NM_KAB_KOTA" name="NM_KAB_KOTA"  >
         </div>
         <div>
             <label for="KD_PROV">Kode Provinsi:</label>
-            <input type="text" id="KD_PROV" name="KD_PROV" required>
+            <input type="text" id="KD_PROV" name="KD_PROV"  >
         </div>
         <div>
             <label for="NM_PROV">Nama Provinsi:</label>
-            <input type="text" id="NM_PROV" name="NM_PROV" required>
+            <input type="text" id="NM_PROV" name="NM_PROV"  >
         </div>
         <div>
             <label for="penggunaan">Penggunaan:</label>
-            <input type="text" id="penggunaan" name="penggunaan" required>
+            <input type="text" id="penggunaan" name="penggunaan"  >
         </div>
         <div>
             <label for="kondisi">Kondisi:</label>
-            <select id="kondisi" name="kondisi" required>
+            <select id="kondisi" name="kondisi"  >
                 <option value="baik">Baik</option>
                 <option value="rusak">Rusak</option>
                 <option value="perlu-perbaikan">Perlu Perbaikan</option>
@@ -361,7 +203,7 @@
         </div>
         <div>
             <label for="NO_DOK_KEPEMILIKAN">Nomor Dokumen Kepemilikan:</label>
-            <input type="text" id="NO_DOK_KEPEMILIKAN" name="NO_DOK_KEPEMILIKAN" required>
+            <input type="text" id="NO_DOK_KEPEMILIKAN" name="NO_DOK_KEPEMILIKAN"  >
         </div>
         <div>
             <label for="DOK_KEPEMILIKAN">Dokumen Kepemilikan:</label>
@@ -369,35 +211,35 @@
         </div>
         <div>
             <label for="JNS_DOK_KEPEMILIKAN">Jenis Dokumen Kepemilikan:</label>
-            <input type="text" id="JNS_DOK_KEPEMILIKAN" name="JNS_DOK_KEPEMILIKAN" required>
+            <input type="text" id="JNS_DOK_KEPEMILIKAN" name="JNS_DOK_KEPEMILIKAN"  >
         </div>
         <div>
             <label for="KD_SATKER_TANAH">Kode Satuan Kerja Tanah:</label>
-            <input type="text" id="KD_SATKER_TANAH" name="KD_SATKER_TANAH" required>
+            <input type="text" id="KD_SATKER_TANAH" name="KD_SATKER_TANAH"  >
         </div>
         <div>
             <label for="NM_SATKER_TANAH">Nama Satuan Kerja Tanah:</label>
-            <input type="text" id="NM_SATKER_TANAH" name="NM_SATKER_TANAH" required>
+            <input type="text" id="NM_SATKER_TANAH" name="NM_SATKER_TANAH"  >
         </div>
         <div>
             <label for="KD_BRG_TANAH">Kode Barang Tanah:</label>
-            <input type="number" id="KD_BRG_TANAH" name="KD_BRG_TANAH" required>
+            <input type="number" id="KD_BRG_TANAH" name="KD_BRG_TANAH"  >
         </div>
         <div>
             <label for="NM_BRG_TANAH">Nama Barang Tanah:</label>
-            <input type="text" id="NM_BRG_TANAH" name="NM_BRG_TANAH" required>
+            <input type="text" id="NM_BRG_TANAH" name="NM_BRG_TANAH"  >
         </div>
         <div>
             <label for="NUP_BRG_TANAH">NUP Barang Tanah:</label>
-            <input type="text" id="NUP_BRG_TANAH" name="NUP_BRG_TANAH" required>
+            <input type="text" id="NUP_BRG_TANAH" name="NUP_BRG_TANAH"  >
         </div>
         <div>
             <label for="TGL_SK_PEMAKAIAN">Tanggal SK Pemakaian:</label>
-            <input type="date" id="TGL_SK_PEMAKAIAN" name="TGL_SK_PEMAKAIAN" required>
+            <input type="date" id="TGL_SK_PEMAKAIAN" name="TGL_SK_PEMAKAIAN"  >
         </div>
         <div>
             <label for="kapasitas">Kapasitas:</label>
-            <input type="number" id="kapasitas" name="kapasitas" required>
+            <input type="number" id="kapasitas" name="kapasitas"  >
         </div>
         <div>
             <label for="tanggal_hapus_buku">Tanggal Hapus Buku:</label>
@@ -405,7 +247,7 @@
         </div>
         <div>
             <label for="keterangan">Keterangan:</label>
-            <input type="text" id="keterangan" name="keterangan" required>
+            <input type="text" id="keterangan" name="keterangan"  >
         </div> -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
@@ -432,42 +274,42 @@
     });
 
     $('#prasaranaForm').submit(function(e) {
-    var jenisPrasarana = $('#jenisPrasarana').val();
-    var jenisTerpaduProdi = $('#jenisTerpaduProdi').val();
-    var jenisLaboratorium = $('#jenisLaboratorium').val();
+        var jenisPrasarana = $('#jenisPrasarana').val();
+        var jenisTerpaduProdi = $('#jenisTerpaduProdi').val();
+        var jenisLaboratorium = $('#jenisLaboratorium').val();
 
-    if (jenisPrasarana === 'Gedung Kuliah' && jenisTerpaduProdi) {
-        var gabungan = jenisPrasarana + ' ' + jenisTerpaduProdi;
-        $('<input>').attr({
-            type: 'hidden',
-            name: 'jenis_prasarana',
-            value: gabungan
-        }).appendTo('#prasaranaForm');
-    }
+        if (jenisPrasarana === 'Gedung Kuliah' && jenisTerpaduProdi) {
+            var gabungan = jenisPrasarana + ' ' + jenisTerpaduProdi;
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'jenis_prasarana',
+                value: gabungan
+            }).appendTo('#prasaranaForm');
+        }
 
-    console.log('Form submitted with values:', {
-        namaPrasarana: $('#namaPrasarana').val(),
-        jenisPrasarana: jenisPrasarana,
-        jenisTerpaduProdi: jenisTerpaduProdi,
-        gabungan: gabungan
-    });
+        console.log('Form submitted with values:', {
+            namaPrasarana: $('#namaPrasarana').val(),
+            jenisPrasarana: jenisPrasarana,
+            jenisTerpaduProdi: jenisTerpaduProdi,
+            gabungan: gabungan
+        });
 
-    if (jenisPrasarana === 'Laboratorium' && jenisTerpaduProdi && jenisLaboratorium) {
-        console.log('ini gedung labo bray')
-        var gabungan = jenisPrasarana + ' ' + jenisTerpaduProdi + ' ' + jenisLaboratorium;
-        $('<input>').attr({
-            type: 'hidden',
-            name: 'jenis_prasarana',
-            value: gabungan
-        }).appendTo('#prasaranaForm');
-    }
-    console.log('Form submitted with values:', {
-        namaPrasarana: $('#namaPrasarana').val(),
-        jenisPrasarana: jenisPrasarana,
-        jenisTerpaduProdi: jenisTerpaduProdi,
-        jenisLaboratorium: jenisLaboratorium,
-        gabungan: gabungan
-    });
+        if (jenisPrasarana === 'Laboratorium' && jenisTerpaduProdi && jenisLaboratorium) {
+            console.log('ini gedung labo bray')
+            var gabungan = jenisPrasarana + ' ' + jenisTerpaduProdi + ' ' + jenisLaboratorium;
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'jenis_prasarana',
+                value: gabungan
+            }).appendTo('#prasaranaForm');
+        }
+        console.log('Form submitted with values:', {
+            namaPrasarana: $('#namaPrasarana').val(),
+            jenisPrasarana: jenisPrasarana,
+            jenisTerpaduProdi: jenisTerpaduProdi,
+            jenisLaboratorium: jenisLaboratorium,
+            gabungan: gabungan
+        });
     });
 </script>
 

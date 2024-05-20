@@ -8,7 +8,10 @@
    
     <ul class="nav nav-underline">
         <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('manajemen_aset.prasarana') ? 'active' : '' }}" aria-current="page" href="{{ route('manajemen_aset.prasarana') }}">Prasarana</a>
+            <a class="nav-link {{ request()->routeIs('manajemen_aset.tanah') ? 'active' : '' }}" aria-current="page" href="{{ route('manajemen_aset.tanah') }}">Tanah</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('manajemen_aset.prasarana') ? 'active' : '' }}" aria-current="page" href="{{ route('manajemen_aset.prasarana') }}">Bangunan</a>
         </li>
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('manajemen_aset.ruangan') ? 'active' : '' }}" href="{{ route('manajemen_aset.ruangan') }}">Ruangan</a>
