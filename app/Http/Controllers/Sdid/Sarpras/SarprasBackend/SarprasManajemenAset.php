@@ -160,7 +160,7 @@ class SarprasManajemenAset extends Controller
 
     public function get_data_ruangan_by_bangunan(Request $request)
     {
-        $ruangan = Ruangan::where('id_prasarana', $request->id_bangunan)->get();
+        $ruangan = Ruangan::where('id_bangunan', $request->id_bangunan)->get();
         return response()->json($ruangan);
     }
 
@@ -332,20 +332,12 @@ class SarprasManajemenAset extends Controller
                 ->select('s.*', 'p.*', 'r.*', 'ps.*')
                 ->get();
         } else {
-            $penempatanSarana = DB::table('penempatan_sarana as ps')
-                ->join('ruangan as r', 'ps.id_ruang', '=', 'r.id')
-                ->join('bangunan as b', 'r.id_bangunan', '=', 'b.id')
-                ->join('prasarana as p', 'b.id_prasarana', '=', 'p.id')
-                ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
-                ->leftJoin('sarana as s', 'ps.id_sarana', '=', 's.id')
-                ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
-                ->select('s.*', 'p.*', 'r.*', 'ps.*')
-                ->get();
+            $penempatanSarana = Sarana::all();
+            // dd($penempatanSarana);
         }
 
         $skema_biaya = Sbsn::where('id_data_lokasi_kampus', $universityCode)->get();
         $phln_data = Phln::all();
-
 
 
 
@@ -377,6 +369,24 @@ class SarprasManajemenAset extends Controller
 
         // dd($penempatanSarana);
     }
+
+    public function get_data_sarana()
+    {
+        // Fetch distinct nama_sarana from the sarana table
+        $sarana = Sarana::select('id', 'nama_sarana')
+            ->distinct()
+            ->get();
+
+        // Map the results to add the is_mapped column based on the existence in penempatan_sarana
+        $sarana = $sarana->map(function ($item) {
+            $item->is_mapped = DB::table('penempatan_sarana')->where('id_sarana', $item->id)->exists() ? 'yes' : 'no';
+            return $item;
+        });
+
+        return datatables()->of($sarana)
+            ->make(true);
+    }
+
 
     public function delete_sarana($id_ruang, $id)
     {
@@ -696,18 +706,19 @@ class SarprasManajemenAset extends Controller
                 DB::raw('COUNT(prs.id_sdm) as jumlah_orang_terisi')
             )
             ->groupBy('r.id', 'r.kode_ruang', 'r.nama_ruangan', 'r.kapasitas');
-            // ->get()
-            // ->map(function ($item) {
-            //     $item->tersisa = $item->kapasitas - $item->jumlah_orang_terisi;
-            //     return $item;
-            // });
+        // ->get()
+        // ->map(function ($item) {
+        //     $item->tersisa = $item->kapasitas - $item->jumlah_orang_terisi;
+        //     return $item;
+        // });
 
         if ($request->has('building_id') && $request->building_id != '') {
             $data->where('r.id_bangunan', $request->building_id)->get()
-            ->map(function ($item) {
-                $item->tersisa = $item->kapasitas - $item->jumlah_orang_terisi;
-                return $item;
-            });;
+                ->map(function ($item) {
+                    $item->tersisa = $item->kapasitas - $item->jumlah_orang_terisi;
+                    return $item;
+                });
+            ;
         }
 
         // if (auth()->user()->role != '1') {
