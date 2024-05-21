@@ -1011,6 +1011,9 @@ class SarprasManajemenAset extends Controller
 
     public function tambah_tanah(Request $request)
     {
+        $universities = auth()->user()->universities;
+        $universityCode = $universities->first()->id;
+
         // Validate the request data
         $request->validate([
             'nama_prasarana' => 'required|string|max:255',
@@ -1033,6 +1036,12 @@ class SarprasManajemenAset extends Controller
                 'nilai_perolehan' => $request->input('nilai_perolehan'),
             ]);
 
+            // Create a new PenempatanPrasarana record
+            PenempatanPrasarana::create([
+                'id_prasarana' => $prasarana->id,
+                'id_data_lokasi_kampus' => $universityCode
+            ]);
+
             // Create a new Tanah record with the ID of the newly created Prasarana record
             Tanah::create([
                 'id_prasarana' => $prasarana->id,
@@ -1041,12 +1050,15 @@ class SarprasManajemenAset extends Controller
                 'keterangan' => $request->input('keterangan'),
             ]);
 
+
             DB::commit();
 
             return redirect()->route('manajemen_aset.tanah')->with('success', 'Tanah created successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error('Error creating Tanah: ' . $e->getMessage());
             return redirect()->back()->with('error', 'There was an error creating the Tanah: ' . $e->getMessage());
         }
     }
+
 }
