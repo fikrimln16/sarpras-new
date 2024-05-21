@@ -721,6 +721,7 @@ class SarprasManajemenAset extends Controller
         $sheet->setCellValue('B1', 'kategori');
         $sheet->setCellValue('C1', 'spesifikasi');
         $sheet->setCellValue('D1', 'nilai_perolehan');
+        $sheet->setCellValue('E1', 'jumlah');
 
         // Create a writer to output the spreadsheet
         $writer = new Xlsx($spreadsheet);
