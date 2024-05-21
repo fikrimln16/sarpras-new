@@ -40,6 +40,10 @@ Route::post('manajemen_aset/ruangan', [SarprasManajemenAset::class, 'create_ruan
      ->name('manajemen_aset.ruangan.create');
 Route::delete('manajemen_aset/ruangan/delete/{id}', [SarprasManajemenAset::class, 'delete_ruangan'])
      ->name('manajemen_aset.ruangan.delete');
+Route::post('/manajemen_aset/ruangan/import', [SarprasManajemenAset::class, 'tambah_ruangan_import'])
+     ->name('manajemen_aset.ruangan.import');
+Route::get('/manajemen_aset/ruangan/get/download', [SarprasManajemenAset::class, 'downloadTemplateExcelRuangan'])->name('manajemen_aset.ruangan.download_template');
+
 
 
 Route::get('manajemen_aset/penempatansarana/{id_ruangan}', [SarprasManajemenAset::class, 'penempatan_sarana'])

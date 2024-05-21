@@ -334,6 +334,91 @@ class SarprasManajemenAset extends Controller
         return redirect()->route('manajemen_aset.ruangan')->with('success', 'Prasarana created successfully.');
     }
 
+    public function tambah_ruangan_import(Request $request)
+    {
+
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+
+        $file = $request->file('file');
+        $path = $file->store('temp'); // Menyimpan file sementara
+
+        $data = Excel::toArray([], storage_path('app/' . $path));
+
+        // Assuming the first sheet
+        $rows = $data[0];
+
+        
+
+        if (
+            isset($rows[0][0]) && $rows[0][0] === 'kode_ruang' &&
+            isset($rows[0][1]) && $rows[0][1] === 'nama_ruangan' &&
+            isset($rows[0][2]) && $rows[0][2] === 'luas_ruang' &&
+            isset($rows[0][3]) && $rows[0][3] === 'lantai' &&
+            isset($rows[0][4]) && $rows[0][4] === 'kapasitas'
+        ) {
+            // Melewati baris pertama (header)
+            array_shift($rows);
+
+            // Proses setiap baris data
+            foreach ($rows as $row) {
+                // Memeriksa apakah semua elemen dalam baris sudah diset
+                if (isset($row[0]) && isset($row[1]) && isset($row[2]) && isset($row[3]) && isset($row[4])) {
+                    // Memeriksa apakah data sudah ada di database
+                    $existingRuangan = Ruangan::where('kode_ruang', $row[0])->first();
+                    // Jika data tidak ada di tabel sarana, tambahkan data sebanyak jumlah yang ditentukan
+                    if (!$existingRuangan) {
+                        
+                        $ruangan = Ruangan::create([
+                            'id_bangunan' => $request->input('id_bangunan'),
+                            'kode_ruang' => $row[0] ?? null,
+                            'nama_ruangan' => $row[1] ?? null,
+                            'luas_ruang' => $row[2] ?? null,
+                            'lantai' => $row[3] ?? null,
+                            'kapasitas' => $row[4] ?? null,
+
+                        ]);
+                    }
+                }
+            }
+
+            // Hapus file sementara setelah proses selesai
+            Storage::delete($path);
+
+            return redirect()->route('manajemen_aset.ruangan')->with('success', 'Ruangan berhasil diimpor.');
+        } else {
+            // Jika format header tidak sesuai, tampilkan pesan error
+            Storage::delete($path); // Hapus file sementara jika ada error
+            return redirect()->back()->with('error', 'Format file tidak sesuai.');
+        }
+    }
+
+
+    public function downloadTemplateExcelRuangan()
+    {
+        $spreadsheet = new Spreadsheet();
+
+        // Set the active sheet and populate it with headers
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'kode_ruang');
+        $sheet->setCellValue('B1', 'nama_ruangan');
+        $sheet->setCellValue('C1', 'luas_ruang');
+        $sheet->setCellValue('D1', 'lantai');
+        $sheet->setCellValue('E1', 'kapasitas');
+
+        // Create a writer to output the spreadsheet
+        $writer = new Xlsx($spreadsheet);
+
+        // Prepare a temporary file to save the spreadsheet
+        $filename = 'template.xlsx';
+        $temp_file = tempnam(sys_get_temp_dir(), $filename);
+        $writer->save($temp_file);
+
+        // Return the file as a response for download
+        return response()->download($temp_file, $filename)->deleteFileAfterSend(true);
+    }
+
     public function penempatan_sarana($id_ruangan)
     {
         $penempatanSarana = PenempatanSarana::with(['ruangan', 'sarana'])->get();
