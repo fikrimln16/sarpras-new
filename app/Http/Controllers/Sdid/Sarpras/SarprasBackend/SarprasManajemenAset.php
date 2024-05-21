@@ -1056,7 +1056,6 @@ class SarprasManajemenAset extends Controller
             return redirect()->route('manajemen_aset.tanah')->with('success', 'Tanah created successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Error creating Tanah: ' . $e->getMessage());
             return redirect()->back()->with('error', 'There was an error creating the Tanah: ' . $e->getMessage());
         }
     }
