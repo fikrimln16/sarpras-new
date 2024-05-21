@@ -292,7 +292,11 @@ class SarprasManajemenAset extends Controller
         $ruangan = $ruanganQuery->get();
 
         // Mengambil prasarana terkait dengan lokasi kampus
-        $prasarana = Bangunan::with('prasarana')->get();
+        $prasarana = Bangunan::join('prasarana as p', 'bangunan.id_prasarana', '=', 'p.id')
+        ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
+        ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
+        ->select('bangunan.*', 'p.nama_prasarana', 'p.jumlah_lantai')
+        ->get();
 
         if ($id) {
             $ruangan = Ruangan::with(['bangunan.prasarana'])->find($id);
@@ -353,7 +357,11 @@ class SarprasManajemenAset extends Controller
         //     ->where('penempatan_prasarana.id_data_lokasi_kampus', $universityCode)
         //     ->get();
 
-        $prasarana = Bangunan::with('prasarana')->get();
+        $prasarana = Bangunan::join('prasarana as p', 'bangunan.id_prasarana', '=', 'p.id')
+        ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
+        ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
+        ->select('bangunan.*', 'p.nama_prasarana', 'p.jumlah_lantai')
+        ->get();
 
         // dd($penempatanSarana);
         $role = auth()->user()->role;
@@ -873,7 +881,7 @@ class SarprasManajemenAset extends Controller
             $penempatan_sarana = DB::table('penempatan_sarana as ps')
                 ->join('alat as a', 'ps.id_alat', '=', 'a.id')
                 ->leftJoin('sarana as s', 'a.id_sarana', '=', 's.id')
-                ->select('s.id as id_alat', 'a.kode_unik as kode_unik', 's.penggunaan as penggunaan', 's.kondisi as kondisi', 's.*', 'ps.id_ruang as id_ruang')
+                ->select('s.id as id_alat', 's.penggunaan as penggunaan', 's.kondisi as kondisi', 's.*', 'ps.id_ruang as id_ruang')
                 ->where('ps.id_ruang', $id)
                 ->get();
 

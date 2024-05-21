@@ -16,7 +16,7 @@
                             <option disabled selected>Pilih Prasarana</option>
                             <!-- asumsikan kolom nama ada di tabel bangunan -->
                             @foreach ($prasarana as $b)
-                                <option value="{{ $b->id }}">{{ $b->prasarana->nama_prasarana }}</option>
+                                <option value="{{ $b->id }}">{{ $b->nama_prasarana }}</option>
                                 <!-- asumsikan kolom nama ada di tabel bangunan -->
                             @endforeach
                         </select>

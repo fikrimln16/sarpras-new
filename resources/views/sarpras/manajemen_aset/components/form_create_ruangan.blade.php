@@ -13,8 +13,9 @@
                         <select class="form-control" id="bangunan" name="id_bangunan" required>
                             <option value="">Pilih Prasarana</option>
                             @foreach ($prasarana as $b)
-                                <option value="{{ $b->id }}" data-jumlah-lantai="{{ $b->prasarana->jumlah_lantai }}">
-                                    {{ $b->prasarana->nama_prasarana }}</option>
+                                <option value="{{ $b->id }}" data-jumlah-lantai="{{ $b->jumlah_lantai }}">
+                                    {{ $b->nama_prasarana }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
