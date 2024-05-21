@@ -128,9 +128,14 @@ class SarprasManajemenAset extends Controller
     public function create_prasarana(Request $request)
     {
         // Validate the incoming data
-        // $validated = $request->validate([
-        //     // Validation rules for Prasarana fields, e.g., 'name' => 'required|string|max:255'
-        // ]);
+        $request->validate([
+            'nama_prasarana' => 'required|string|max:255',
+            'luas' => 'required|string|max:255',
+            'alamat' => 'required|string|max:255',
+            'nilai_perolehan' => 'required|numeric',
+            'jumlah_lantai' => 'required|integer',
+            'keterangan' => 'required|string|max:255',
+        ]);
 
         $universities = auth()->user()->universities;
         $universityCode = $universities->first()->id;
@@ -144,19 +149,24 @@ class SarprasManajemenAset extends Controller
                 'luas' => $request->input('luas'),
                 'alamat' => $request->input('alamat'),
                 'nilai_perolehan' => $request->input('nilai_perolehan'),
+                'jumlah_lantai' => $request->input('jumlah_lantai'),
             ]);
 
+
+            // Create a new PenempatanPrasarana record
+            PenempatanPrasarana::create([
+                'id_prasarana' => $prasarana->id,
+                'id_data_lokasi_kampus' => $universityCode,
+            ]);
+
+
+            // Create a new Bangunan record with the ID of the newly created Prasarana record
             Bangunan::create([
                 'id_prasarana' => $prasarana->id,
                 'id_tanah' => $request->input('id_tanah'),
-                'kapasitas' => $request->input('kapasitas'),
                 'keterangan' => $request->input('keterangan'),
             ]);
 
-            PenempatanPrasarana::create([
-                'id_prasarana' => $prasarana->id,
-                'id_data_lokasi_kampus' => $universityCode
-            ]);
 
             DB::commit();
 
@@ -166,6 +176,7 @@ class SarprasManajemenAset extends Controller
             return back()->withErrors('Error creating Prasarana: ' . $e->getMessage());
         }
     }
+
 
     public function delete_prasarana($id)
     {
