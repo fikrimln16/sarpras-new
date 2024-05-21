@@ -1,6 +1,6 @@
-@extends('layout')
+@extends('sarpras.manajemen_aset.index_inventaris')
 
-@section('content')
+@section('inventaris_table')
     {{-- <h1>INVENTARIS RUANG SARANA</h1> --}}
     <div class="ibox float-e-margins">
         <div class="dropdown-container mb-2">
