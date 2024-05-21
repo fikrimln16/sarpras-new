@@ -368,7 +368,16 @@ class SarprasManajemenAset extends Controller
                 ->select('s.*', 'p.*', 'r.*', 'ps.*')
                 ->get();
         } else {
-            $penempatanSarana = Sarana::all();
+            $penempatanSarana = DB::table('alat')
+                ->leftJoin('penempatan_sarana', 'alat.id', '=', 'penempatan_sarana.id_alat')
+                ->leftJoin('sarana', 'alat.id_sarana', '=', 'sarana.id')
+                ->select(
+                    'alat.*',
+                    'penempatan_sarana.id as penempatan_id',
+                    'sarana.nama_sarana',
+                    DB::raw('CASE WHEN penempatan_sarana.id IS NULL THEN "no" ELSE "yes" END AS pemetaan')
+                )
+                ->get();
             // dd($penempatanSarana);
         }
 
@@ -425,21 +434,21 @@ class SarprasManajemenAset extends Controller
 
     public function get_data_sarana()
     {
-        // Fetch distinct nama_sarana from the sarana table
-        $sarana = Sarana::select('id', 'nama_sarana')
+        // Membuat query menggunakan query builder
+        $sarana = DB::table('alat')
+            ->leftJoin('penempatan_sarana', 'alat.id', '=', 'penempatan_sarana.id_alat')
+            ->leftJoin('sarana', 'alat.id_sarana', '=', 'sarana.id')
+            ->select(
+                'alat.*',
+                'penempatan_sarana.id as penempatan_id',
+                'sarana.nama_sarana',
+                DB::raw('CASE WHEN penempatan_sarana.id IS NULL THEN "no" ELSE "yes" END AS pemetaan')
+            )
             ->distinct()
             ->get();
 
-
-
-        // Map the results to add the is_mapped column based on the existence in penempatan_sarana
-        $sarana = $sarana->map(function ($item) {
-            $item->is_mapped = DB::table('penempatan_sarana')->where('id_sarana', $item->id)->exists() ? 'yes' : 'no';
-            return $item;
-        });
-
         return datatables()->of($sarana)
-            ->rawColumns(['is_mapped'])
+            ->rawColumns(['pemetaan'])
             ->make(true);
     }
 
@@ -749,27 +758,14 @@ class SarprasManajemenAset extends Controller
 
     public function tambah_pemetaan_sarana(Request $request)
     {
-
-        foreach ($request->id_sarana as $key => $value) {
-            for ($i = 0; $i < 1; $i++) {
-
-                $alat = Alat::create([
-                    'id_sarana' => $value,
-                    'kode_unik' => strtoupper(Str::random(15)),
-                ]);
-
-                PenempatanSarana::create([
-                    'id_alat' => $alat->id,
-                    'id_ruang' => $request->ruangan,
-                ]);
-
-                // PenempatanSarana::create([
-                //     'kode_unik' => strtoupper(Str::random(10)),
-                //     'id_sarana' => $value,
-                //     'id_ruang' => $request->ruangan,
-                // ]);
-            }
+        foreach ($request->id_sarana as $value) {
+            // Buat entri di tabel penempatan_sarana
+            PenempatanSarana::create([
+                'id_alat' => $value,
+                'id_ruang' => $request->ruangan,
+            ]);
         }
+
         return redirect()->route('manajemen_aset.sarana')->with('success', 'Sarana sudah dipetakan');
     }
 
