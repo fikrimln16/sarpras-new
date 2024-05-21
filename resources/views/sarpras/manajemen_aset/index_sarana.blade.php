@@ -133,8 +133,8 @@
                     name: 'nama_sarana'
                 },
                 {
-                    data: 'is_mapped',
-                    name: 'is_mapped'
+                    data: 'pemetaan',
+                    name: 'pemetaan'
                 },
             ]
         });

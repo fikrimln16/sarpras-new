@@ -83,7 +83,6 @@ class SarprasManajemenAset extends Controller
                 ->where('penempatan_prasarana.id_data_lokasi_kampus', $universityCode)
                 ->select(['p.id as id', 'p.nama_prasarana as nama_prasarana', 'p.luas as luas', 'p.alamat as alamat', 'p.nilai_perolehan as nilai_perolehan', 'p.nilai_buku as nilai_buku'])
                 ->get();
-
         }
 
         $tanahList = Tanah::join('prasarana as p', 'tanah.id_prasarana', '=', 'p.id')
@@ -369,16 +368,14 @@ class SarprasManajemenAset extends Controller
                 ->get();
         } else {
             $penempatanSarana = DB::table('alat')
-                ->leftJoin('penempatan_sarana', 'alat.id', '=', 'penempatan_sarana.id_alat')
-                ->leftJoin('sarana', 'alat.id_sarana', '=', 'sarana.id')
-                ->select(
-                    'alat.*',
-                    'penempatan_sarana.id as penempatan_id',
-                    'sarana.nama_sarana',
-                    DB::raw('CASE WHEN penempatan_sarana.id IS NULL THEN "no" ELSE "yes" END AS pemetaan')
-                )
-                ->get();
+            ->leftJoin('penempatan_sarana', 'alat.id', '=', 'penempatan_sarana.id_alat')
+            ->leftJoin('sarana', 'alat.id_sarana', '=', 'sarana.id')
+            ->select('alat.*', 'penempatan_sarana.id as penempatan_id', 'sarana.nama_sarana')
+            ->whereNull('penempatan_sarana.id')
+            ->get();
+
             // dd($penempatanSarana);
+        
         }
 
         $skema_biaya = Sbsn::where('id_data_lokasi_kampus', $universityCode)->get();
@@ -769,6 +766,7 @@ class SarprasManajemenAset extends Controller
         return redirect()->route('manajemen_aset.sarana')->with('success', 'Sarana sudah dipetakan');
     }
 
+
     public function get_data_inventaris_ruang_sdm(Request $request)
     {
 
@@ -801,8 +799,7 @@ class SarprasManajemenAset extends Controller
                 ->map(function ($item) {
                     $item->tersisa = $item->kapasitas - $item->jumlah_orang_terisi;
                     return $item;
-                });
-            ;
+                });;
         }
 
         // if (auth()->user()->role != '1') {
@@ -1066,5 +1063,4 @@ class SarprasManajemenAset extends Controller
             return redirect()->back()->with('error', 'There was an error creating the Tanah: ' . $e->getMessage());
         }
     }
-
 }

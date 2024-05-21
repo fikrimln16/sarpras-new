@@ -98,15 +98,14 @@
                         </div>
 
 
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <div class="form-group form-check">
                                 <input type="checkbox" class="form-check-input" id="bangunanCheck">
                                 <label class="form-check-label" for="bangunanCheck">Bangunan</label>
                             </div>
-                        </div>
+                        </div> -->
 
                         <!-- Dynamic Bangunan fields container -->
-                        <div id="bangunanFields">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="jumlah_lantai">Jumlah Lantai:</label>
@@ -119,7 +118,6 @@
                                     <input type="text" class="form-control" id="keterangan" name="keterangan">
                                 </div>
                             </div>
-                        </div>
                         <button id="prasaranaForm" type="submit" class="btn btn-primary">Simpan</button>
 
                 </form>
@@ -254,10 +252,10 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
-    document.getElementById('bangunanCheck').addEventListener('change', function() {
-        var bangunanContainer = document.getElementById('bangunanFields');
-        bangunanContainer.style.display = this.checked ? 'block' : 'none';
-    });
+    // document.getElementById('bangunanCheck').addEventListener('change', function() {
+    //     var bangunanContainer = document.getElementById('bangunanFields');
+    //     bangunanContainer.style.display = this.checked ? 'block' : 'none';
+    // });
 
     $('#jenisPrasarana').change(function() {
         var selectedOption = $(this).val();
@@ -343,7 +341,6 @@
     }
 
     #bangunanFields {
-        display: none;
         margin-top: 15px;
         padding-top: 15px;
         border-top: 1px solid #ddd;
