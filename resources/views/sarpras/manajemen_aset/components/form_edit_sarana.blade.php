@@ -36,10 +36,10 @@
                         <label for="edit-kondisi" class="form-label">Kondisi</label>
                         <input type="text" class="form-control" id="edit-kondisi" name="kondisi">
                     </div>
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
                         <label for="edit-status" class="form-label">Status</label>
                         <input type="text" class="form-control" id="edit-status" name="status">
-                    </div>
+                    </div> --}}
                     {{-- <div class="mb-3">
                        <label for="edit-nilai-perolehan" class="form-label">Nilai Perolehan</label>
                        <input type="text" class="form-control" id="edit-nilai-perolehan" name="nilai_perolehan"
