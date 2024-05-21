@@ -78,14 +78,22 @@ class SarprasManajemenAset extends Controller
 
         $data = Prasarana::all();
         if ($role == "2") {
-            $data = Prasarana::select('prasarana.*')
-                ->join('penempatan_prasarana', 'penempatan_prasarana.id_prasarana', '=', 'prasarana.id')
+            $data = Bangunan::join('prasarana as p', 'bangunan.id_prasarana', '=', 'p.id')
+                ->join('penempatan_prasarana', 'penempatan_prasarana.id_prasarana', '=', 'p.id')
                 ->where('penempatan_prasarana.id_data_lokasi_kampus', $universityCode)
+                ->select(['p.id as id', 'p.nama_prasarana as nama_prasarana', 'p.luas as luas', 'p.alamat as alamat', 'p.nilai_perolehan as nilai_perolehan', 'p.nilai_buku as nilai_buku'])
                 ->get();
+
         }
 
-        $tanahList = Tanah::with('prasarana')->get();
+        $tanahList = Tanah::join('prasarana as p', 'tanah.id_prasarana', '=', 'p.id')
+            ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
+            ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
+            ->select(['tanah.id as id', 'tanggal_mutasi_keluar', 'batas', 'keterangan', 'tanah.id', 'p.nama_prasarana as nama_prasarana'])
+            ->get();
+
         // dd($tanahList);
+
 
         // dd($data);
         $bangunan = DataLokasiKampus::find($universityCode)->prasarana;
@@ -411,7 +419,7 @@ class SarprasManajemenAset extends Controller
             ->distinct()
             ->get();
 
-      
+
 
         // Map the results to add the is_mapped column based on the existence in penempatan_sarana
         $sarana = $sarana->map(function ($item) {
@@ -658,26 +666,35 @@ class SarprasManajemenAset extends Controller
             isset($rows[0][0]) && $rows[0][0] === 'nama_sarana' &&
             isset($rows[0][1]) && $rows[0][1] === 'kategori' &&
             isset($rows[0][2]) && $rows[0][2] === 'spesifikasi' &&
-            isset($rows[0][3]) && $rows[0][3] === 'nilai_perolehan'
+            isset($rows[0][3]) && $rows[0][3] === 'nilai_perolehan' &&
+            isset($rows[0][4]) && $rows[0][4] === 'jumlah'
         ) {
             // Melewati baris pertama (header)
             array_shift($rows);
 
             // Proses setiap baris data
             foreach ($rows as $row) {
-                // Memeriksa apakah kedua elemen dalam baris sudah diset
-                if (isset($row[0]) && isset($row[1])) {
+                // Memeriksa apakah semua elemen dalam baris sudah diset
+                if (isset($row[0]) && isset($row[1]) && isset($row[2]) && isset($row[3]) && isset($row[4])) {
                     // Memeriksa apakah data sudah ada di database
                     $existingSarana = Sarana::where('nama_sarana', $row[0])->first();
 
+                    // Jika data tidak ada di tabel sarana, tambahkan data sebanyak jumlah yang ditentukan
                     if (!$existingSarana) {
-                        // Tambahkan data ke dalam database jika tidak ada
-                        Sarana::create([
-                            'nama_sarana' => $row[0] ?? null,
-                            'kategori' => $row[1] ?? null,
-                            'spesifikasi' => $row[2] ?? null,
-                            'nilai_perolehan' => $row[3] ?? null,
-                        ]);
+                        for ($i = 0; $i < $row[4]; $i++) {
+                            $sarana = Sarana::create([
+                                'nama_sarana' => $row[0] ?? null,
+                                'kategori' => $row[1] ?? null,
+                                'spesifikasi' => $row[2] ?? null,
+                                'nilai_perolehan' => $row[3] ?? null,
+                                'kode_unik' => strtoupper(Str::random(15)),
+                            ]);
+
+                            // Tambahkan data ke dalam tabel alat
+                            Alat::create([
+                                'id_sarana' => $sarana->id,
+                            ]);
+                        }
                     }
                 }
             }
@@ -692,6 +709,7 @@ class SarprasManajemenAset extends Controller
             return redirect()->back()->with('error', 'Format file tidak sesuai.');
         }
     }
+
 
     public function downloadTemplateExcel()
     {
@@ -721,7 +739,7 @@ class SarprasManajemenAset extends Controller
     {
 
         foreach ($request->id_sarana as $key => $value) {
-            for ($i = 0; $i < $request->jumlah_barang[$key]; $i++) {
+            for ($i = 0; $i < 1; $i++) {
 
                 $alat = Alat::create([
                     'id_sarana' => $value,
@@ -775,7 +793,8 @@ class SarprasManajemenAset extends Controller
                 ->map(function ($item) {
                     $item->tersisa = $item->kapasitas - $item->jumlah_orang_terisi;
                     return $item;
-                });;
+                });
+            ;
         }
 
         // if (auth()->user()->role != '1') {
@@ -849,7 +868,7 @@ class SarprasManajemenAset extends Controller
             $penempatan_sarana = DB::table('penempatan_sarana as ps')
                 ->join('alat as a', 'ps.id_alat', '=', 'a.id')
                 ->leftJoin('sarana as s', 'a.id_sarana', '=', 's.id')
-                ->select('a.id as id_alat', 'a.kode_unik as kode_unik', 'a.penggunaan as penggunaan', 'a.status as status', 'a.kondisi as kondisi', 's.*', 'ps.id_ruang as id_ruang')
+                ->select('s.id as id_alat', 'a.kode_unik as kode_unik', 's.penggunaan as penggunaan', 'a.status as status', 's.kondisi as kondisi', 's.*', 'ps.id_ruang as id_ruang')
                 ->where('ps.id_ruang', $id)
                 ->get();
 
@@ -947,9 +966,13 @@ class SarprasManajemenAset extends Controller
 
     public function getTanahData(Request $request)
     {
+        $universities = auth()->user()->universities;
+        $universityCode = $universities->first()->id;
         // Fetching data with related prasarana data
-        $tanahs = Tanah::with('prasarana')
-            ->select(['id', 'tanggal_mutasi_keluar', 'batas', 'keterangan', 'id_prasarana'])
+        $tanahs = Tanah::join('prasarana as p', 'tanah.id_prasarana', '=', 'p.id')
+            ->join('penempatan_prasarana as pp', 'p.id', '=', 'pp.id_prasarana')
+            ->where('pp.id_data_lokasi_kampus', '=', $universityCode)
+            ->select(['tanah.id as id', 'tanggal_mutasi_keluar', 'batas', 'keterangan', 'tanah.id_prasarana'])
             ->get();
 
 

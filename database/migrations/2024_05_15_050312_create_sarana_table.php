@@ -24,6 +24,10 @@ return new class extends Migration
             $table->string('penggunaan', 255)->nullable();
             $table->string('kondisi', 255)->nullable();
             $table->string('tanggal_hapus_buku', 255)->nullable();
+
+            $table->string('kode_unik', 255)->nullable();
+
+            
             $table->timestamps(); 
         });
     }
