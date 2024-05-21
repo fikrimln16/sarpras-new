@@ -649,11 +649,11 @@ class SarprasManajemenAset extends Controller
 
     public function update_sarana(Request $request)
     {
-        $penempatan = Alat::find($request->id);
+        $penempatan = Sarana::find($request->id);
         // dd($request->all());
         $penempatan->penggunaan = $request->penggunaan;
         $penempatan->kondisi = $request->kondisi;
-        $penempatan->status = $request->status;
+        // $penempatan->status = $request->status;
         $penempatan->save();
 
         return redirect()->back()->with('success', 'Data sarana berhasil diupdate');
@@ -880,7 +880,7 @@ class SarprasManajemenAset extends Controller
             $penempatan_sarana = DB::table('penempatan_sarana as ps')
                 ->join('alat as a', 'ps.id_alat', '=', 'a.id')
                 ->leftJoin('sarana as s', 'a.id_sarana', '=', 's.id')
-                ->select('s.id as id_alat', 'a.kode_unik as kode_unik', 's.penggunaan as penggunaan', 'a.status as status', 's.kondisi as kondisi', 's.*', 'ps.id_ruang as id_ruang')
+                ->select('s.id as id_alat', 'a.kode_unik as kode_unik', 's.penggunaan as penggunaan', 's.kondisi as kondisi', 's.*', 'ps.id_ruang as id_ruang')
                 ->where('ps.id_ruang', $id)
                 ->get();
 

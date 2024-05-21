@@ -42,7 +42,7 @@
                             <th>Nama Sarana</th>
                             {{-- <th>Kategori</th> --}}
                             <th>Penggunaan</th>
-                            <th>Status</th>
+                            {{-- <th>Status</th> --}}
                             <th>Kondisi</th>
                             @if (auth()->user()->role != '1')
                                 <th>Aksi</th>
@@ -57,7 +57,7 @@
                                 <td>{{ $item->nama_sarana }}</td>
                                 {{-- <td>{{ $item->sarana->kategori }}</td> --}}
                                 <td>{{ $item->penggunaan ?: 'belum diisi' }}</td>
-                                <td>{{ $item->status ?: 'belum diisi' }}</td>
+                                {{-- <td>{{ $item->status ?: 'belum diisi' }}</td> --}}
                                 <td>{{ $item->kondisi ?: 'belum diisi' }}</td>
                                 @if (auth()->user()->role != '1')
                                     <td>
@@ -72,7 +72,7 @@
                                                 data-kode-unik="{{ $item->kode_unik }}"
                                                 data-nama-sarana="{{ $item->nama_sarana }}"
                                                 data-penggunaan="{{ $item->penggunaan }}"
-                                                data-kondisi="{{ $item->kondisi }}" data-status="{{ $item->status }}">
+                                                data-kondisi="{{ $item->kondisi }}">
                                                 Edit
                                             </button>
                                         @endif
