@@ -1,6 +1,6 @@
-@extends('layout')
+@extends('sarpras.manajemen_aset.index_inventaris')
 
-@section('content')
+@section('inventaris_table')
     <div class="ibox float-e-margins">
         <div class="dropdown-container mb-2">
             <label for="building-select">Pilih Bangunan:</label>
