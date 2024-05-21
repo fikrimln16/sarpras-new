@@ -44,10 +44,10 @@
                                         <tr>
                                             <td>
                                                 <input type="checkbox" class="checkbox-dosen"
-                                                    value="{{ $sarana->id }}"
+                                                    value="{{ $sarana->id_sarana}}"
                                                     data-nama_sarana="{{ $sarana->nama_sarana }}">
                                             </td>
-                                            <td>{{ $sarana->id }}</td>
+                                            <td>{{ $sarana->id_sarana }}</td>
                                             <td>{{ $sarana->nama_sarana }}</td>
                                         </tr>
                                     @endforeach
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                     <div id="tambahSaranaForm">
-                        <input type="hidden" name="id_sarana" value="{{ $sarana->id ?? null }}">
+                        <input type="hidden" name="id_sarana" value="{{ $sarana->id_sarana ?? null }}">
                         <div class="form-group">
                             <label for="sarana_terpilih">Dosen Terpilih</label>
                             <table class="table table-bordered" id="sarana_terpilih">
