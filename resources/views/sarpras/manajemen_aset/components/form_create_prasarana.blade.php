@@ -108,8 +108,8 @@
                         <!-- Dynamic Bangunan fields container -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="kapasitas">Kapasitas:</label>
-                                    <input type="number" class="form-control" id="kapasitas" name="kapasitas">
+                                    <label for="jumlah_lantai">Jumlah Lantai:</label>
+                                    <input type="number" class="form-control" id="jumlah_lantai" name="jumlah_lantai">
                                 </div>
                             </div>
                             <div class="col-md-6">
