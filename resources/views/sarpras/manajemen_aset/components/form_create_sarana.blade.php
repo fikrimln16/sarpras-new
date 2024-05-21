@@ -64,7 +64,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Nama Sarana</th>
-                                        <th>Jumlah</th>
+                                        {{-- <th>Jumlah</th> --}}
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -133,7 +133,6 @@
                       <tr data-id="${id}">
                           <td><input type="hidden" name="id_sarana[]" value="${id}">${id}</td>
                           <td>${nama_sarana}</td>
-                          <td><input type="number" name="jumlah_barang[]" class="form-control"></td>
                           <td><button type="button" class="btn btn-danger btn-sm hapus-dosen">Hapus</button></td>
                       </tr>
                   `);

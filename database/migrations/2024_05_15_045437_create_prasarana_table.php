@@ -20,8 +20,7 @@ return new class extends Migration
             $table->string('bujur', 100)->nullable();
             $table->integer('panjang')->nullable();
             $table->integer('lebar')->nullable();
-            $table->integer('luas_bangunan')->nullable();
-            $table->integer('luas_tanah')->nullable();
+            $table->integer('luas')->nullable();
             $table->integer('jumlah_lantai')->nullable();
             $table->string('objek_infrastruktur', 100)->nullable();
             $table->string('bmn_satker', 255)->nullable();

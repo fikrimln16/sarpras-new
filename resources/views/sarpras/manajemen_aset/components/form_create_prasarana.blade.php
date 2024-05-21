@@ -19,7 +19,7 @@
                                 <select class="form-control" id="tanah_id" name="id_tanah">
                                     <option value="" disabled selected>Pilih Tanah</option>
                                     @foreach ($tanahList as $tanah)
-                                        <option value="{{ $tanah->id }}">{{ $tanah->prasarana->nama_prasarana }}
+                                        <option value="{{ $tanah->id }}">{{ $tanah->nama_prasarana }}
                                         </option>
                                     @endforeach
                                 </select>
